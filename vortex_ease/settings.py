@@ -24,6 +24,7 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 #  INSTALLED APPS
 # ----------------------------------------------------
 INSTALLED_APPS = [
+    "unfold",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -108,5 +109,37 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"   # Required for production collectstatic
+
+# ----------------------------------------------------
+# MEDIA FILES
+# ----------------------------------------------------
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+# ----------------------------------------------------
+# DJANGO UNFOLD CONFIGURATION
+# ----------------------------------------------------
+UNFOLD = {
+    "SITE_TITLE": "VortexEase Admin",
+    "SITE_HEADER": "VortexEase Administration",
+    "SITE_URL": "/",
+    "SITE_ICON": None,
+    "SITE_LOGO": None,
+    "SITE_SYMBOL": "settings",
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
+    "ENVIRONMENT": None,
+    "DASHBOARD_CALLBACK": None,
+    "LOGIN": {
+        "image": None,
+        "redirect_after": None,
+    },
+    "STYLES": [
+        "/static/css/admin_inline_custom.css",
+    ],
+    "SCRIPTS": [
+        "/static/admin/js/payment_fields_border.js",
+    ],
+}
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

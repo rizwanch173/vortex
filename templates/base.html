@@ -16,13 +16,22 @@
     />
     <meta
       name="description"
-      content="Abroad - Immigration and Visa Consulting HTML Template"
+      content="Vortex Ease - Expert visa services and immigration consulting for Schengen, USA, Canada, Australia, and more. Get your tourist, student, and business visas with 99% approval rate."
     />
     <title>
-      {% block title %}Vortex Ease{% endblock %}
+      {% block title %}Vortex Ease - Visa Services & Immigration Consulting{% endblock %}
     </title>
 
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{% block og_title %}Vortex Ease - Visa Services & Immigration Consulting{% endblock %}" />
+    <meta property="og:description" content="{% block og_description %}Expert visa services and immigration consulting for Schengen, USA, Canada, Australia, and more. Get your tourist, student, and business visas with 99% approval rate.{% endblock %}" />
+    <meta property="og:site_name" content="Vortex Ease" />
 
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{% block twitter_title %}Vortex Ease - Visa Services & Immigration Consulting{% endblock %}" />
+    <meta name="twitter:description" content="{% block twitter_description %}Expert visa services and immigration consulting for Schengen, USA, Canada, Australia, and more. Get your tourist, student, and business visas with 99% approval rate.{% endblock %}" />
 
     <meta
         name="viewport"

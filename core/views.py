@@ -16,7 +16,7 @@ from .context_schema import Testimonial, Reviews
 def home(request: HttpRequest):
     visa_countries_config = load_visa_services_countries()
     testimonial_config = load_testimonial()
-    
+
     # Get random success stories
     success_stories = get_random_success_stories(max_items=6)
 
@@ -50,7 +50,7 @@ def home(request: HttpRequest):
 def visa_detail_page(request: HttpRequest, slug: str):
     visa_countries_config = load_visa_services_countries()
     config = load_config(slug.replace("-", "_"))
-    
+
     # Preprocess sections for template logic
     sections_data = []
     sections = config.sections
@@ -59,7 +59,7 @@ def visa_detail_page(request: HttpRequest, slug: str):
         sec_data = section.model_dump() if hasattr(section, 'model_dump') else section.dict()
         sec_data['is_benefits'] = (section.title == 'Benefits')
         sec_data['is_estimated_cost'] = (section.title == 'Estimated Cost')
-        
+
         # Next section
         if i < len(sections) - 1:
             next_sec = sections[i+1]
@@ -69,7 +69,7 @@ def visa_detail_page(request: HttpRequest, slug: str):
         else:
             sec_data['next_section'] = None
             sec_data['is_estimated_cost_next'] = False
-            
+
         # Prev section
         if i > 0:
             prev_sec = sections[i-1]
@@ -79,9 +79,9 @@ def visa_detail_page(request: HttpRequest, slug: str):
         else:
             sec_data['prev_section'] = None
             sec_data['is_benefits_prev'] = False
-            
+
         sections_data.append(sec_data)
-    
+
     # Convert main config to dict and replace sections
     config_dict = config.model_dump() if hasattr(config, 'model_dump') else config.dict()
     config_dict['sections'] = sections_data

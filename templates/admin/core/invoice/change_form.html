@@ -1,0 +1,208 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <style>
+        .invoice-applications-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        .applications-selector {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
+        .applications-selector > div {
+            flex: 1;
+        }
+        .applications-selector label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        .applications-selector select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .applications-selector button {
+            padding: 8px 16px;
+            background: #007cba;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+            height: 36px;
+        }
+        .applications-selector button:hover {
+            background: #005a87;
+        }
+        .applications-selector button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        .selected-applications {
+            margin-top: 20px;
+        }
+        .selected-applications h3 {
+            margin: 0 0 15px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        .applications-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .applications-table thead {
+            background: #f8f9fa;
+        }
+        .applications-table th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .applications-table td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 14px;
+            color: #333;
+        }
+        .applications-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .applications-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        .remove-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .remove-btn:hover {
+            background: #c82333;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .subtotal-display {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 4px;
+        }
+        .subtotal-display strong {
+            font-size: 16px;
+            color: #0066cc;
+        }
+    </style>
+{% endblock %}
+
+{% block field_sets %}
+    {{ block.super }}
+
+    <!-- Custom Visa Applications Section -->
+    <div class="form-row" style="margin-top: 30px;">
+        <div class="field-box">
+            <div class="invoice-applications-section">
+                <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #333;">Visa Applications</h2>
+
+                <input type="hidden" id="selected-applications-data" name="selected_applications_data" value="">
+
+                <div class="applications-selector">
+                    <div>
+                        <label for="available-applications">Available Applications</label>
+                        <select id="available-applications" name="available_applications">
+                            <option value="">-- Select a client first --</option>
+                        </select>
+                        <div id="applications-error" class="error-message" style="display: none;"></div>
+                    </div>
+                    <button type="button" id="add-application-btn" disabled>+ Add</button>
+                </div>
+
+                <div class="selected-applications">
+                    <h3>Selected Applications</h3>
+                    <div id="selected-applications-container">
+                        <div class="empty-state">
+                            <p>No applications selected. Select a client and add applications above.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subtotal-display">
+                    <strong>Subtotal: <span id="subtotal-display">0.00</span></strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize window variables
+        window.INVOICE_ID = {% if original and original.pk %}{{ original.pk }}{% else %}0{% endif %};
+        window.CLIENT_ID = {% if original and original.client %}{{ original.client.pk }}{% else %}null{% endif %};
+        window.SELECTED_APPLICATIONS = {% if selected_applications %}{{ selected_applications|safe }}{% else %}[]{% endif %};
+
+        console.log('Invoice form initialized');
+        console.log('INVOICE_ID:', window.INVOICE_ID);
+        console.log('CLIENT_ID:', window.CLIENT_ID);
+        console.log('SELECTED_APPLICATIONS:', window.SELECTED_APPLICATIONS);
+    </script>
+{% endblock %}
+
+{% block submit_buttons_bottom %}
+    {{ block.super }}
+    {% if original and original.pk %}
+        <div class="submit-row" style="padding: 15px; background: #f8f9fa; border-top: 1px solid #dee2e6; display: flex; gap: 10px; align-items: center; margin-top: 20px;">
+            <a href="{% url 'admin:core_invoice_changelist' %}" class="button" style="background: #6b7280; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-block; border: none; cursor: pointer;">
+                ← {% trans "Back to List" %}
+            </a>
+            <a href="{% url 'admin:core_invoice_preview' original.pk %}" class="button" target="_blank" style="background: #3b82f6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-block; border: none; cursor: pointer;">
+                👁️ {% trans "Preview" %}
+            </a>
+            <a href="{% url 'admin:core_invoice_pdf' original.pk %}" class="button" target="_blank" style="background: #10b981; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-block; border: none; cursor: pointer;">
+                📄 {% trans "Download PDF" %}
+            </a>
+            {% if original.status != 'sent' and original.status != 'paid' %}
+            <a href="{% url 'admin:core_invoice_send' original.pk %}" class="button" style="background: #f59e0b; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-block; border: none; cursor: pointer;">
+                📧 {% trans "Send Invoice" %}
+            </a>
+            {% endif %}
+            {% if original.client %}
+            <a href="{% url 'admin:core_client_change' original.client.pk %}" class="button" style="background: #6b7280; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-block; border: none; cursor: pointer;">
+                👤 {% trans "View Client" %}
+            </a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}
