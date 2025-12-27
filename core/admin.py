@@ -9,6 +9,7 @@ from django.forms import ModelForm
 from django import forms
 from decimal import Decimal
 from .models import Client, VisaApplication, Payment, Pricing, Invoice, InvoiceApplication
+from .admin_site import admin_site
 
 
 # Custom Form for Payment
@@ -186,7 +187,7 @@ class PaymentInline(admin.TabularInline):
 
 
 
-@admin.register(Client)
+@admin.register(Client, site=admin_site)
 class ClientAdmin(ModelAdmin):
     """
     Admin interface for Client model using Django Unfold.
@@ -586,7 +587,7 @@ class VisaApplicationForm(ModelForm):
         return cleaned_data
 
 
-@admin.register(VisaApplication)
+@admin.register(VisaApplication, site=admin_site)
 class VisaApplicationAdmin(ModelAdmin):
     """
     Admin interface for VisaApplication model using Django Unfold.
@@ -867,7 +868,9 @@ class VisaApplicationAdmin(ModelAdmin):
 
             # Prevent POST requests in view mode (redirect to edit mode if trying to save)
             if request.method == "POST" and not edit_mode:
-                edit_url = reverse("admin:core_visaapplication_change", args=[object_id])
+                edit_url = reverse(
+                    f"{admin_site.name}:core_visaapplication_change", args=[object_id]
+                )
                 return HttpResponseRedirect(f"{edit_url}?edit=1")
 
             extra_context["edit_mode"] = edit_mode
@@ -875,16 +878,26 @@ class VisaApplicationAdmin(ModelAdmin):
 
             # Add edit button URL
             if not edit_mode:
-                edit_url = reverse("admin:core_visaapplication_change", args=[object_id])
+                edit_url = reverse(
+                    f"{admin_site.name}:core_visaapplication_change", args=[object_id]
+                )
                 extra_context["edit_url"] = f"{edit_url}?edit=1"
 
-            # Add invoice URL - get most recent payment for this visa application or create new one
-            most_recent_payment = Payment.objects.filter(visa_application=obj).order_by('-created_at').first()
-            if most_recent_payment:
-                invoice_url = reverse("admin:core_payment_change", args=[most_recent_payment.pk])
+            # Add invoice URL - link to latest invoice if present, otherwise open the builder.
+            invoice = (
+                Invoice.objects.filter(visa_applications=obj)
+                .order_by("-invoice_date", "-created_at")
+                .first()
+            )
+            if invoice:
+                invoice_url = reverse(
+                    f"{admin_site.name}:core_invoice_change", args=[invoice.pk]
+                )
             else:
-                # Create new payment with visa application and client pre-selected
-                invoice_url = reverse("admin:core_payment_add") + f"?visa_application={object_id}&client={obj.client.pk}"
+                invoice_url = (
+                    reverse(f"{admin_site.name}:core_invoice_builder")
+                    + f"?client={obj.client.pk}"
+                )
             extra_context["invoice_url"] = invoice_url
 
         return super().change_view(request, object_id, form_url, extra_context)
@@ -894,7 +907,7 @@ class VisaApplicationAdmin(ModelAdmin):
         if "_save" in request.POST or "_continue" in request.POST:
             # After saving, redirect to view mode (without edit parameter)
             return HttpResponseRedirect(
-                reverse("admin:core_visaapplication_change", args=[obj.pk])
+                reverse(f"{admin_site.name}:core_visaapplication_change", args=[obj.pk])
             )
         return super().response_change(request, obj)
 
@@ -1241,7 +1254,7 @@ class VisaApplicationAdmin(ModelAdmin):
 # The entire PaymentAdmin class has been removed from admin interface
 
 
-@admin.register(Pricing)
+@admin.register(Pricing, site=admin_site)
 class PricingAdmin(ModelAdmin):
     """
     Admin interface for Pricing model using Django Unfold.
@@ -1334,7 +1347,7 @@ class InvoiceForm(ModelForm):
             self.fields['client'].required = True
 
 
-@admin.register(Invoice)
+@admin.register(Invoice, site=admin_site)
 class InvoiceAdmin(ModelAdmin):
     """
     Admin interface for Invoice model using Django Unfold.

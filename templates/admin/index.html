@@ -1,0 +1,297 @@
+{% extends 'admin/base.html' %}
+{% load i18n %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+    {% include "unfold/helpers/site_branding.html" %}
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .dashboard-shell {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        .dashboard-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .dashboard-subtitle {
+            color: #64748b;
+            font-size: 14px;
+        }
+        .dashboard-grid {
+            display: grid;
+            gap: 16px;
+        }
+        .kpi-grid {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+        .chart-grid {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+        .dashboard-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        }
+        .dashboard-card h3 {
+            margin: 0 0 10px;
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .dashboard-card .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .dashboard-card .muted {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        .dashboard-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0f172a;
+            margin: 4px 0;
+        }
+        .dashboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .dashboard-list li {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #475569;
+        }
+        .dashboard-list span.count {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .dark .dashboard-title,
+        .dark .dashboard-section-title,
+        .dark .dashboard-card .value {
+            color: #e2e8f0;
+        }
+        .dark .dashboard-subtitle,
+        .dark .dashboard-card h3,
+        .dark .dashboard-card .muted,
+        .dark .dashboard-list li {
+            color: #94a3b8;
+        }
+        .dark .dashboard-card {
+            background: #0f172a;
+            border-color: #1f2937;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+        }
+        .dark .dashboard-list span.count {
+            color: #e2e8f0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <section class="dashboard-shell">
+        <div>
+            <div class="dashboard-title">Admin Overview</div>
+            <div class="dashboard-subtitle">Key finance and visa performance metrics for the last 12 months.</div>
+        </div>
+
+        <div class="dashboard-grid kpi-grid">
+            {% for kpi in dashboard.kpis %}
+                <div class="dashboard-card">
+                    <h3>{{ kpi.label }}</h3>
+                    <div class="value">{{ kpi.value }}</div>
+                </div>
+            {% empty %}
+                <div class="dashboard-card">
+                    <div class="muted">No KPI data available yet.</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="dashboard-grid kpi-grid">
+            {% for kpi in dashboard.visa_kpis %}
+                <div class="dashboard-card">
+                    <h3>{{ kpi.label }}</h3>
+                    <div class="value">{{ kpi.value }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="dashboard-grid kpi-grid">
+            {% for kpi in dashboard.ops_kpis %}
+                <div class="dashboard-card">
+                    <h3>{{ kpi.label }}</h3>
+                    <div class="value">{{ kpi.value }}</div>
+                </div>
+            {% endfor %}
+            <div class="dashboard-card">
+                <h3>Top Destinations</h3>
+                <ul class="dashboard-list">
+                    {% if dashboard.top_destinations %}
+                        {% for destination in dashboard.top_destinations %}
+                            <li>
+                                <span>{{ destination.label }}</span>
+                                <span class="count">{{ destination.count }}</span>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li>No destination data yet.</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="dashboard-section-title">Revenue & Performance</div>
+        <div class="dashboard-grid chart-grid">
+            <div class="dashboard-card">
+                <h3>Revenue Received (Monthly)</h3>
+                <canvas id="revenueChart" height="120"></canvas>
+            </div>
+            <div class="dashboard-card">
+                <h3>Invoice Status</h3>
+                <canvas id="statusChart" height="120"></canvas>
+            </div>
+            <div class="dashboard-card">
+                <h3>Approvals vs Rejections</h3>
+                <canvas id="approvalChart" height="120"></canvas>
+            </div>
+            <div class="dashboard-card">
+                <h3>US Approvals vs Rejections</h3>
+                <canvas id="usApprovalChart" height="120"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <div class="flex flex-col lg:flex-row lg:gap-8">
+        <div class="grow">
+            {% include "unfold/helpers/app_list_default.html" %}
+        </div>
+
+        {% include "unfold/helpers/history.html" %}
+    </div>
+
+    <script id="dashboard-data" type="application/json">{{ chart_data|safe }}</script>
+    <script>
+        (function() {
+            const raw = document.getElementById('dashboard-data');
+            if (!raw) return;
+            const data = JSON.parse(raw.textContent || '{}');
+
+            const isDark = document.documentElement.classList.contains('dark') || document.body.classList.contains('dark');
+            const textColor = isDark ? '#e2e8f0' : '#0f172a';
+            const gridColor = isDark ? '#1f2937' : '#e2e8f0';
+
+            Chart.defaults.color = textColor;
+            Chart.defaults.borderColor = gridColor;
+            const axisOptions = {
+                ticks: { color: textColor },
+                grid: { color: gridColor },
+            };
+            const legendOptions = {
+                labels: { color: textColor },
+            };
+
+            const revenueCtx = document.getElementById('revenueChart');
+            if (revenueCtx) {
+                new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.revenue.labels || [],
+                        datasets: [{
+                            label: 'Revenue',
+                            data: data.revenue.data || [],
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.15)',
+                            tension: 0.3,
+                            fill: true,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: axisOptions,
+                            y: { ...axisOptions, beginAtZero: true },
+                        },
+                    }
+                });
+            }
+
+            const statusCtx = document.getElementById('statusChart');
+            if (statusCtx) {
+                new Chart(statusCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.invoice_status.labels || [],
+                        datasets: [{
+                            label: 'Invoices',
+                            data: data.invoice_status.data || [],
+                            backgroundColor: ['#94a3b8', '#38bdf8', '#22c55e', '#f97316', '#ef4444'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: axisOptions,
+                            y: { ...axisOptions, beginAtZero: true },
+                        },
+                    }
+                });
+            }
+
+            const approvalCtx = document.getElementById('approvalChart');
+            if (approvalCtx) {
+                new Chart(approvalCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.approvals.labels || [],
+                        datasets: [{
+                            data: data.approvals.data || [],
+                            backgroundColor: ['#22c55e', '#ef4444'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom', ...legendOptions } },
+                    }
+                });
+            }
+
+            const usApprovalCtx = document.getElementById('usApprovalChart');
+            if (usApprovalCtx) {
+                new Chart(usApprovalCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.us_approvals.labels || [],
+                        datasets: [{
+                            data: data.us_approvals.data || [],
+                            backgroundColor: ['#38bdf8', '#f97316'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom', ...legendOptions } },
+                    }
+                });
+            }
+        })();
+    </script>
+{% endblock %}

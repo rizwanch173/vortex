@@ -20,8 +20,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from core.admin_site import admin_site
+
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("admin/", admin_site.urls),
     path("", include("core.urls")),
 ]
 
