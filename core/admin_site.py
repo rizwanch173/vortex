@@ -7,6 +7,7 @@ from django.db.models import Count, DateTimeField, DecimalField, ExpressionWrapp
 from django.db.models.functions import Cast
 from django.db.models.functions import Coalesce, TruncMonth
 from django.utils import timezone
+from django.urls import reverse
 from unfold.sites import UnfoldAdminSite
 
 from .models import Client, Invoice, Payment, VisaApplication
@@ -107,7 +108,7 @@ class DashboardAdminSite(UnfoldAdminSite):
         previous_rate = (previous_approved / previous_total * 100) if previous_total else 0
         success_rate_change = current_rate - previous_rate
 
-        active_clients = Client.objects.filter(client_status="new").count()
+        total_clients = Client.objects.count()
         pending_cases = VisaApplication.objects.exclude(stage="decision_received").count()
 
         top_destinations = (
@@ -173,17 +174,39 @@ class DashboardAdminSite(UnfoldAdminSite):
             value = value or Decimal("0.00")
             return f"{currency} {value:,.2f}"
 
+        visa_changelist = reverse(f"{self.name}:core_visaapplication_changelist")
+        invoice_changelist = reverse(f"{self.name}:core_invoice_changelist")
+
         dashboard_context = {
-            "kpis": [
-                {"label": "Total Invoiced", "value": fmt_currency(total_invoiced)},
-                {"label": "Total Received", "value": fmt_currency(total_received)},
-                {"label": "Outstanding", "value": fmt_currency(outstanding_amount)},
-                {"label": "Paid Invoices", "value": f"{paid_invoices:,}"},
-                {"label": "Draft Invoices", "value": f"{draft_invoices:,}"},
+            "invoice_kpis": [
+                {
+                    "label": "Total Received",
+                    "value": fmt_currency(total_received),
+                    "url": "",
+                },
+                {
+                    "label": "Total Invoiced",
+                    "value": fmt_currency(total_invoiced),
+                    "url": "",
+                },
+                {
+                    "label": "Outstanding",
+                    "value": fmt_currency(outstanding_amount),
+                    "url": f"{invoice_changelist}?outstanding=yes",
+                },
+                {
+                    "label": "Paid Invoices",
+                    "value": f"{paid_invoices:,}",
+                    "url": f"{invoice_changelist}?status__exact=paid",
+                },
+                {
+                    "label": "Draft Invoices",
+                    "value": f"{draft_invoices:,}",
+                    "url": f"{invoice_changelist}?status__exact=draft",
+                },
             ],
             "visa_kpis": [
                 {"label": "Overall Success", "value": f"{overall_success_rate:.1f}%"},
-                {"label": "US Success", "value": f"{us_success_rate:.1f}%"},
                 {"label": "Rejection Rate", "value": f"{overall_reject_rate:.1f}%"},
                 {
                     "label": "Success Rate Change",
@@ -191,11 +214,16 @@ class DashboardAdminSite(UnfoldAdminSite):
                 },
             ],
             "ops_kpis": [
-                {"label": "Active Clients", "value": f"{active_clients:,}"},
-                {"label": "Pending Cases", "value": f"{pending_cases:,}"},
+                {
+                    "label": "Pending Cases",
+                    "value": f"{pending_cases:,}",
+                    "url": f"{visa_changelist}?case_status=pending",
+                },
+                {"label": "Total Clients", "value": f"{total_clients:,}", "url": ""},
                 {
                     "label": "Partially Paid Invoices",
                     "value": f"{partially_paid_invoices:,}",
+                    "url": "",
                 },
             ],
             "top_destinations": top_destinations,

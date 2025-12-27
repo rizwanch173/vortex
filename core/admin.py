@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
 from unfold.admin import ModelAdmin
 from unfold.decorators import display
 from django.utils.html import format_html
@@ -183,6 +184,39 @@ class PaymentInline(admin.TabularInline):
     fields = ["amount", "currency", "payment_status", "payment_received_date", "created_at"]
     readonly_fields = ["created_at"]
     show_change_link = True
+
+
+class VisaApplicationCaseFilter(SimpleListFilter):
+    title = "Case status"
+    parameter_name = "case_status"
+
+    def lookups(self, request, model_admin):
+        return [
+            ("pending", "Pending"),
+            ("completed", "Decision received"),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == "pending":
+            return queryset.exclude(stage="decision_received")
+        if self.value() == "completed":
+            return queryset.filter(stage="decision_received")
+        return queryset
+
+
+class InvoiceOutstandingFilter(SimpleListFilter):
+    title = "Outstanding"
+    parameter_name = "outstanding"
+
+    def lookups(self, request, model_admin):
+        return [
+            ("yes", "Outstanding"),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == "yes":
+            return queryset.filter(status__in=["sent", "overdue"])
+        return queryset
 
 
 
@@ -668,6 +702,7 @@ class VisaApplicationAdmin(ModelAdmin):
         "stage",
         "visa_type",
         "decision",
+        VisaApplicationCaseFilter,
         "assigned_agent",
         "appointment_date",
         "created_at",
@@ -1385,6 +1420,7 @@ class InvoiceAdmin(ModelAdmin):
     # List Filters
     list_filter = [
         "status",
+        InvoiceOutstandingFilter,
         "currency",
         "invoice_date",
         "due_date",

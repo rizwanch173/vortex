@@ -43,6 +43,13 @@
             padding: 16px;
             box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
         }
+        .chart-card {
+            height: 340px;
+        }
+        .chart-canvas {
+            width: 100%;
+            height: 260px;
+        }
         .dashboard-card h3 {
             margin: 0 0 10px;
             font-size: 14px;
@@ -63,6 +70,23 @@
             font-weight: 600;
             color: #0f172a;
             margin: 4px 0;
+        }
+        .dashboard-divider {
+            border-top: 1px solid rgba(148, 163, 184, 0.15);
+            margin: 18px 0;
+        }
+        .dashboard-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .dashboard-card-link .dashboard-card {
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+        }
+        .dashboard-card-link:hover .dashboard-card {
+            transform: translateY(-2px);
+            border-color: rgba(59, 130, 246, 0.6);
+            box-shadow: 0 14px 34px rgba(37, 99, 235, 0.18);
         }
         .dashboard-list {
             display: flex;
@@ -112,12 +136,22 @@
             <div class="dashboard-subtitle">Key finance and visa performance metrics for the last 12 months.</div>
         </div>
 
+        <div class="dashboard-section-title">Invoices &amp; Earnings</div>
         <div class="dashboard-grid kpi-grid">
-            {% for kpi in dashboard.kpis %}
-                <div class="dashboard-card">
-                    <h3>{{ kpi.label }}</h3>
-                    <div class="value">{{ kpi.value }}</div>
-                </div>
+            {% for kpi in dashboard.invoice_kpis %}
+                {% if kpi.url %}
+                    <a class="dashboard-card-link" href="{{ kpi.url }}">
+                        <div class="dashboard-card">
+                            <h3>{{ kpi.label }}</h3>
+                            <div class="value">{{ kpi.value }}</div>
+                        </div>
+                    </a>
+                {% else %}
+                    <div class="dashboard-card">
+                        <h3>{{ kpi.label }}</h3>
+                        <div class="value">{{ kpi.value }}</div>
+                    </div>
+                {% endif %}
             {% empty %}
                 <div class="dashboard-card">
                     <div class="muted">No KPI data available yet.</div>
@@ -125,6 +159,8 @@
             {% endfor %}
         </div>
 
+        <div class="dashboard-divider"></div>
+        <div class="dashboard-section-title">Visa Success Rate</div>
         <div class="dashboard-grid kpi-grid">
             {% for kpi in dashboard.visa_kpis %}
                 <div class="dashboard-card">
@@ -134,12 +170,23 @@
             {% endfor %}
         </div>
 
+        <div class="dashboard-divider"></div>
+        <div class="dashboard-section-title">Operations</div>
         <div class="dashboard-grid kpi-grid">
             {% for kpi in dashboard.ops_kpis %}
-                <div class="dashboard-card">
-                    <h3>{{ kpi.label }}</h3>
-                    <div class="value">{{ kpi.value }}</div>
-                </div>
+                {% if kpi.url %}
+                    <a class="dashboard-card-link" href="{{ kpi.url }}">
+                        <div class="dashboard-card">
+                            <h3>{{ kpi.label }}</h3>
+                            <div class="value">{{ kpi.value }}</div>
+                        </div>
+                    </a>
+                {% else %}
+                    <div class="dashboard-card">
+                        <h3>{{ kpi.label }}</h3>
+                        <div class="value">{{ kpi.value }}</div>
+                    </div>
+                {% endif %}
             {% endfor %}
             <div class="dashboard-card">
                 <h3>Top Destinations</h3>
@@ -158,24 +205,22 @@
             </div>
         </div>
 
-        <div class="dashboard-section-title">Revenue & Performance</div>
+        <div class="dashboard-divider"></div>
+        <div class="dashboard-section-title">Revenue &amp; Performance</div>
         <div class="dashboard-grid chart-grid">
-            <div class="dashboard-card">
+            <div class="dashboard-card chart-card">
                 <h3>Revenue Received (Monthly)</h3>
-                <canvas id="revenueChart" height="120"></canvas>
+                <canvas id="revenueChart" class="chart-canvas"></canvas>
             </div>
-            <div class="dashboard-card">
+            <div class="dashboard-card chart-card">
                 <h3>Invoice Status</h3>
-                <canvas id="statusChart" height="120"></canvas>
+                <canvas id="statusChart" class="chart-canvas"></canvas>
             </div>
-            <div class="dashboard-card">
+            <div class="dashboard-card chart-card">
                 <h3>Approvals vs Rejections</h3>
-                <canvas id="approvalChart" height="120"></canvas>
+                <canvas id="approvalChart" class="chart-canvas"></canvas>
             </div>
-            <div class="dashboard-card">
-                <h3>US Approvals vs Rejections</h3>
-                <canvas id="usApprovalChart" height="120"></canvas>
-            </div>
+            
         </div>
     </section>
 
@@ -184,7 +229,9 @@
             {% include "unfold/helpers/app_list_default.html" %}
         </div>
 
-        {% include "unfold/helpers/history.html" %}
+        {% if user.is_active %}
+            {% include "admin/partials/collapsible_history.html" %}
+        {% endif %}
     </div>
 
     <script id="dashboard-data" type="application/json">{{ chart_data|safe }}</script>
@@ -200,12 +247,32 @@
 
             Chart.defaults.color = textColor;
             Chart.defaults.borderColor = gridColor;
+            const axisTickColor = '#ffffff';
+            const axisGridColor = isDark ? 'rgba(148, 163, 184, 0.15)' : 'rgba(148, 163, 184, 0.25)';
+            const titleColor = '#ffffff';
             const axisOptions = {
-                ticks: { color: textColor },
-                grid: { color: gridColor },
+                ticks: { color: axisTickColor, font: { size: 11 } },
+                grid: { color: axisGridColor },
+                title: { display: true, color: titleColor, font: { size: 12, weight: '600' } },
             };
             const legendOptions = {
-                labels: { color: textColor },
+                labels: { color: axisTickColor, font: { size: 11 }, padding: 16, boxWidth: 18 },
+            };
+            const titleOptions = {
+                display: true,
+                color: titleColor,
+                font: { size: 13, weight: '600' },
+                padding: { bottom: 10 },
+            };
+            const tooltipOptions = {
+                backgroundColor: isDark ? '#0f172a' : '#ffffff',
+                titleColor: '#ffffff',
+                bodyColor: '#ffffff',
+                borderColor: isDark ? '#1f2937' : '#e2e8f0',
+                borderWidth: 1,
+            };
+            const baseLayout = {
+                padding: { top: 10, right: 10, bottom: 35, left: 10 },
             };
 
             const revenueCtx = document.getElementById('revenueChart');
@@ -225,10 +292,31 @@
                     },
                     options: {
                         responsive: true,
-                        plugins: { legend: { display: false } },
+                        maintainAspectRatio: false,
+                        layout: baseLayout,
+                        plugins: {
+                            legend: { display: false },
+                            title: { ...titleOptions, text: 'Revenue Received (Monthly)' },
+                            tooltip: tooltipOptions,
+                        },
                         scales: {
-                            x: axisOptions,
-                            y: { ...axisOptions, beginAtZero: true },
+                            x: {
+                                ...axisOptions,
+                                ticks: {
+                                    ...axisOptions.ticks,
+                                    maxRotation: 45,
+                                    minRotation: 45,
+                                    autoSkip: true,
+                                    maxTicksLimit: 6,
+                                    padding: 8,
+                                },
+                                title: { ...axisOptions.title, text: 'Month', padding: { top: 10 } },
+                            },
+                            y: {
+                                ...axisOptions,
+                                beginAtZero: true,
+                                title: { ...axisOptions.title, text: 'Amount', padding: { bottom: 10 } },
+                            },
                         },
                     }
                 });
@@ -248,10 +336,25 @@
                     },
                     options: {
                         responsive: true,
-                        plugins: { legend: { display: false } },
+                        maintainAspectRatio: false,
+                        layout: baseLayout,
+                        plugins: {
+                            legend: { display: false },
+                            title: { ...titleOptions, text: 'Invoice Status' },
+                            tooltip: tooltipOptions,
+                        },
                         scales: {
-                            x: axisOptions,
-                            y: { ...axisOptions, beginAtZero: true },
+                            x: {
+                                ...axisOptions,
+                                ticks: { ...axisOptions.ticks, maxRotation: 0, minRotation: 0, padding: 10 },
+                                title: { ...axisOptions.title, text: 'Status', padding: { top: 12 } },
+                            },
+                            y: {
+                                ...axisOptions,
+                                beginAtZero: true,
+                                ticks: { ...axisOptions.ticks, precision: 0 },
+                                title: { ...axisOptions.title, text: 'Count', padding: { bottom: 10 } },
+                            },
                         },
                     }
                 });
@@ -270,28 +373,18 @@
                     },
                     options: {
                         responsive: true,
-                        plugins: { legend: { position: 'bottom', ...legendOptions } },
+                        maintainAspectRatio: false,
+                        layout: baseLayout,
+                        plugins: {
+                            legend: { position: 'bottom', ...legendOptions },
+                            title: { ...titleOptions, text: 'Approvals vs Rejections' },
+                            tooltip: tooltipOptions,
+                        },
                     }
                 });
             }
 
-            const usApprovalCtx = document.getElementById('usApprovalChart');
-            if (usApprovalCtx) {
-                new Chart(usApprovalCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: data.us_approvals.labels || [],
-                        datasets: [{
-                            data: data.us_approvals.data || [],
-                            backgroundColor: ['#38bdf8', '#f97316'],
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: { legend: { position: 'bottom', ...legendOptions } },
-                    }
-                });
-            }
+            
         })();
     </script>
 {% endblock %}
