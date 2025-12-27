@@ -1774,7 +1774,14 @@ class InvoiceAdmin(ModelAdmin):
                         messages.success(request, f"Invoice {invoice.invoice_number} updated successfully.")
                     else:
                         messages.success(request, f"Invoice {invoice.invoice_number} created successfully.")
-                    return redirect("admin:core_invoice_builder_edit", invoice.pk)
+
+                    if "_addanother" in request.POST:
+                        if selected_client_id:
+                            return redirect(f"{reverse('admin:core_invoice_builder')}?client={selected_client_id}")
+                        return redirect("admin:core_invoice_builder")
+                    if "_continue" in request.POST:
+                        return redirect("admin:core_invoice_builder_edit", invoice.pk)
+                    return redirect("admin:core_invoice_changelist")
 
         context = {
             **self.admin_site.each_context(request),

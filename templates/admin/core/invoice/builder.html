@@ -56,6 +56,36 @@
         flex-direction: column;
         gap: 10px;
     }
+    .item-adder-row {
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) 160px auto;
+        gap: 12px;
+        align-items: center;
+    }
+    .item-adder-row > div {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .item-adder-row .adder-label {
+        visibility: hidden;
+        height: 1em;
+    }
+    .item-adder-row .adder-button {
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
+    @media (max-width: 900px) {
+        .item-adder-row {
+            grid-template-columns: 1fr;
+        }
+        .item-adder-row .adder-button {
+            width: 100%;
+        }
+    }
     .item-row {
         display: grid;
         grid-template-columns: 1.2fr 0.7fr 0.3fr;
@@ -65,6 +95,15 @@
         border: 1px solid #e2e8f0;
         border-radius: 10px;
         padding: 12px 14px;
+    }
+    .item-row > div {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .item-row .item-action-label {
+        visibility: hidden;
+        height: 1em;
     }
     .item-row h4 {
         margin: 0 0 4px 0;
@@ -115,6 +154,79 @@
     }
     .primary-btn:hover { transform: translateY(-1px); }
     .primary-btn:active { transform: translateY(0); }
+    .invoice-shell .errorlist {
+        margin: 0 0 20px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #b91c1c;
+        list-style: none;
+    }
+    .invoice-shell .errorlist li {
+        margin: 0;
+    }
+
+    /* Dark theme alignment with Unfold */
+    .dark .invoice-shell {
+        background: linear-gradient(135deg, #0b1220 0%, #0f172a 100%);
+        border-color: #1f2937;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    }
+    .dark .panel {
+        background: #0f172a;
+        border-color: #1f2937;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .dark .panel h2,
+    .dark .field-grid label,
+    .dark .item-row h4 {
+        color: #e5e7eb;
+    }
+    .dark .meta-text,
+    .dark .item-row .subline {
+        color: #94a3b8;
+    }
+    .dark .pill {
+        background: #1e293b;
+        color: #93c5fd;
+    }
+    .dark .item-row {
+        background: #0b1324;
+        border-color: #1f2937;
+    }
+    .dark .invoice-shell .errorlist {
+        background: rgba(239, 68, 68, 0.12);
+        border-color: #7f1d1d;
+        color: #fecaca;
+    }
+    .dark .item-adder {
+        background: #0b1324 !important;
+        border-color: #1f2937 !important;
+    }
+    .dark .badge {
+        background: #0b2a3a;
+        color: #38bdf8;
+    }
+    .dark .totals-block {
+        background: #0b1324;
+        border-color: #1f2937;
+        color: #e5e7eb;
+    }
+    .dark .totals-row strong {
+        color: #fff;
+    }
+    .dark .invoice-shell input:not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
+    .dark .invoice-shell select,
+    .dark .invoice-shell textarea {
+        background: #0f172a !important;
+        border-color: #1f2937 !important;
+        color: #e5e7eb !important;
+    }
+    .dark .invoice-shell input::placeholder,
+    .dark .invoice-shell textarea::placeholder {
+        color: #94a3b8;
+    }
 </style>
 
 <div id="content-main" class="module invoice-shell">
@@ -127,14 +239,14 @@
     </div>
 
     {% if errors %}
-        <ul class="errorlist" style="margin-bottom: 20px;">
+    <ul class="errorlist">
             {% for error in errors %}
                 <li>{{ error }}</li>
             {% endfor %}
         </ul>
     {% endif %}
 
-    <form method="post" novalidate>
+    <form id="invoice_form" method="post" novalidate>
         {% csrf_token %}
 
         <fieldset class="module aligned panel">
@@ -171,23 +283,24 @@
             <p class="meta-text" style="margin: 0 0 10px 0;">Select applications from the dropdown, add them one by one, and set per-item discounts.</p>
             <input type="hidden" id="items-json" name="items_json" value="{{ items_payload|default:"" }}">
 
-            <div style="border: 1px dashed #cbd5e1; padding: 14px; border-radius: 12px; background: #f8fafc; margin-bottom: 12px;">
-                <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;">
-                    <div style="flex: 1 1 280px;">
+            <div class="item-adder" style="border: 1px dashed #cbd5e1; padding: 14px; border-radius: 12px; background: #f8fafc; margin-bottom: 12px;">
+                <div class="item-adder-row">
+                    <div>
                         <label class="required" for="application-select">Visa application</label>
                         <select id="application-select" style="width: 100%; min-width: 240px; padding: 10px; border-radius: 10px; border: 1px solid #d1d5db;">
                             <option value="">-- Select a client first --</option>
                         </select>
-                        <div id="applications-empty" class="meta-text" style="margin-top: 6px;">Select a client to load their visa applications.</div>
                     </div>
-                    <div style="width: 160px;">
+                    <div>
                         <label for="item-discount">Item discount</label>
                         <input type="number" step="0.01" min="0" id="item-discount" value="0" style="width: 100%; padding:10px; border-radius:10px; border: 1px solid #d1d5db;" />
                     </div>
                     <div>
-                        <button type="button" id="add-item-btn" class="primary-btn" disabled style="margin-top: 2px;">+ Add item</button>
+                        <span class="adder-label">Action</span>
+                        <button type="button" id="add-item-btn" class="primary-btn adder-button" disabled>+ Add item</button>
                     </div>
                 </div>
+                <div id="applications-empty" class="meta-text" style="margin-top: 6px;">Select a client to load their visa applications.</div>
             </div>
 
             <div id="items-list" class="items-card">
@@ -230,9 +343,19 @@
             </div>
         </fieldset>
 
-        <div class="submit-row" style="margin-top: 20px;">
-            <input type="submit" value="{% translate 'Save' %}" class="primary-btn" />
-            <a href="{% url 'admin:core_invoice_changelist' %}" class="button" style="margin-left: 10px;">{% translate 'Cancel' %}</a>
+        <div id="submit-row" class="relative lg:sticky lg:bottom-0 z-40">
+            <div class="backdrop-blur-xs bg-white/80 rounded-b-default pb-4 px-4 dark:bg-base-900/80 lg:border-t lg:border-base-200 relative lg:scrollable-top lg:py-0 dark:border-base-800">
+                <div class="flex flex-col-reverse gap-3 items-center mx-auto lg:flex-row-reverse container lg:h-[64px]">
+                    <button type="submit" form="invoice_form" name="_save" class="bg-primary-600 block border border-transparent cursor-pointer font-medium px-3 py-2 rounded-default text-white w-full lg:w-auto">
+                        {% translate 'Save' %}
+                    </button>
+                    <div class="flex flex-col gap-3 mr-auto w-full lg:flex-row lg:w-auto">
+                        <a href="{% url 'admin:core_invoice_changelist' %}" class="border border-base-200 cursor-pointer font-medium px-3 py-2 rounded-default text-center transition-all w-full hover:bg-base-50 lg:block lg:w-auto dark:border-base-700 dark:hover:text-base-200 dark:hover:bg-base-900">
+                            {% translate 'Close' %}
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
 </div>
@@ -356,10 +479,17 @@
                 });
                 discountWrap.appendChild(discountInput);
 
+                const actionWrap = document.createElement('div');
+                const actionLabel = document.createElement('span');
+                actionLabel.className = 'item-action-label';
+                actionLabel.textContent = 'Action';
+                actionWrap.appendChild(actionLabel);
+
                 const removeBtn = document.createElement('button');
                 removeBtn.type = 'button';
                 removeBtn.className = 'button';
                 removeBtn.textContent = 'Remove';
+                removeBtn.style.cursor = 'pointer';
                 removeBtn.style.background = '#fee2e2';
                 removeBtn.style.color = '#b91c1c';
                 removeBtn.style.border = '1px solid #fecaca';
@@ -370,10 +500,11 @@
                     updateAppSelect();
                     renderItems();
                 });
+                actionWrap.appendChild(removeBtn);
 
                 row.appendChild(title);
                 row.appendChild(discountWrap);
-                row.appendChild(removeBtn);
+                row.appendChild(actionWrap);
                 itemsList.appendChild(row);
             });
 

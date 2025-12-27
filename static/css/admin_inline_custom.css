@@ -198,6 +198,53 @@
     resize: vertical;
 }
 
+/* ============================================
+   INVOICE CHANGE LIST ACTIONS
+   Align custom builder button with Unfold header actions
+   ============================================ */
+
+.invoice-builder-item {
+    list-style: none;
+}
+
+body.model-invoice .object-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+body.model-invoice .object-tools li,
+body.model-invoice .object-tools li::marker,
+body.model-invoice .object-tools li::before {
+    list-style: none;
+    content: none !important;
+}
+
+body.model-invoice .object-tools li {
+    margin: 0;
+    padding: 0;
+}
+
+body.model-invoice .invoice-builder-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    background-color: var(--color-primary-600, #7c3aed);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 1;
+}
+
+body.model-invoice .invoice-builder-link:hover,
+body.model-invoice .invoice-builder-link:focus {
+    background-color: var(--color-primary-700, #6d28d9);
+    color: #fff;
+}
+
 /* Match the visual spacing and alignment of main form fieldsets */
 .inline-group .stacked {
     padding: 1rem 0;
