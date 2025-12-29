@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="{{ css_url }}" />
+</head>
+<body>
+  <main class="page">
+    <div class="watermark" aria-hidden="true"></div>
+
+    <header class="header">
+      <div class="brand">
+        <img class="logo" src="{{ logo_url }}" alt="Vortex Ease Travel & Tours" />
+        <div class="invoice-to">
+          <div class="label">INVOICE TO</div>
+          <div class="name">{{ invoice.client.full_name }}</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="title-block">
+        <h1 class="title">INVOICE</h1>
+
+        <div class="meta">
+          <div class="meta-row">
+            <span class="meta-label">Invoice ID :</span>
+            <span class="meta-value">#{{ invoice.invoice_number }}</span>
+          </div>
+
+          <div class="contact">
+            <div>{{ contact_email }}</div>
+            <a href="{{ site_url }}" target="_blank" rel="noreferrer">{{ site_url }}</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="items">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-product">PRODUCT</th>
+            <th class="col-price">PRICE</th>
+            <th class="col-qty">QTY</th>
+            <th class="col-total">TOTAL</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for item in invoice_items %}
+            <tr class="{% if forloop.counter0|divisibleby:2 %}stripe{% endif %}">
+              <td>{{ item.description }}</td>
+              <td class="num">{{ currency_symbol }} {{ item.price|floatformat:2 }}</td>
+              <td class="num">{{ item.qty }}</td>
+              <td class="num">{{ currency_symbol }} {{ item.total|floatformat:2 }}</td>
+            </tr>
+          {% empty %}
+            <tr class="blank"><td colspan="4">&nbsp;</td></tr>
+          {% endfor %}
+
+          {% for _ in blank_rows %}
+            <tr class="blank"><td colspan="4">&nbsp;</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="summary-wrap">
+      <div class="summary">
+        <div class="summary-row">
+          <span class="k">SUB TOTAL</span>
+          <span class="v">{{ currency_symbol }}{{ invoice.subtotal|floatformat:2 }}</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="k">DISCOUNT</span>
+          <span class="v">{% if invoice.discount > 0 %}-{% endif %}{{ currency_symbol }}{{ invoice.discount|floatformat:2 }}</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="k">TAX ({{ invoice.tax_rate|floatformat:0 }}%)</span>
+          <span class="v">{{ currency_symbol }} {{ invoice.tax_amount|floatformat:2 }}</span>
+        </div>
+
+        <div class="summary-total">
+          <span class="k">TOTAL</span>
+          <span class="v">{{ currency_symbol }} {{ invoice.total_amount|floatformat:2 }}</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="tcs">
+        <div class="tcs-label">T&CS APPLY:</div>
+        <a href="{{ terms_url }}" target="_blank" rel="noreferrer">
+          {{ terms_url|cut:"https://" }}
+        </a>
+      </div>
+
+      <div class="thanks">
+        THANK YOU FOR CHOOSING VORTEX EASE TRAVEL &amp; TOURS.
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

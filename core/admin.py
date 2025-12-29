@@ -2116,10 +2116,10 @@ class InvoiceAdmin(ModelAdmin):
         from django.template.loader import render_to_string
 
         invoice = get_object_or_404(Invoice, pk=invoice_id)
-        context = self._build_invoice_context(invoice)
+        context = self._build_invoice_context(invoice, request=request)
         context["title"] = f"Invoice {invoice.invoice_number}"
 
-        html = render_to_string("admin/core/invoice/preview.html", context)
+        html = render_to_string("admin/core/invoice/preview_pdf.html", context)
         try:
             from weasyprint import HTML
         except Exception:
@@ -2134,7 +2134,9 @@ class InvoiceAdmin(ModelAdmin):
         response["Content-Disposition"] = f'attachment; filename="invoice_{invoice.invoice_number}.pdf"'
         return response
 
-    def _build_invoice_context(self, invoice):
+    def _build_invoice_context(self, invoice, request=None):
+        from django.templatetags.static import static
+
         def currency_symbol(code):
             if code == "GBP":
                 return "£"
@@ -2164,6 +2166,12 @@ class InvoiceAdmin(ModelAdmin):
 
         blank_rows = max(0, 2 - len(items))
 
+        logo_url = static("admin/img/invoice_logo.png")
+        css_url = static("admin/css/invoice.css")
+        if request is not None:
+            logo_url = request.build_absolute_uri(logo_url)
+            css_url = request.build_absolute_uri(css_url)
+
         return {
             "invoice": invoice,
             "invoice_items": items,
@@ -2172,6 +2180,8 @@ class InvoiceAdmin(ModelAdmin):
             "contact_email": "contact@vortexease.com",
             "site_url": "https://vortexease.com",
             "terms_url": "https://vortexease.com/terms-and-conditions/",
+            "logo_url": logo_url,
+            "css_url": css_url,
         }
 
     def invoice_send(self, request, invoice_id):

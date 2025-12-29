@@ -7,8 +7,8 @@
   --a4-h: 297mm;
 
   --pad-x: 18mm;
-  --pad-top: 18mm;
-  --pad-bottom: 20mm;
+  --pad-top: 14mm;
+  --pad-bottom: 16mm;
 
   --blue: #6f97c3;
   --light: #f3f3f3;
@@ -34,7 +34,7 @@ body{
   background:#fff;
   position: relative;
   overflow: hidden;
-  padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+  padding: var(--pad-top) var(--pad-x) 24mm;
   box-shadow: 0 12px 35px rgba(0,0,0,.10);
 }
 
@@ -274,11 +274,32 @@ body{
    Print / PDF
    ========================= */
 @media print{
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
   body{ background:#fff; }
   .page{
     margin: 0;
     width: auto;
     min-height: auto;
     box-shadow: none;
+    padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+    max-width: 100%;
+  }
+  .items table,
+  .summary{
+    max-width: 100%;
+  }
+  .items thead th.col-total,
+  .items tbody td.num{
+    padding-right: 24px;
+  }
+  .footer{
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin-top: 20mm;
   }
 }
