@@ -409,6 +409,27 @@
                         <a href="{% url 'admin:core_invoice_changelist' %}" class="border border-base-200 cursor-pointer font-medium px-3 py-2 rounded-default text-center transition-all w-full hover:bg-base-50 lg:block lg:w-auto dark:border-base-700 dark:hover:text-base-200 dark:hover:bg-base-900">
                             {% translate 'Close' %}
                         </a>
+                        {% if invoice_obj and invoice_obj.pk %}
+                            <a href="{% url 'admin:core_invoice_preview' invoice_obj.pk %}" target="_blank" class="border border-base-200 cursor-pointer font-medium px-3 py-2 rounded-default text-center transition-all w-full hover:bg-base-50 lg:block lg:w-auto dark:border-base-700 dark:hover:text-base-200 dark:hover:bg-base-900">
+                                {% translate 'Preview Invoice' %}
+                            </a>
+                            <a href="{% url 'admin:core_invoice_pdf' invoice_obj.pk %}" target="_blank" class="border border-base-200 cursor-pointer font-medium px-3 py-2 rounded-default text-center transition-all w-full hover:bg-base-50 lg:block lg:w-auto dark:border-base-700 dark:hover:text-base-200 dark:hover:bg-base-900">
+                                {% translate 'Download Invoice' %}
+                            </a>
+                            <a href="{% url 'admin:core_invoice_send' invoice_obj.pk %}" class="border border-base-200 cursor-pointer font-medium px-3 py-2 rounded-default text-center transition-all w-full hover:bg-base-50 lg:block lg:w-auto dark:border-base-700 dark:hover:text-base-200 dark:hover:bg-base-900">
+                                {% translate 'Send Invoice' %}
+                            </a>
+                        {% else %}
+                            <span class="border border-base-200 font-medium px-3 py-2 rounded-default text-center w-full opacity-60 lg:block lg:w-auto dark:border-base-700">
+                                {% translate 'Preview Invoice' %}
+                            </span>
+                            <span class="border border-base-200 font-medium px-3 py-2 rounded-default text-center w-full opacity-60 lg:block lg:w-auto dark:border-base-700">
+                                {% translate 'Download Invoice' %}
+                            </span>
+                            <span class="border border-base-200 font-medium px-3 py-2 rounded-default text-center w-full opacity-60 lg:block lg:w-auto dark:border-base-700">
+                                {% translate 'Send Invoice' %}
+                            </span>
+                        {% endif %}
                     </div>
                 </div>
             </div>

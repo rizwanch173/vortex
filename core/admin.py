@@ -2187,20 +2187,56 @@ class InvoiceAdmin(ModelAdmin):
     def invoice_send(self, request, invoice_id):
         """Send invoice via email."""
         from django.contrib import messages
+        from django.core.mail import EmailMessage
+        from django.template.loader import render_to_string
         from django.utils import timezone
+        from django.conf import settings
 
         invoice = get_object_or_404(Invoice, pk=invoice_id)
 
-        # Update sent date and status
+        if invoice.status != "draft":
+            messages.error(
+                request,
+                f"Invoice can only be sent from Draft status. Current status: {invoice.get_status_display()}."
+            )
+            return redirect("admin:core_invoice_change", invoice_id)
+
+        context = self._build_invoice_context(invoice, request=request)
+        context["title"] = f"Invoice {invoice.invoice_number}"
+        html = render_to_string("admin/core/invoice/preview_pdf.html", context)
+        try:
+            from weasyprint import HTML
+        except Exception:
+            messages.error(request, "PDF generation is not available. Install WeasyPrint and reload.")
+            return redirect("admin:core_invoice_change", invoice_id)
+
+        pdf_bytes = HTML(string=html, base_url=request.build_absolute_uri("/")).write_pdf()
+
+        subject = f"Invoice {invoice.invoice_number}"
+        body = (
+            f"Dear {invoice.client.full_name},\n\n"
+            f"Please find your invoice {invoice.invoice_number} attached.\n\n"
+            "Thank you,\nVortex Ease"
+        )
+
+        email = EmailMessage(
+            subject=subject,
+            body=body,
+            from_email=getattr(settings, "DEFAULT_FROM_EMAIL", None),
+            to=[invoice.client.email],
+        )
+        email.attach(f"invoice_{invoice.invoice_number}.pdf", pdf_bytes, "application/pdf")
+
+        try:
+            email.send(fail_silently=False)
+        except Exception as exc:
+            messages.error(request, f"Failed to send invoice email: {exc}")
+            return redirect("admin:core_invoice_change", invoice_id)
+
         invoice.sent_date = timezone.now()
-        if invoice.status == "draft":
-            invoice.status = "sent"
+        invoice.status = "sent"
         invoice.save()
-
-        # TODO: Implement actual email sending
-        # For now, just update the status
-        messages.success(request, f"Invoice {invoice.invoice_number} has been marked as sent.")
-
+        messages.success(request, f"Invoice {invoice.invoice_number} sent successfully.")
         return redirect("admin:core_invoice_change", invoice_id)
 
     def get_form(self, request, obj=None, **kwargs):
