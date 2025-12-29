@@ -529,6 +529,36 @@ class InvoiceApplication(models.Model):
         return f"{self.invoice.invoice_number} - {self.visa_application.get_visa_type_display()}"
 
 
+class InvoiceOtherPayment(models.Model):
+    """
+    Additional payments or charges associated with an invoice.
+    """
+    invoice = models.ForeignKey(
+        "Invoice",
+        on_delete=models.CASCADE,
+        related_name="other_payments",
+    )
+    description = models.CharField(max_length=255, verbose_name="Description")
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name="Amount",
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
+
+    class Meta:
+        verbose_name = "Invoice Other Payment"
+        verbose_name_plural = "Invoice Other Payments"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["invoice"]),
+            models.Index(fields=["-created_at"]),
+        ]
+
+    def __str__(self):
+        return f"{self.invoice.invoice_number} - {self.description} ({self.amount})"
+
+
 class Invoice(models.Model):
     """
     Invoice model to manage invoices for clients and visa applications.
@@ -720,6 +750,15 @@ class Invoice(models.Model):
         # Use unit_price from through model
         for invoice_app in self.invoice_applications.all():
             total += invoice_app.unit_price
+
+        other_payments_total = (
+            self.other_payments.aggregate(
+                total=models.Sum("amount")
+            )["total"]
+            or Decimal("0.00")
+        )
+
+        total += other_payments_total
 
         self.subtotal = total
         # Recalculate tax and total (save() will do this, but we need to ensure it happens)

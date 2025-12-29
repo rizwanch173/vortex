@@ -56,6 +56,32 @@
         flex-direction: column;
         gap: 10px;
     }
+    .other-payments-row {
+        display: grid;
+        grid-template-columns: minmax(240px, 1fr) 180px auto;
+        gap: 12px;
+        align-items: center;
+    }
+    .other-payments-row > div {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .other-payments-row .adder-button {
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
+    @media (max-width: 900px) {
+        .other-payments-row {
+            grid-template-columns: 1fr;
+        }
+        .other-payments-row .adder-button {
+            width: 100%;
+        }
+    }
     .item-adder-row {
         display: grid;
         grid-template-columns: minmax(260px, 1fr) 160px auto;
@@ -129,8 +155,8 @@
         border: 1px solid #e2e8f0;
         border-radius: 12px;
         padding: 14px 16px;
-        background: #0f172a;
-        color: #e2e8f0;
+        background: #f8fafc;
+        color: #0f172a;
     }
     .totals-row {
         display: flex;
@@ -139,7 +165,7 @@
         font-size: 14px;
     }
     .totals-row strong {
-        color: #fff;
+        color: #0f172a;
     }
     .primary-btn {
         background: linear-gradient(135deg, #2563eb, #1d4ed8);
@@ -282,6 +308,7 @@
             <h2>Visa Applications <span class="pill">Step 2</span></h2>
             <p class="meta-text" style="margin: 0 0 10px 0;">Select applications from the dropdown, add them one by one, and set per-item discounts.</p>
             <input type="hidden" id="items-json" name="items_json" value="{{ items_payload|default:"" }}">
+            <input type="hidden" id="other-payments-json" name="other_payments_json" value="{{ other_payments_payload|default:"" }}">
 
             <div class="item-adder" style="border: 1px dashed #cbd5e1; padding: 14px; border-radius: 12px; background: #f8fafc; margin-bottom: 12px;">
                 <div class="item-adder-row">
@@ -309,6 +336,31 @@
         </fieldset>
 
         <fieldset class="module aligned panel">
+            <h2>Other payments</h2>
+            <p class="meta-text" style="margin: 0 0 10px 0;">Add extra charges or payments that should be included in the invoice totals.</p>
+            <div class="item-adder" style="border: 1px dashed #cbd5e1; padding: 14px; border-radius: 12px; background: #f8fafc; margin-bottom: 12px;">
+                <div class="other-payments-row">
+                    <div>
+                        <label for="other-payment-description">Payment description</label>
+                        <input type="text" id="other-payment-description" placeholder="e.g., Biometric fee" style="width: 100%; padding:10px; border-radius:10px; border: 1px solid #d1d5db;" />
+                    </div>
+                    <div>
+                        <label for="other-payment-amount">Payment value</label>
+                        <input type="number" step="0.01" min="0" id="other-payment-amount" value="0" style="width: 100%; padding:10px; border-radius:10px; border: 1px solid #d1d5db;" />
+                    </div>
+                    <div>
+                        <span class="adder-label">Action</span>
+                        <button type="button" id="add-other-payment-btn" class="primary-btn adder-button">+ Add payment</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="other-payments-list" class="items-card">
+                <div id="other-payments-empty" class="meta-text">No other payments added yet.</div>
+            </div>
+        </fieldset>
+
+        <fieldset class="module aligned panel">
             <h2>Totals <span class="pill">Step 3</span></h2>
             <div class="field-grid" style="margin-bottom: 12px;">
                 <div>
@@ -320,6 +372,10 @@
                 <div class="totals-row">
                     <span>Items total</span>
                     <strong id="items-total">0.00</strong>
+                </div>
+                <div class="totals-row">
+                    <span>Other payments</span>
+                    <span id="other-payments-total">0.00</span>
                 </div>
                 <div class="totals-row">
                     <span>Discount total</span>
@@ -367,18 +423,27 @@
         const appsEmpty = document.getElementById('applications-empty');
         const itemsList = document.getElementById('items-list');
         const itemsEmpty = document.getElementById('items-empty');
+        const otherPaymentsList = document.getElementById('other-payments-list');
+        const otherPaymentsEmpty = document.getElementById('other-payments-empty');
         const itemsTotalEl = document.getElementById('items-total');
+        const otherPaymentsTotalEl = document.getElementById('other-payments-total');
         const discountEl = document.getElementById('summary-discount');
         const taxEl = document.getElementById('summary-tax');
         const totalEl = document.getElementById('summary-total');
         const taxRateInput = document.getElementById('id_tax_rate');
         const itemsJsonField = document.getElementById('items-json');
+        const otherPaymentsJsonField = document.getElementById('other-payments-json');
         const addBtn = document.getElementById('add-item-btn');
         const itemDiscountInput = document.getElementById('item-discount');
+        const otherPaymentDescription = document.getElementById('other-payment-description');
+        const otherPaymentAmount = document.getElementById('other-payment-amount');
+        const addOtherPaymentBtn = document.getElementById('add-other-payment-btn');
 
         let availableApps = [];
         let items = [];
+        let otherPayments = [];
         const preselectedRaw = {{ items_payload|default:'[]'|safe }};
+        const otherPaymentsRaw = {{ other_payments_payload|default:'[]'|safe }};
 
         function currencySymbol(code) {
             if (code === 'GBP') return '£';
@@ -397,15 +462,21 @@
                 }
             });
 
+            const otherPaymentsTotal = otherPayments.reduce((acc, payment) => {
+                return acc + (parseFloat(payment.amount || 0) || 0);
+            }, 0);
+
             const discount = items.reduce((acc, item) => acc + (parseFloat(item.discount || 0) || 0), 0);
             const taxRate = parseFloat(taxRateInput.value || '0') || 0;
 
             const afterDiscount = Math.max(subtotal - discount, 0);
-            const taxAmount = (afterDiscount * taxRate) / 100;
-            const total = afterDiscount + taxAmount;
+            const beforeTax = afterDiscount + otherPaymentsTotal;
+            const taxAmount = (beforeTax * taxRate) / 100;
+            const total = beforeTax + taxAmount;
 
             const symbol = currencySymbol(currency);
             itemsTotalEl.textContent = symbol + subtotal.toFixed(2);
+            otherPaymentsTotalEl.textContent = symbol + otherPaymentsTotal.toFixed(2);
             discountEl.textContent = symbol + discount.toFixed(2);
             taxEl.textContent = symbol + taxAmount.toFixed(2);
             totalEl.textContent = symbol + total.toFixed(2);
@@ -512,6 +583,78 @@
             recalcTotals();
         }
 
+        function renderOtherPayments() {
+            otherPaymentsList.innerHTML = '';
+            if (!otherPayments.length) {
+                otherPaymentsEmpty.style.display = 'block';
+                otherPaymentsList.appendChild(otherPaymentsEmpty);
+                otherPaymentsJsonField.value = '';
+                recalcTotals();
+                return;
+            }
+            otherPaymentsEmpty.style.display = 'none';
+
+            otherPayments.forEach((payment, idx) => {
+                const row = document.createElement('div');
+                row.className = 'item-row';
+
+                const title = document.createElement('div');
+                const amountVal = parseFloat(payment.amount || 0);
+                const paymentCurrency = payment.currency || (items[0] && items[0].currency) || 'GBP';
+                title.innerHTML = `<h4>${payment.description}</h4><div class="subline">${currencySymbol(paymentCurrency)}${amountVal.toFixed(2)}</div>`;
+
+                const amountWrap = document.createElement('div');
+                amountWrap.innerHTML = '<label style="margin:0; color:#374151; font-weight:600;">Amount</label>';
+                const amountInput = document.createElement('input');
+                amountInput.type = 'number';
+                amountInput.step = '0.01';
+                amountInput.min = '0';
+                amountInput.value = amountVal;
+                amountInput.style.width = '100%';
+                amountInput.style.padding = '8px';
+                amountInput.style.borderRadius = '8px';
+                amountInput.style.border = '1px solid #d1d5db';
+                amountInput.addEventListener('input', () => {
+                    let val = parseFloat(amountInput.value || 0);
+                    if (isNaN(val) || val < 0) val = 0;
+                    amountInput.value = val.toFixed(2);
+                    otherPayments[idx].amount = val;
+                    recalcTotals();
+                });
+                amountWrap.appendChild(amountInput);
+
+                const actionWrap = document.createElement('div');
+                const actionLabel = document.createElement('span');
+                actionLabel.className = 'item-action-label';
+                actionLabel.textContent = 'Action';
+                actionWrap.appendChild(actionLabel);
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'button';
+                removeBtn.textContent = 'Remove';
+                removeBtn.style.background = '#fee2e2';
+                removeBtn.style.color = '#b91c1c';
+                removeBtn.style.border = '1px solid #fecaca';
+                removeBtn.style.borderRadius = '10px';
+                removeBtn.style.padding = '8px 10px';
+                removeBtn.style.cursor = 'pointer';
+                removeBtn.addEventListener('click', () => {
+                    otherPayments.splice(idx, 1);
+                    renderOtherPayments();
+                });
+                actionWrap.appendChild(removeBtn);
+
+                row.appendChild(title);
+                row.appendChild(amountWrap);
+                row.appendChild(actionWrap);
+                otherPaymentsList.appendChild(row);
+            });
+
+            otherPaymentsJsonField.value = JSON.stringify(otherPayments);
+            recalcTotals();
+        }
+
         function loadApplications(clientId) {
             if (!clientId) {
                 availableApps = [];
@@ -588,6 +731,27 @@
             renderItems();
         });
 
+        addOtherPaymentBtn.addEventListener('click', () => {
+            const description = (otherPaymentDescription.value || '').trim();
+            let amountVal = parseFloat(otherPaymentAmount.value || 0);
+            if (!description) {
+                otherPaymentDescription.focus();
+                return;
+            }
+            if (isNaN(amountVal) || amountVal <= 0) {
+                otherPaymentAmount.focus();
+                return;
+            }
+            otherPayments.push({
+                description,
+                amount: amountVal,
+                currency: (items[0] && items[0].currency) || 'GBP',
+            });
+            otherPaymentDescription.value = '';
+            otherPaymentAmount.value = '0';
+            renderOtherPayments();
+        });
+
         // Initial load if a client was preselected
         if (clientSelect.value) {
             try {
@@ -599,7 +763,17 @@
             } catch (e) {
                 items = [];
             }
+            try {
+                if (otherPaymentsRaw && typeof otherPaymentsRaw === 'string') {
+                    otherPayments = JSON.parse(otherPaymentsRaw) || [];
+                } else if (Array.isArray(otherPaymentsRaw)) {
+                    otherPayments = otherPaymentsRaw;
+                }
+            } catch (e) {
+                otherPayments = [];
+            }
             renderItems();
+            renderOtherPayments();
             loadApplications(clientSelect.value);
         }
     })();

@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.forms import ModelForm
 from django import forms
 from decimal import Decimal
-from .models import Client, VisaApplication, Payment, Pricing, Invoice, InvoiceApplication
+from .models import Client, VisaApplication, Payment, Pricing, Invoice, InvoiceApplication, InvoiceOtherPayment
 from .admin_site import admin_site
 
 
@@ -1679,9 +1679,11 @@ class InvoiceAdmin(ModelAdmin):
         due_date_value = request.POST.get("due_date", "")
         notes_value = request.POST.get("notes", "")
         items_payload = request.POST.get("items_json", "[]")
+        other_payments_payload = request.POST.get("other_payments_json", "[]")
         status_value = request.POST.get("status", "draft")
         errors = []
         items_data = []
+        other_payments_data = []
         invoice_obj = None
         status_choices = [choice[0] for choice in Invoice.INVOICE_STATUS_CHOICES]
 
@@ -1712,6 +1714,11 @@ class InvoiceAdmin(ModelAdmin):
                             "discount": float(discount_share) if discount_share else 0,
                         })
                     items_payload = json.dumps(items_list)
+
+                    other_payments_payload = json.dumps([
+                        {"description": op.description, "amount": float(op.amount)}
+                        for op in invoice_obj.other_payments.all()
+                    ])
             except Invoice.DoesNotExist:
                 errors.append("Invoice not found for editing.")
                 invoice_obj = None
@@ -1731,6 +1738,13 @@ class InvoiceAdmin(ModelAdmin):
                     errors.append("Could not read invoice items. Please add them again.")
             else:
                 errors.append("Add at least one visa application item.")
+
+            if other_payments_payload:
+                try:
+                    import json
+                    other_payments_data = json.loads(other_payments_payload)
+                except Exception:
+                    errors.append("Could not read other payments. Please add them again.")
 
             try:
                 tax_rate_decimal = Decimal(tax_rate_value or "0")
@@ -1775,6 +1789,7 @@ class InvoiceAdmin(ModelAdmin):
                 # Clear existing items when editing
                 if is_edit:
                     InvoiceApplication.objects.filter(invoice=invoice).delete()
+                    InvoiceOtherPayment.objects.filter(invoice=invoice).delete()
 
                 # Attach applications and store prices
                 for item in items_data:
@@ -1814,6 +1829,23 @@ class InvoiceAdmin(ModelAdmin):
                     if not is_edit:
                         invoice.delete()
                 else:
+                    for payment_item in other_payments_data:
+                        description = (payment_item.get("description") or "").strip()
+                        raw_amount = payment_item.get("amount")
+                        if not description:
+                            continue
+                        try:
+                            amount = Decimal(str(raw_amount or "0"))
+                        except Exception:
+                            amount = Decimal("0")
+                        if amount <= 0:
+                            continue
+                        InvoiceOtherPayment.objects.create(
+                            invoice=invoice,
+                            description=description,
+                            amount=amount,
+                        )
+
                     invoice.discount = discount_total
                     if detected_currency and invoice.currency != detected_currency:
                         invoice.currency = detected_currency
@@ -1842,6 +1874,7 @@ class InvoiceAdmin(ModelAdmin):
             "due_date_value": due_date_value,
             "notes_value": notes_value,
             "items_payload": items_payload or "[]",
+            "other_payments_payload": other_payments_payload or "[]",
             "errors": errors,
             "invoice_obj": invoice_obj,
             "status_choices": Invoice.INVOICE_STATUS_CHOICES,
