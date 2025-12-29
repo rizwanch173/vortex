@@ -2106,144 +2106,73 @@ class InvoiceAdmin(ModelAdmin):
     def invoice_preview(self, request, invoice_id):
         """Preview invoice in HTML."""
         invoice = get_object_or_404(Invoice, pk=invoice_id)
-        return render(request, "admin/core/invoice/preview.html", {
-            "invoice": invoice,
-            "title": f"Invoice {invoice.invoice_number}",
-        })
+        context = self._build_invoice_context(invoice)
+        context["title"] = f"Invoice {invoice.invoice_number}"
+        return render(request, "admin/core/invoice/preview.html", context)
 
     def invoice_pdf(self, request, invoice_id):
         """Generate and download PDF invoice."""
-        from django.shortcuts import get_object_or_404
         from django.http import HttpResponse
-        from reportlab.lib.pagesizes import letter, A4
-        from reportlab.lib import colors
-        from reportlab.lib.units import inch
-        from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-        from reportlab.lib.enums import TA_CENTER, TA_RIGHT, TA_LEFT
-        from io import BytesIO
-        from decimal import Decimal
+        from django.template.loader import render_to_string
 
         invoice = get_object_or_404(Invoice, pk=invoice_id)
+        context = self._build_invoice_context(invoice)
+        context["title"] = f"Invoice {invoice.invoice_number}"
 
-        # Create PDF buffer
-        buffer = BytesIO()
-        doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=72, leftMargin=72, topMargin=72, bottomMargin=18)
+        html = render_to_string("admin/core/invoice/preview.html", context)
+        try:
+            from weasyprint import HTML
+        except Exception:
+            return HttpResponse(
+                "PDF generation is not available. Install WeasyPrint and reload.",
+                status=500,
+                content_type="text/plain",
+            )
 
-        # Container for PDF elements
-        elements = []
-        styles = getSampleStyleSheet()
-
-        # Title
-        title_style = ParagraphStyle(
-            'CustomTitle',
-            parent=styles['Heading1'],
-            fontSize=24,
-            textColor=colors.HexColor('#1f2937'),
-            spaceAfter=30,
-            alignment=TA_CENTER
-        )
-        elements.append(Paragraph("INVOICE", title_style))
-        elements.append(Spacer(1, 0.2*inch))
-
-        # Invoice details
-        invoice_data = [
-            ['Invoice Number:', invoice.invoice_number],
-            ['Invoice Date:', invoice.invoice_date.strftime('%B %d, %Y')],
-            ['Due Date:', invoice.due_date.strftime('%B %d, %Y') if invoice.due_date else 'N/A'],
-            ['Status:', invoice.get_status_display()],
-        ]
-
-        invoice_table = Table(invoice_data, colWidths=[2*inch, 3*inch])
-        invoice_table.setStyle(TableStyle([
-            ('ALIGN', (0, 0), (0, -1), 'LEFT'),
-            ('ALIGN', (1, 0), (1, -1), 'LEFT'),
-            ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, -1), 10),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-            ('TOPPADDING', (0, 0), (-1, -1), 6),
-        ]))
-        elements.append(invoice_table)
-        elements.append(Spacer(1, 0.3*inch))
-
-        # Client information
-        client_style = ParagraphStyle(
-            'ClientStyle',
-            parent=styles['Normal'],
-            fontSize=12,
-            textColor=colors.HexColor('#374151'),
-            spaceAfter=12
-        )
-        elements.append(Paragraph("<b>Bill To:</b>", client_style))
-        elements.append(Paragraph(f"{invoice.client.full_name}", client_style))
-        elements.append(Paragraph(f"{invoice.client.email}", client_style))
-        elements.append(Paragraph(f"{invoice.client.phone}", client_style))
-        elements.append(Spacer(1, 0.3*inch))
-
-        # Visa applications
-        elements.append(Paragraph("<b>Visa Applications:</b>", client_style))
-        visa_apps = invoice.visa_applications.all()
-        for app in visa_apps:
-            elements.append(Paragraph(f"• {app.get_visa_type_display()} - {app.get_stage_display()}", client_style))
-        elements.append(Spacer(1, 0.3*inch))
-
-        # Items table
-        items_data = [['Description', 'Amount']]
-        for app in visa_apps:
-            price = Pricing.get_price_for_visa_type(app.visa_type)
-            items_data.append([f"{app.get_visa_type_display()} Visa Application", f"{invoice.currency} {price:.2f}"])
-
-        items_table = Table(items_data, colWidths=[4*inch, 1.5*inch])
-        items_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f3f4f6')),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#1f2937')),
-            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-            ('ALIGN', (1, 0), (1, -1), 'RIGHT'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, -1), 10),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
-            ('TOPPADDING', (0, 0), (-1, -1), 8),
-            ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#e5e7eb')),
-        ]))
-        elements.append(items_table)
-        elements.append(Spacer(1, 0.3*inch))
-
-        # Totals
-        totals_data = [
-            ['Subtotal:', f"{invoice.currency} {invoice.subtotal:.2f}"],
-            ['Discount:', f"{invoice.currency} {invoice.discount:.2f}"],
-        ]
-        if invoice.tax_rate > 0:
-            totals_data.append([f'Tax ({invoice.tax_rate}%):', f"{invoice.currency} {invoice.tax_amount:.2f}"])
-        totals_data.append(['<b>Total:</b>', f"<b>{invoice.currency} {invoice.total_amount:.2f}</b>"])
-
-        totals_table = Table(totals_data, colWidths=[4*inch, 1.5*inch])
-        totals_table.setStyle(TableStyle([
-            ('ALIGN', (0, 0), (-1, -1), 'RIGHT'),
-            ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, -1), 11),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-            ('TOPPADDING', (0, 0), (-1, -1), 6),
-        ]))
-        elements.append(totals_table)
-
-        # Notes
-        if invoice.notes:
-            elements.append(Spacer(1, 0.3*inch))
-            elements.append(Paragraph("<b>Notes:</b>", client_style))
-            elements.append(Paragraph(invoice.notes, client_style))
-
-        # Build PDF
-        doc.build(elements)
-
-        # Get PDF content
-        pdf = buffer.getvalue()
-        buffer.close()
-
-        # Create response
-        response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="invoice_{invoice.invoice_number}.pdf"'
+        pdf = HTML(string=html, base_url=request.build_absolute_uri("/")).write_pdf()
+        response = HttpResponse(pdf, content_type="application/pdf")
+        response["Content-Disposition"] = f'attachment; filename="invoice_{invoice.invoice_number}.pdf"'
         return response
+
+    def _build_invoice_context(self, invoice):
+        def currency_symbol(code):
+            if code == "GBP":
+                return "£"
+            if code == "USD":
+                return "$"
+            if code == "EUR":
+                return "€"
+            return code + " "
+
+        items = []
+        for invoice_app in invoice.invoice_applications.select_related("visa_application"):
+            app = invoice_app.visa_application
+            items.append({
+                "description": f"{app.get_visa_type_display()} - {app.get_stage_display()}",
+                "price": invoice_app.unit_price,
+                "qty": 1,
+                "total": invoice_app.unit_price,
+            })
+
+        for other_payment in invoice.other_payments.all():
+            items.append({
+                "description": other_payment.description,
+                "price": other_payment.amount,
+                "qty": 1,
+                "total": other_payment.amount,
+            })
+
+        blank_rows = max(0, 2 - len(items))
+
+        return {
+            "invoice": invoice,
+            "invoice_items": items,
+            "blank_rows": range(blank_rows),
+            "currency_symbol": currency_symbol(invoice.currency),
+            "contact_email": "contact@vortexease.com",
+            "site_url": "https://vortexease.com",
+            "terms_url": "https://vortexease.com/terms-and-conditions/",
+        }
 
     def invoice_send(self, request, invoice_id):
         """Send invoice via email."""

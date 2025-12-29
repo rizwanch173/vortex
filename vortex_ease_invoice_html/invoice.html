@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Invoice</title>
+  <link rel="stylesheet" href="./invoice.css" />
+</head>
+
+<body>
+  <main class="page">
+
+    <!-- Watermark (optional) -->
+    <div class="watermark" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <img class="logo" src="./logo.png" alt="Vortex Ease Travel & Tours" />
+        <div class="invoice-to">
+          <div class="label">INVOICE TO</div>
+          <div class="name">Abdul Rehman</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="title-block">
+        <h1 class="title">INVOICE</h1>
+
+        <div class="meta">
+          <div class="meta-row">
+            <span class="meta-label">Invoice ID :</span>
+            <span class="meta-value">#Sgn67896</span>
+          </div>
+
+          <div class="contact">
+            <div>contact@vortexease.com</div>
+            <a href="https://vortexease.com" target="_blank" rel="noreferrer">https://vortexease.com</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Items table -->
+    <section class="items">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-product">PRODUCT</th>
+            <th class="col-price">PRICE</th>
+            <th class="col-qty">QTY</th>
+            <th class="col-total">TOTAL</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr class="stripe">
+            <td>Visa Service Fee</td>
+            <td class="num">£ 125.00</td>
+            <td class="num">3</td>
+            <td class="num">£ 375.00</td>
+          </tr>
+
+          <tr>
+            <td>Appointment Fee</td>
+            <td class="num">£ 28.00</td>
+            <td class="num">3</td>
+            <td class="num">£ 84.00</td>
+          </tr>
+
+          <!-- Empty rows to match Canva spacing (optional) -->
+          <tr class="blank"><td colspan="4">&nbsp;</td></tr>
+          <tr class="blank"><td colspan="4">&nbsp;</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Summary box -->
+    <section class="summary-wrap">
+      <div class="summary">
+        <div class="summary-row">
+          <span class="k">SUB TOTAL</span>
+          <span class="v">£459.00</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="k">DISCOUNT</span>
+          <span class="v">-£75.00</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="k">TAX (0%)</span>
+          <span class="v">£ 00.00</span>
+        </div>
+
+        <div class="summary-total">
+          <span class="k">TOTAL</span>
+          <span class="v">£ 384.00</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="tcs">
+        <div class="tcs-label">T&CS APPLY:</div>
+        <a href="https://vortexease.com/terms-and-conditions/" target="_blank" rel="noreferrer">
+          vortexease.com/terms-and-conditions
+        </a>
+      </div>
+
+      <div class="thanks">
+        THANK YOU FOR CHOOSING VORTEX EASE TRAVEL &amp; TOURS.
+      </div>
+    </footer>
+
+  </main>
+</body>
+</html>
