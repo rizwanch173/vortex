@@ -420,9 +420,15 @@
                             <a href="{% url 'admin:core_invoice_pdf' invoice_obj.pk %}" target="_blank" class="border border-base-200 cursor-pointer font-medium px-3 py-2 rounded-default text-center transition-all w-full hover:bg-base-50 lg:block lg:w-auto dark:border-base-700 dark:hover:text-base-200 dark:hover:bg-base-900">
                                 {% translate 'Download Invoice' %}
                             </a>
-                            <a href="{% url 'admin:core_invoice_send' invoice_obj.pk %}" class="border border-base-200 cursor-pointer font-medium px-3 py-2 rounded-default text-center transition-all w-full hover:bg-base-50 lg:block lg:w-auto dark:border-base-700 dark:hover:text-base-200 dark:hover:bg-base-900">
-                                {% translate 'Send Invoice' %}
-                            </a>
+                            {% if invoice_obj.status == 'draft' %}
+                                <a href="{% url 'admin:core_invoice_send' invoice_obj.pk %}" class="border border-base-200 cursor-pointer font-medium px-3 py-2 rounded-default text-center transition-all w-full hover:bg-base-50 lg:block lg:w-auto dark:border-base-700 dark:hover:text-base-200 dark:hover:bg-base-900">
+                                    {% translate 'Send Invoice' %}
+                                </a>
+                            {% else %}
+                                <a href="{% url 'admin:core_invoice_send' invoice_obj.pk %}" class="border border-base-200 font-medium px-3 py-2 rounded-default text-center w-full opacity-50 cursor-pointer lg:block lg:w-auto dark:border-base-700">
+                                    {% translate 'Send Invoice' %}
+                                </a>
+                            {% endif %}
                         {% else %}
                             <span class="border border-base-200 font-medium px-3 py-2 rounded-default text-center w-full opacity-60 lg:block lg:w-auto dark:border-base-700">
                                 {% translate 'Preview Invoice' %}

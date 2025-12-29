@@ -204,10 +204,14 @@
             <a href="{% url 'admin:core_invoice_pdf' original.pk %}" class="button" target="_blank" style="background: #10b981; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-block; border: none; cursor: pointer;">
                 📄 {% trans "Download PDF" %}
             </a>
-            {% if original.status != 'sent' and original.status != 'paid' %}
+            {% if original.status == 'draft' %}
             <a href="{% url 'admin:core_invoice_send' original.pk %}" class="button" style="background: #f59e0b; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-block; border: none; cursor: pointer;">
                 📧 {% trans "Send Invoice" %}
             </a>
+            {% else %}
+            <span class="button" style="background: transparent; color: #9ca3af; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-block; border: 1px solid #4b5563; cursor: not-allowed; opacity: 0.5;">
+                📧 {% trans "Send Invoice" %}
+            </span>
             {% endif %}
             {% if original.client %}
             <a href="{% url 'admin:core_client_change' original.client.pk %}" class="button" style="background: #6b7280; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-block; border: none; cursor: pointer;">

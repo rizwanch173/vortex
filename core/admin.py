@@ -1550,16 +1550,9 @@ class InvoiceAdmin(ModelAdmin):
     def actions_column(self, obj):
         """Display action buttons."""
         view_url = reverse("admin:core_invoice_change", args=[obj.pk])
-        preview_url = reverse("admin:core_invoice_preview", args=[obj.pk])
-        pdf_url = reverse("admin:core_invoice_pdf", args=[obj.pk])
-
         return format_html(
-            '<a href="{}" class="button" style="margin-right: 8px;">View</a>'
-            '<a href="{}" class="button" target="_blank" style="margin-right: 8px;">Preview</a>'
-            '<a href="{}" class="button" target="_blank">PDF</a>',
+            '<a href="{}" class="button" style="margin-right: 8px;">View</a>',
             view_url,
-            preview_url,
-            pdf_url,
         )
 
     @display(description="Visa Applications")
