@@ -120,11 +120,14 @@ MEDIA_ROOT = BASE_DIR / "media"
 # DJANGO UNFOLD CONFIGURATION
 # ----------------------------------------------------
 UNFOLD = {
-    "SITE_TITLE": "VortexEase Admin",
-    "SITE_HEADER": "VortexEase Administration",
+    "SITE_TITLE": "Vortex Ease",
+    "SITE_HEADER": "Vortex Ease",
     "SITE_URL": "/",
     "SITE_ICON": None,
-    "SITE_LOGO": None,
+    "SITE_LOGO": {
+        "light": "/static/img/logos/logo.svg",
+        "dark": "/static/img/logos/logo.svg",
+    },
     "SITE_SYMBOL": "settings",
     "SHOW_HISTORY": True,
     "SHOW_VIEW_ON_SITE": True,

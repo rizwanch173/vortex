@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<a href="{% url "admin:index" %}" class="flex items-center gap-3">
+    {% if site_logo.light and site_logo.dark %}
+        <img src="{{ site_logo.dark }}" alt="{% trans 'Home' %}" class="hidden dark:block h-9 w-9"/>
+        <img src="{{ site_logo.light }}" alt="{% trans 'Home' %}" class="dark:hidden h-9 w-9"/>
+    {% else %}
+        <img src="{{ site_logo }}" class="h-9 w-9" alt="{% trans 'Home' %}" />
+    {% endif %}
+    <span style="display:inline-block;font-weight:600;color:#e2e8f0;font-size:1rem;">Vortex Ease</span>
+</a>

@@ -25,8 +25,8 @@ class DashboardAdminSite(UnfoldAdminSite):
     - Success rate trend uses VisaApplication.decision_date (if null, excluded).
     """
 
-    site_header = "VortexEase Administration"
-    site_title = "VortexEase Admin"
+    site_header = "Vortex Ease"
+    site_title = "Vortex Ease"
     index_title = "Dashboard"
 
     def index(self, request, extra_context=None):
