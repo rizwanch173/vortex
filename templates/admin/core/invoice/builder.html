@@ -1,7 +1,7 @@
 {% extends "admin/base_site.html" %}
 {% load i18n static %}
 
-{% block title %}{% if invoice_obj %}Edit Invoice {{ invoice_obj.invoice_number }}{% else %}Create Invoice{% endif %} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+{% block title %}{% if invoice_obj %}Edit Invoice {{ invoice_obj.invoice_id|default:invoice_obj.invoice_number }}{% else %}Create Invoice{% endif %} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
 {% block content %}
 <style>
@@ -262,7 +262,7 @@
 <div id="content-main" class="module invoice-shell">
     <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px;">
         <div>
-            <h1 style="margin:0; font-size:22px;">{% if invoice_obj %}Edit Invoice {{ invoice_obj.invoice_number }}{% else %}Create Invoice{% endif %}</h1>
+            <h1 style="margin:0; font-size:22px;">{% if invoice_obj %}Edit Invoice {{ invoice_obj.invoice_id|default:invoice_obj.invoice_number }}{% else %}Create Invoice{% endif %}</h1>
             <p class="meta-text" style="margin:4px 0 0 0;">Build an invoice by selecting visa applications and setting per-item discounts.</p>
         </div>
         <span class="pill">{% if invoice_obj %}Editing{% else %}New flow{% endif %}</span>
@@ -294,7 +294,7 @@
                     </select>
                 </div>
                 <div>
-                    <label for="id_due_date">Due date (optional)</label>
+                    <label for="id_due_date">Due date</label>
                     <input type="date" id="id_due_date" name="due_date" value="{{ due_date_value }}" style="width:100%; padding:10px; border-radius:10px; border: 1px solid #d1d5db;" />
                 </div>
                 <div>

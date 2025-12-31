@@ -228,26 +228,16 @@ class ClientAdmin(ModelAdmin):
     Follows the design pattern from Unfold demo.
     """
 
-    # Inlines - No inlines on add page, only shown on edit page
-    inlines = [VisaApplicationInline, PaymentInline]
+    # Inlines - hidden on both add and edit pages
+    inlines = []
 
     def get_inline_instances(self, request, obj=None):
-        """Show inlines only when editing existing client, not when adding."""
-        if obj is None:
-            # Adding new client - no inlines shown
-            return []
-        else:
-            # Editing existing client - show both Visa Applications and Payments
-            inline_instances = []
-            visa_inline = VisaApplicationInline(self.model, self.admin_site)
-            payment_inline = PaymentInline(self.model, self.admin_site)
-            inline_instances.append(visa_inline)
-            inline_instances.append(payment_inline)
-            return inline_instances
+        """Hide Visa Applications and Payments inlines."""
+        return []
 
     # List Display
     list_display = [
-        "id",
+        "client_id",
         "full_name_display",
         "email",
         "phone",
@@ -259,7 +249,7 @@ class ClientAdmin(ModelAdmin):
     ]
 
     # List Display Links
-    list_display_links = ["id", "full_name_display"]
+    list_display_links = ["client_id", "full_name_display"]
 
     # Search Fields
     search_fields = [
@@ -292,6 +282,7 @@ class ClientAdmin(ModelAdmin):
                     "email",
                     "phone",
                     "date_of_birth",
+                    "gender",
                 ),
                 "classes": ("wide",),
             },
@@ -673,7 +664,7 @@ class VisaApplicationAdmin(ModelAdmin):
 
     # List Display
     list_display = [
-        "id",
+        "application_id",
         "client_name",
         "visa_type",
         "stage_badge",
@@ -685,7 +676,7 @@ class VisaApplicationAdmin(ModelAdmin):
     ]
 
     # List Display Links
-    list_display_links = ["id", "client_name"]
+    list_display_links = ["application_id", "client_name"]
 
     # Search Fields
     search_fields = [
@@ -1393,7 +1384,7 @@ class InvoiceAdmin(ModelAdmin):
 
     # List Display
     list_display = [
-        "invoice_number",
+        "invoice_id_display",
         "client_name",
         "visa_applications_display",
         "total_amount",
@@ -1406,11 +1397,12 @@ class InvoiceAdmin(ModelAdmin):
     ]
 
     # List Display Links
-    list_display_links = ["invoice_number", "client_name"]
+    list_display_links = ["invoice_id_display", "client_name"]
 
     # Search Fields
     search_fields = [
         "invoice_number",
+        "invoice_id",
         "client__first_name",
         "client__last_name",
         "client__email",
@@ -1499,6 +1491,11 @@ class InvoiceAdmin(ModelAdmin):
     list_per_page = 25
 
     # Custom Methods
+    @display(description="Invoice ID", ordering="invoice_id")
+    def invoice_id_display(self, obj):
+        """Show generated invoice ID with fallback to invoice number."""
+        return obj.invoice_id or obj.invoice_number
+
     @display(description="Client", ordering="client__first_name")
     def client_name(self, obj):
         """Display client name with link."""
@@ -1551,7 +1548,9 @@ class InvoiceAdmin(ModelAdmin):
         """Display action buttons."""
         view_url = reverse("admin:core_invoice_change", args=[obj.pk])
         return format_html(
-            '<a href="{}" class="button" style="margin-right: 8px;">View</a>',
+            '<a href="{}" class="button" style="padding: 4px 8px; '
+            'background: #2563eb; color: white; text-decoration: none; '
+            'border-radius: 4px; font-size: 12px;">View</a>',
             view_url,
         )
 
@@ -1758,6 +1757,13 @@ class InvoiceAdmin(ModelAdmin):
                     due_date = datetime.strptime(due_date_value, "%Y-%m-%d").date()
                 except ValueError:
                     errors.append("Invalid due date format. Use YYYY-MM-DD.")
+            else:
+                errors.append("Due date is required.")
+
+            if due_date:
+                today = timezone.localdate()
+                if due_date < today:
+                    errors.append("Due date cannot be in the past.")
 
             if not errors and client:
                 is_edit = invoice_obj is not None
@@ -1847,10 +1853,11 @@ class InvoiceAdmin(ModelAdmin):
                         invoice.currency = detected_currency
 
                     invoice.calculate_totals()
+                    display_invoice_id = invoice.invoice_id or invoice.invoice_number
                     if is_edit:
-                        messages.success(request, f"Invoice {invoice.invoice_number} updated successfully.")
+                        messages.success(request, f"Invoice {display_invoice_id} updated successfully.")
                     else:
-                        messages.success(request, f"Invoice {invoice.invoice_number} created successfully.")
+                        messages.success(request, f"Invoice {display_invoice_id} created successfully.")
 
                     if "_addanother" in request.POST:
                         if selected_client_id:
@@ -2104,7 +2111,8 @@ class InvoiceAdmin(ModelAdmin):
         """Preview invoice in HTML."""
         invoice = get_object_or_404(Invoice, pk=invoice_id)
         context = self._build_invoice_context(invoice)
-        context["title"] = f"Invoice {invoice.invoice_number}"
+        display_invoice_id = invoice.invoice_id or invoice.invoice_number
+        context["title"] = f"Invoice {display_invoice_id}"
         return render(request, "admin/core/invoice/preview.html", context)
 
     def invoice_pdf(self, request, invoice_id):
@@ -2114,7 +2122,8 @@ class InvoiceAdmin(ModelAdmin):
 
         invoice = get_object_or_404(Invoice, pk=invoice_id)
         context = self._build_invoice_context(invoice, request=request)
-        context["title"] = f"Invoice {invoice.invoice_number}"
+        display_invoice_id = invoice.invoice_id or invoice.invoice_number
+        context["title"] = f"Invoice {display_invoice_id}"
 
         html = render_to_string("admin/core/invoice/preview_pdf.html", context)
         try:
@@ -2128,7 +2137,7 @@ class InvoiceAdmin(ModelAdmin):
 
         pdf = HTML(string=html, base_url=request.build_absolute_uri("/")).write_pdf()
         response = HttpResponse(pdf, content_type="application/pdf")
-        response["Content-Disposition"] = f'attachment; filename="invoice_{invoice.invoice_number}.pdf"'
+        response["Content-Disposition"] = f'attachment; filename="invoice_{display_invoice_id}.pdf"'
         return response
 
     def _build_invoice_context(self, invoice, request=None):
@@ -2169,6 +2178,8 @@ class InvoiceAdmin(ModelAdmin):
             logo_url = request.build_absolute_uri(logo_url)
             css_url = request.build_absolute_uri(css_url)
 
+        display_invoice_id = invoice.invoice_id or invoice.invoice_number
+
         return {
             "invoice": invoice,
             "invoice_items": items,
@@ -2179,15 +2190,17 @@ class InvoiceAdmin(ModelAdmin):
             "terms_url": "https://vortexease.com/terms-and-conditions/",
             "logo_url": logo_url,
             "css_url": css_url,
+            "display_invoice_id": display_invoice_id,
         }
 
     def invoice_send(self, request, invoice_id):
         """Send invoice via email."""
         from django.contrib import messages
-        from django.core.mail import EmailMessage
+        from django.core.mail import EmailMultiAlternatives
         from django.template.loader import render_to_string
         from django.utils import timezone
         from django.conf import settings
+        from django.templatetags.static import static
 
         invoice = get_object_or_404(Invoice, pk=invoice_id)
 
@@ -2199,7 +2212,8 @@ class InvoiceAdmin(ModelAdmin):
             return redirect("admin:core_invoice_change", invoice_id)
 
         context = self._build_invoice_context(invoice, request=request)
-        context["title"] = f"Invoice {invoice.invoice_number}"
+        display_invoice_id = invoice.invoice_id or invoice.invoice_number
+        context["title"] = f"Invoice {display_invoice_id}"
         html = render_to_string("admin/core/invoice/preview_pdf.html", context)
         try:
             from weasyprint import HTML
@@ -2209,31 +2223,59 @@ class InvoiceAdmin(ModelAdmin):
 
         pdf_bytes = HTML(string=html, base_url=request.build_absolute_uri("/")).write_pdf()
 
-        subject = f"Invoice {invoice.invoice_number}"
-        body = (
+        visa_types = [
+            f"{app.get_visa_type_display()} Visa"
+            for app in invoice.visa_applications.all()
+        ]
+        visa_label = " / ".join(visa_types) if visa_types else "Visa"
+        subject = f"Invoice for your {visa_label} is attached — please pay"
+        text_body = (
             f"Dear {invoice.client.full_name},\n\n"
-            f"Please find your invoice {invoice.invoice_number} attached.\n\n"
+            f"Please find your invoice {display_invoice_id} attached.\n\n"
             "Thank you,\nVortex Ease"
         )
 
-        email = EmailMessage(
+        email_context = self._build_invoice_context(invoice, request=request)
+        email_context.update(
+            {
+                "client_name": invoice.client.full_name,
+                "invoice_number": display_invoice_id,
+                "due_date": invoice.due_date,
+                "preheader": f"Vortex Ease — Invoice {display_invoice_id} attached.",
+                "logo_url": "https://vortexease.com/static/img/logos/logo.png",
+                "whatsapp_url": "https://wa.me/vortexeaseuk",
+                "whatsapp_display": "+44 7539 080846",
+                "facebook_url": "https://www.facebook.com/vortexease",
+                "instagram_url": "https://www.instagram.com/vortexease",
+                "tiktok_url": "https://tiktok.com/@YOUR_PAGE",
+            }
+        )
+
+        html_body = render_to_string("email/invoice_email.html", email_context)
+
+        email = EmailMultiAlternatives(
             subject=subject,
-            body=body,
+            body=text_body,
             from_email=getattr(settings, "DEFAULT_FROM_EMAIL", None),
             to=[invoice.client.email],
         )
-        email.attach(f"invoice_{invoice.invoice_number}.pdf", pdf_bytes, "application/pdf")
+        email.attach_alternative(html_body, "text/html")
+        email.attach(f"invoice_{display_invoice_id}.pdf", pdf_bytes, "application/pdf")
 
         try:
-            email.send(fail_silently=False)
+            sent_count = email.send(fail_silently=False)
         except Exception as exc:
             messages.error(request, f"Failed to send invoice email: {exc}")
+            return redirect("admin:core_invoice_change", invoice_id)
+
+        if sent_count < 1:
+            messages.error(request, "Email could not be sent. Please check email settings and try again.")
             return redirect("admin:core_invoice_change", invoice_id)
 
         invoice.sent_date = timezone.now()
         invoice.status = "sent"
         invoice.save()
-        messages.success(request, f"Invoice {invoice.invoice_number} sent successfully.")
+        messages.success(request, f"Invoice {display_invoice_id} sent successfully.")
         return redirect("admin:core_invoice_change", invoice_id)
 
     def get_form(self, request, obj=None, **kwargs):

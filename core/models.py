@@ -1,4 +1,7 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.db.models.signals import post_delete, post_save
+from django.dispatch import receiver
 from django.core.validators import EmailValidator
 from django.utils import timezone
 from decimal import Decimal
@@ -12,6 +15,12 @@ class Client(models.Model):
     CLIENT_STATUS_CHOICES = [
         ("new", "New"),
         ("previous", "Previous"),
+    ]
+
+    GENDER_CHOICES = [
+        ("male", "Male"),
+        ("female", "Female"),
+        ("other", "Other/Unknown"),
     ]
 
     VISA_TYPE_CHOICES = [
@@ -41,6 +50,13 @@ class Client(models.Model):
     # Personal Information
     first_name = models.CharField(max_length=100, verbose_name="First Name")
     last_name = models.CharField(max_length=100, verbose_name="Last Name")
+    client_id = models.CharField(
+        max_length=32,
+        unique=True,
+        blank=True,
+        null=True,
+        verbose_name="Client ID",
+    )
     email = models.EmailField(
         max_length=255,
         validators=[EmailValidator()],
@@ -52,6 +68,12 @@ class Client(models.Model):
         null=True,
         blank=True,
         verbose_name="Date of Birth"
+    )
+    gender = models.CharField(
+        max_length=10,
+        choices=GENDER_CHOICES,
+        default="other",
+        verbose_name="Gender",
     )
 
     # Passport Information
@@ -146,6 +168,26 @@ class Client(models.Model):
         from django.urls import reverse
         return reverse("admin:core_client_change", args=[self.pk])
 
+    def save(self, *args, **kwargs):
+        if not self.client_id:
+            if not self.date_of_birth:
+                raise ValidationError("Date of birth is required to generate client ID.")
+            gender_code = {"male": "A", "female": "B"}.get(self.gender, "C")
+            today = timezone.localdate()
+            date_part = today.strftime("%y%m%d")
+            birth_year = self.date_of_birth.strftime("%y")
+            base_id = f"{self.last_name[0].upper()}{gender_code}{date_part}{birth_year}"
+            candidate = base_id
+            if Client.objects.filter(client_id=candidate).exists():
+                for i in range(1, 100):
+                    candidate = f"{base_id}{i:02d}"
+                    if not Client.objects.filter(client_id=candidate).exists():
+                        break
+                else:
+                    raise ValidationError("Unable to generate unique client ID.")
+            self.client_id = candidate
+        super().save(*args, **kwargs)
+
 
 class VisaApplication(models.Model):
     """
@@ -174,6 +216,13 @@ class VisaApplication(models.Model):
         on_delete=models.CASCADE,
         related_name="visa_applications",
         verbose_name="Client"
+    )
+    application_id = models.CharField(
+        max_length=64,
+        unique=True,
+        blank=True,
+        null=True,
+        verbose_name="Application ID",
     )
 
     # Visa Information
@@ -272,6 +321,23 @@ class VisaApplication(models.Model):
         if self.stage == "decision_received" and self.decision in ["approved", "rejected"]:
             self.client.client_status = "previous"
             self.client.save()
+        if not self.application_id:
+            if self.client and not self.client.client_id:
+                self.client.save()
+            visa_type = (self.visa_type or "").strip()
+            if not visa_type:
+                raise ValidationError("Visa type is required to generate application ID.")
+            prefix = visa_type[0].upper()
+            base_id = f"{prefix}{self.client.client_id}"
+            candidate = base_id
+            if VisaApplication.objects.filter(application_id=candidate).exists():
+                for i in range(1, 100):
+                    candidate = f"{base_id}{i:02d}"
+                    if not VisaApplication.objects.filter(application_id=candidate).exists():
+                        break
+                else:
+                    raise ValidationError("Unable to generate unique application ID.")
+            self.application_id = candidate
         super().save(*args, **kwargs)
 
 
@@ -591,6 +657,13 @@ class Invoice(models.Model):
     )
 
     # Invoice Information
+    invoice_id = models.CharField(
+        max_length=96,
+        unique=True,
+        blank=True,
+        null=True,
+        verbose_name="Invoice ID",
+    )
     invoice_number = models.CharField(
         max_length=50,
         unique=True,
@@ -602,8 +675,6 @@ class Invoice(models.Model):
         help_text="Date when invoice was issued"
     )
     due_date = models.DateField(
-        null=True,
-        blank=True,
         verbose_name="Due Date",
         help_text="Payment due date"
     )
@@ -769,3 +840,54 @@ class Invoice(models.Model):
         self.tax_amount = (subtotal_after_discount * tax_rate) / Decimal('100.00')
         self.total_amount = subtotal_after_discount + self.tax_amount
         self.save()
+
+    def update_invoice_id(self):
+        invoice_apps = (
+            InvoiceApplication.objects.filter(invoice=self)
+            .select_related("visa_application")
+            .order_by("created_at", "pk")
+        )
+        if not invoice_apps.exists():
+            if self.invoice_id:
+                self.invoice_id = None
+                self.save(update_fields=["invoice_id"])
+            return
+
+        if not self.due_date:
+            raise ValidationError("Due date is required to generate invoice ID.")
+
+        letters = []
+        for invoice_app in invoice_apps:
+            app = invoice_app.visa_application
+            if app.application_id:
+                letters.append(app.application_id[0].upper())
+            else:
+                letters.append((app.visa_type or "")[:1].upper())
+
+        date_suffix = self.due_date.strftime("%m%d")
+        client_id = self.client.client_id or ""
+        if len(client_id) > 2:
+            base_id = f"{''.join(letters)}{client_id[:2]}-{client_id[2:]}-{date_suffix}"
+        else:
+            base_id = f"{''.join(letters)}{client_id}-{date_suffix}"
+        candidate = base_id
+        if Invoice.objects.exclude(pk=self.pk).filter(invoice_id=candidate).exists():
+            for i in range(1, 100):
+                candidate = f"{base_id}-{i:02d}"
+                if not Invoice.objects.exclude(pk=self.pk).filter(invoice_id=candidate).exists():
+                    break
+            else:
+                raise ValidationError("Unable to generate unique invoice ID.")
+        if self.invoice_id != candidate:
+            self.invoice_id = candidate
+            self.save(update_fields=["invoice_id"])
+
+
+@receiver(post_save, sender=InvoiceApplication)
+def update_invoice_id_on_add(sender, instance, **kwargs):
+    instance.invoice.update_invoice_id()
+
+
+@receiver(post_delete, sender=InvoiceApplication)
+def update_invoice_id_on_remove(sender, instance, **kwargs):
+    instance.invoice.update_invoice_id()
