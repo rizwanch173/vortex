@@ -16,4 +16,7 @@ urlpatterns = [
     path("blog/work-visa-requirements/", views.blog_work_visa_requirements, name="blog_work_visa_requirements"),
     path("blogs/", views.blogs, name="blogs"),
     path("search/", views.search, name="search"),
+    path("invoice/<int:invoice_id>/pay/", views.invoice_pay, name="invoice_pay"),
+    path("invoice/<int:invoice_id>/preview/", views.invoice_preview_public, name="invoice_preview_public"),
+    path("invoice/<int:invoice_id>/download/", views.invoice_download_public, name="invoice_download_public"),
 ]

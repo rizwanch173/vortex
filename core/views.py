@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.conf import settings
+from django.urls import reverse
+from django.templatetags.static import static
 from .utils import (
     load_config,
     load_testimonial,
@@ -10,6 +12,7 @@ from .utils import (
     get_random_success_stories,
 )
 from .context_schema import Testimonial, Reviews
+from .models import Invoice, InvoiceApplication, InvoiceOtherPayment
 
 # Load global configs that don't change often or can be loaded per request
 # For simplicity and to match FastAPI behavior, we'll load them in views or globally if static.
@@ -273,3 +276,105 @@ def search(request: HttpRequest):
                 })
 
     return render(request, "search.html", {"query": query, "results": results})
+
+
+def invoice_pay(request: HttpRequest, invoice_id: int):
+    """Public invoice payment page (dummy checkout)."""
+    invoice = get_object_or_404(Invoice, pk=invoice_id)
+    payment_success = False
+    if request.method == "POST":
+        payment_success = True
+
+    context = {
+        "invoice": invoice,
+        "display_invoice_id": invoice.invoice_id or invoice.invoice_number,
+        "payment_success": payment_success,
+        "preview_url": reverse("invoice_preview_public", args=[invoice.pk]),
+        "download_url": reverse("invoice_download_public", args=[invoice.pk]),
+    }
+    return render(request, "invoice/pay.html", context)
+
+
+def _build_invoice_context(invoice, request: HttpRequest | None = None):
+    def currency_symbol(code):
+        if code == "GBP":
+            return "£"
+        if code == "USD":
+            return "$"
+        if code == "EUR":
+            return "€"
+        return code + " "
+
+    items = []
+    for invoice_app in invoice.invoice_applications.select_related("visa_application"):
+        app = invoice_app.visa_application
+        items.append({
+            "description": f"{app.get_visa_type_display()} - {app.get_stage_display()}",
+            "price": invoice_app.unit_price,
+            "qty": 1,
+            "total": invoice_app.unit_price,
+        })
+
+    for other_payment in InvoiceOtherPayment.objects.filter(invoice=invoice):
+        items.append({
+            "description": other_payment.description,
+            "price": other_payment.amount,
+            "qty": 1,
+            "total": other_payment.amount,
+        })
+
+    blank_rows = max(0, 2 - len(items))
+
+    logo_url = static("admin/img/invoice_logo.png")
+    css_url = static("admin/css/invoice.css")
+    if request is not None:
+        logo_url = request.build_absolute_uri(logo_url)
+        css_url = request.build_absolute_uri(css_url)
+
+    return {
+        "invoice": invoice,
+        "invoice_items": items,
+        "blank_rows": range(blank_rows),
+        "currency_symbol": currency_symbol(invoice.currency),
+        "contact_email": "contact@vortexease.com",
+        "site_url": "https://vortexease.com",
+        "terms_url": "https://vortexease.com/terms-and-conditions/",
+        "logo_url": logo_url,
+        "css_url": css_url,
+        "display_invoice_id": invoice.invoice_id or invoice.invoice_number,
+    }
+
+
+def invoice_preview_public(request: HttpRequest, invoice_id: int):
+    """Public invoice preview page."""
+    invoice = get_object_or_404(Invoice, pk=invoice_id)
+    context = _build_invoice_context(invoice, request=request)
+    context["title"] = f"Invoice {context['display_invoice_id']}"
+    return render(request, "admin/core/invoice/preview_pdf.html", context)
+
+
+def invoice_download_public(request: HttpRequest, invoice_id: int):
+    """Public invoice PDF download."""
+    from django.http import HttpResponse
+    from django.template.loader import render_to_string
+
+    invoice = get_object_or_404(Invoice, pk=invoice_id)
+    context = _build_invoice_context(invoice, request=request)
+    context["title"] = f"Invoice {context['display_invoice_id']}"
+
+    html = render_to_string("admin/core/invoice/preview_pdf.html", context)
+    try:
+        from weasyprint import HTML
+    except Exception:
+        return HttpResponse(
+            "PDF generation is not available. Install WeasyPrint and reload.",
+            status=500,
+            content_type="text/plain",
+        )
+
+    pdf = HTML(string=html, base_url=request.build_absolute_uri("/")).write_pdf()
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response["Content-Disposition"] = (
+        f'attachment; filename="invoice_{context["display_invoice_id"]}.pdf"'
+    )
+    return response

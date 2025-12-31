@@ -1689,6 +1689,26 @@ class InvoiceAdmin(ModelAdmin):
                     due_date_value = invoice_obj.due_date.isoformat() if invoice_obj.due_date else ""
                     notes_value = invoice_obj.notes or ""
                     status_value = invoice_obj.status
+                    import json
+                    items_list = []
+                    applications = list(invoice_obj.invoice_applications.select_related("visa_application"))
+                    discount_total = invoice_obj.discount or Decimal("0")
+                    discount_share = (discount_total / len(applications)) if applications else Decimal("0")
+                    for ia in applications:
+                        app = ia.visa_application
+                        items_list.append({
+                            "id": app.pk,
+                            "name": f"{app.get_visa_type_display()} - {app.get_stage_display()}",
+                            "price": float(ia.unit_price),
+                            "currency": invoice_obj.currency or "GBP",
+                            "discount": float(discount_share) if discount_share else 0,
+                        })
+                    items_payload = json.dumps(items_list)
+
+                    other_payments_payload = json.dumps([
+                        {"description": op.description, "amount": float(op.amount)}
+                        for op in invoice_obj.other_payments.all()
+                    ])
                 else:
                     if not request.POST.get("status"):
                         status_value = invoice_obj.status
@@ -2243,6 +2263,9 @@ class InvoiceAdmin(ModelAdmin):
                 "due_date": invoice.due_date,
                 "preheader": f"Vortex Ease — Invoice {display_invoice_id} attached.",
                 "logo_url": "https://vortexease.com/static/img/logos/logo.png",
+                "payment_url": request.build_absolute_uri(
+                    reverse("invoice_pay", args=[invoice.pk])
+                ),
                 "whatsapp_url": "https://wa.me/vortexeaseuk",
                 "whatsapp_display": "+44 7539 080846",
                 "facebook_url": "https://www.facebook.com/vortexease",
