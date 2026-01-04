@@ -15,16 +15,24 @@ ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
 
 DEBUG = True
 
+# # Parse ALLOWED_HOSTS="a,b,c"
+# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+# # For production, add domain:
+# # ALLOWED_HOSTS.append("yourdomain.com")
+
 # Parse ALLOWED_HOSTS="a,b,c"
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
-# For production, add domain:
-# ALLOWED_HOSTS.append("yourdomain.com")
+ALLOWED_HOSTS = [
+    "vortexease.com",
+    "www.vortexease.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 # ----------------------------------------------------
 #  INSTALLED APPS
 # ----------------------------------------------------
 INSTALLED_APPS = [
-     "unfold", 
+     "unfold",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
