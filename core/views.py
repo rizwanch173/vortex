@@ -325,7 +325,7 @@ def _build_invoice_context(invoice, request: HttpRequest | None = None):
 
     blank_rows = max(0, 2 - len(items))
 
-    logo_url = static("admin/img/invoice_logo.png")
+    logo_url = static("img/logos/final_logo.png")
     css_url = static("admin/css/invoice.css")
     if request is not None:
         logo_url = request.build_absolute_uri(logo_url)
