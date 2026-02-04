@@ -730,6 +730,16 @@ class VisaApplicationAdmin(ModelAdmin):
             },
         ),
         (
+            "Appointment Searching",
+            {
+                "fields": (
+                    "appointment_search_website",
+                    "appointment_search_email",
+                ),
+                "classes": ("appointment-search-section",),
+            },
+        ),
+        (
             "Decision Information",
             {
                 "fields": (
@@ -768,6 +778,8 @@ class VisaApplicationAdmin(ModelAdmin):
         "assigned_agent",
         "appointment_date",
         "appointment_location",
+        "appointment_search_website",
+        "appointment_search_email",
         "decision",
         "decision_date",
         "decision_notes",
@@ -803,6 +815,7 @@ class VisaApplicationAdmin(ModelAdmin):
             "document_collected": "#3b82f6",  # Blue
             "payment_requested": "#f59e0b",  # Amber
             "payment_received": "#10b981",  # Green
+            "appointment_searching": "#0ea5e9",  # Light Blue
             "appointment_scheduled": "#8b5cf6",  # Purple
             "appointment_attended": "#06b6d4",  # Cyan
             "waiting_for_decision": "#f97316",  # Orange
@@ -2242,6 +2255,7 @@ class InvoiceAdmin(ModelAdmin):
             {
                 "client_name": invoice.client.full_name,
                 "invoice_number": display_invoice_id,
+                "invoice_date": invoice.invoice_date,
                 "due_date": invoice.due_date,
                 "preheader": f"Vortex Ease — Invoice {display_invoice_id} attached.",
                 "logo_url": "https://vortexease.com/static/img/logos/logo.png",

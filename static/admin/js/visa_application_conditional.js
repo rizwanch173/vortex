@@ -52,6 +52,83 @@
         }
     }
 
+    function toggleAppointmentSearchSection() {
+        var searchFieldset = $('fieldset.appointment-search-section');
+
+        if (searchFieldset.length === 0) {
+            var websiteField = $('#id_appointment_search_website');
+            if (websiteField.length > 0) {
+                searchFieldset = websiteField.closest('fieldset');
+            }
+        }
+
+        if (searchFieldset.length > 0) {
+            searchFieldset.show();
+        }
+    }
+
+    function ensureGoButton() {
+        if ($('#appointment-search-go').length) {
+            return;
+        }
+
+        var websiteField = $('#id_appointment_search_website');
+        var fieldRow = $('.field-appointment_search_website');
+        var readonlyValue = fieldRow.find('.readonly').text().trim();
+
+        var wrapper = $('<div></div>').css({
+            display: 'flex',
+            gap: '8px',
+            alignItems: 'center',
+        });
+
+        var button = $('<a></a>')
+            .attr('id', 'appointment-search-go')
+            .attr('href', '#')
+            .attr('target', '_blank')
+            .addClass('button')
+            .css({
+                padding: '8px 12px',
+                background: '#2563eb',
+                color: '#fff',
+                borderRadius: '6px',
+                textDecoration: 'none',
+                fontWeight: 500,
+                whiteSpace: 'nowrap',
+            })
+            .text('Go');
+
+        function updateHrefFromValue(value) {
+            if (!value) {
+                button.attr('href', '#');
+                button.css('pointerEvents', 'none').css('opacity', '0.5');
+                return;
+            }
+            var normalized = value.match(/^https?:\/\//i) ? value : 'https://' + value;
+            button.attr('href', normalized);
+            button.css('pointerEvents', 'auto').css('opacity', '1');
+        }
+
+        if (websiteField.length) {
+            websiteField.wrap(wrapper);
+            websiteField.after(button);
+            updateHrefFromValue((websiteField.val() || '').trim());
+            websiteField.on('input change', function() {
+                updateHrefFromValue(($(this).val() || '').trim());
+            });
+            return;
+        }
+
+        if (fieldRow.length) {
+            var readonlyContainer = fieldRow.find('.readonly');
+            if (readonlyContainer.length) {
+                readonlyContainer.wrap(wrapper);
+                readonlyContainer.after(button);
+                updateHrefFromValue(readonlyValue);
+            }
+        }
+    }
+
     // Run when document is ready
     $(document).ready(function() {
         // Try multiple times to ensure form is loaded
@@ -64,6 +141,8 @@
 
             if (decisionFieldset.length > 0 || attempts >= maxAttempts) {
                 toggleDecisionSection();
+                toggleAppointmentSearchSection();
+                ensureGoButton();
             } else {
                 setTimeout(tryToggle, 200);
             }
@@ -75,13 +154,18 @@
         // Check when stage dropdown changes
         $(document).on('change', '#id_stage', function() {
             toggleDecisionSection();
+            toggleAppointmentSearchSection();
         });
     });
 
     // Also handle dynamic form loading
     if (typeof django !== 'undefined' && django.jQuery) {
         django.jQuery(document).on('formset:added', function() {
-            setTimeout(toggleDecisionSection, 200);
+            setTimeout(function() {
+                toggleDecisionSection();
+                toggleAppointmentSearchSection();
+                ensureGoButton();
+            }, 200);
         });
     }
 })(django.jQuery || jQuery);

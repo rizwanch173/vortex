@@ -199,6 +199,7 @@ class VisaApplication(models.Model):
         ("document_collected", "Document Collected"),
         ("payment_requested", "Payment Requested"),
         ("payment_received", "Payment Received"),
+        ("appointment_searching", "Appointment Searching"),
         ("appointment_scheduled", "Appointment Scheduled"),
         ("appointment_attended", "Appointment Attended"),
         ("waiting_for_decision", "Waiting for Decision"),
@@ -253,6 +254,20 @@ class VisaApplication(models.Model):
         blank=True,
         verbose_name="Appointment Location",
         help_text="Embassy/Consulate location"
+    )
+    appointment_search_website = models.URLField(
+        max_length=500,
+        null=True,
+        blank=True,
+        verbose_name="Appointment Website",
+        help_text="Website used to search for appointments"
+    )
+    appointment_search_email = models.EmailField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name="Appointment Search Email",
+        help_text="Email used for appointment searching"
     )
 
     # Decision Information
