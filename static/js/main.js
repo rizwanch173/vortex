@@ -148,7 +148,7 @@
             "<i class='ti-angle-right'></i>",
           ],
           autoplay: !0,
-          smartSpeed: 1500,
+          smartSpeed: 2500,
           mouseDrag: !1,
           animateIn: "fadeIn",
           animateOut: "fadeOut",
