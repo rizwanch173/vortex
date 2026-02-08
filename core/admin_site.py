@@ -77,6 +77,27 @@ class DashboardAdminSite(UnfoldAdminSite):
         )
 
         outstanding_amount = max(total_invoiced - total_received, Decimal("0.00"))
+        collection_rate = (total_received / total_invoiced * 100) if total_invoiced else 0
+        avg_invoice_value = (total_invoiced / total_invoices) if total_invoices else Decimal("0.00")
+
+        received_at_expr = Coalesce(
+            Cast("payment_received_date", DateTimeField()),
+            "created_at",
+            output_field=DateTimeField(),
+        )
+        recent_received = (
+            Payment.objects.filter(payment_status="received")
+            .annotate(received_at=received_at_expr)
+            .filter(received_at__date__gte=start_current)
+            .aggregate(
+                total=Coalesce(
+                    Sum(received_expr),
+                    Value(Decimal("0.00")),
+                    output_field=DecimalField(max_digits=12, decimal_places=2),
+                )
+            )["total"]
+            or Decimal("0.00")
+        )
 
         visa_decisions = VisaApplication.objects.filter(
             decision__in=["approved", "rejected"]
@@ -129,15 +150,7 @@ class DashboardAdminSite(UnfoldAdminSite):
         start_month = (today.replace(day=1) - timezone.timedelta(days=365)).replace(day=1)
         revenue_qs = (
             Payment.objects.filter(payment_status="received")
-            .annotate(
-                month=TruncMonth(
-                    Coalesce(
-                        Cast("payment_received_date", DateTimeField()),
-                        "created_at",
-                        output_field=DateTimeField(),
-                    )
-                )
-            )
+            .annotate(month=TruncMonth(received_at_expr))
             .filter(month__gte=start_month)
             .values("month")
             .annotate(total=Coalesce(Sum(received_expr), Value(Decimal("0.00"))))
@@ -170,7 +183,56 @@ class DashboardAdminSite(UnfoldAdminSite):
         approvals_values = [approved_count, rejected_count]
         us_approvals_values = [us_approved, us_rejected]
 
-        def fmt_currency(value, currency="GBP"):
+        stage_label_map = dict(VisaApplication.APPLICATION_STAGE_CHOICES)
+        stage_counts_qs = (
+            VisaApplication.objects.values("stage")
+            .annotate(count=Count("id"))
+        )
+        stage_counts = {row["stage"]: row["count"] for row in stage_counts_qs}
+        stage_labels = [
+            stage_label_map.get(key, key) for key, _ in VisaApplication.APPLICATION_STAGE_CHOICES
+        ]
+        stage_values = [
+            stage_counts.get(key, 0) for key, _ in VisaApplication.APPLICATION_STAGE_CHOICES
+        ]
+
+        visa_type_label_map = dict(Client.VISA_TYPE_CHOICES)
+        visa_type_counts_qs = (
+            VisaApplication.objects.values("visa_type")
+            .annotate(count=Count("id"))
+        )
+        visa_type_counts = {row["visa_type"]: row["count"] for row in visa_type_counts_qs}
+        visa_type_labels = [
+            visa_type_label_map.get(key, key) for key, _ in Client.VISA_TYPE_CHOICES
+        ]
+        visa_type_values = [
+            visa_type_counts.get(key, 0) for key, _ in Client.VISA_TYPE_CHOICES
+        ]
+
+        payment_method_label_map = dict(Payment.PAYMENT_METHOD_CHOICES)
+        payment_method_counts_qs = (
+            Payment.objects.values("payment_method")
+            .annotate(count=Count("id"))
+        )
+        payment_method_counts = {
+            row["payment_method"]: row["count"] for row in payment_method_counts_qs
+        }
+        unspecified_methods = (
+            payment_method_counts.pop(None, 0) + payment_method_counts.pop("", 0)
+        )
+        payment_method_labels = [
+            payment_method_label_map.get(key, key) for key, _ in Payment.PAYMENT_METHOD_CHOICES
+        ]
+        payment_method_values = [
+            payment_method_counts.get(key, 0) for key, _ in Payment.PAYMENT_METHOD_CHOICES
+        ]
+        if unspecified_methods:
+            payment_method_labels.append("Unspecified")
+            payment_method_values.append(unspecified_methods)
+
+        currency_code = "GBP"
+
+        def fmt_currency(value, currency=currency_code):
             value = value or Decimal("0.00")
             return f"{currency} {value:,.2f}"
 
@@ -226,6 +288,28 @@ class DashboardAdminSite(UnfoldAdminSite):
                     "url": "",
                 },
             ],
+            "performance_kpis": [
+                {
+                    "label": "Revenue (30 Days)",
+                    "value": fmt_currency(recent_received),
+                    "muted": "Payments received",
+                },
+                {
+                    "label": "Collection Rate",
+                    "value": f"{collection_rate:.1f}%",
+                    "muted": "Received / Invoiced",
+                },
+                {
+                    "label": "Avg Invoice Value",
+                    "value": fmt_currency(avg_invoice_value),
+                    "muted": "Non-cancelled invoices",
+                },
+                {
+                    "label": "Decisions (30 Days)",
+                    "value": f"{current_total:,}",
+                    "muted": "Approved + Rejected",
+                },
+            ],
             "top_destinations": top_destinations,
         }
 
@@ -234,6 +318,10 @@ class DashboardAdminSite(UnfoldAdminSite):
             "invoice_status": {"labels": status_labels, "data": status_values},
             "approvals": {"labels": approvals_labels, "data": approvals_values},
             "us_approvals": {"labels": approvals_labels, "data": us_approvals_values},
+            "visa_stages": {"labels": stage_labels, "data": stage_values},
+            "visa_types": {"labels": visa_type_labels, "data": visa_type_values},
+            "payment_methods": {"labels": payment_method_labels, "data": payment_method_values},
+            "currency": currency_code,
         }
 
         extra_context = extra_context or {}

@@ -1,390 +1,784 @@
 {% extends 'admin/base.html' %}
 {% load i18n %}
 
-{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin')
+}}{% endblock %}
 
 {% block branding %}
-    {% include "unfold/helpers/site_branding.html" %}
+{% include "unfold/helpers/site_branding.html" %}
 {% endblock %}
 
 {% block extrahead %}
-    {{ block.super }}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        .dashboard-shell {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-        .dashboard-title {
-            font-size: 22px;
-            font-weight: 600;
-            color: #0f172a;
-        }
-        .dashboard-subtitle {
-            color: #64748b;
-            font-size: 14px;
-        }
-        .dashboard-grid {
-            display: grid;
-            gap: 16px;
-        }
-        .kpi-grid {
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        }
-        .chart-grid {
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        }
-        .dashboard-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 14px;
-            padding: 16px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-        }
-        .chart-card {
-            height: 340px;
-        }
-        .chart-canvas {
-            width: 100%;
-            height: 260px;
-        }
-        .dashboard-card h3 {
-            margin: 0 0 10px;
-            font-size: 14px;
-            color: #64748b;
-            font-weight: 600;
-        }
-        .dashboard-card .value {
-            font-size: 20px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-        .dashboard-card .muted {
-            color: #94a3b8;
-            font-size: 12px;
-        }
-        .dashboard-section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #0f172a;
-            margin: 4px 0;
-        }
-        .dashboard-divider {
-            border-top: 1px solid rgba(148, 163, 184, 0.15);
-            margin: 18px 0;
-        }
-        .dashboard-card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        .dashboard-card-link .dashboard-card {
-            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-        }
-        .dashboard-card-link:hover .dashboard-card {
-            transform: translateY(-2px);
-            border-color: rgba(59, 130, 246, 0.6);
-            box-shadow: 0 14px 34px rgba(37, 99, 235, 0.18);
-        }
-        .dashboard-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        .dashboard-list li {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            color: #475569;
-        }
-        .dashboard-list span.count {
-            color: #0f172a;
-            font-weight: 600;
-        }
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .dashboard-shell {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin-bottom: 24px;
+    }
 
-        .dark .dashboard-title,
-        .dark .dashboard-section-title,
-        .dark .dashboard-card .value {
-            color: #e2e8f0;
-        }
-        .dark .dashboard-subtitle,
-        .dark .dashboard-card h3,
-        .dark .dashboard-card .muted,
-        .dark .dashboard-list li {
-            color: #94a3b8;
-        }
-        .dark .dashboard-card {
-            background: #0f172a;
-            border-color: #1f2937;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-        }
-        .dark .dashboard-list span.count {
-            color: #e2e8f0;
-        }
-    </style>
+    .dashboard-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    .dashboard-subtitle {
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        gap: 16px;
+    }
+
+    .kpi-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .chart-grid {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+
+    .dashboard-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .chart-card {
+        height: 340px;
+    }
+
+    .chart-canvas {
+        width: 100%;
+        height: 260px;
+    }
+
+    .revenue-kpis .dashboard-card {
+        padding: 14px;
+    }
+
+    .revenue-kpis .dashboard-card .value {
+        font-size: 18px;
+    }
+
+    .revenue-kpis .dashboard-card .muted {
+        margin-top: 4px;
+    }
+
+    .dashboard-card h3 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 600;
+    }
+
+    .dashboard-card .value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .dashboard-card .muted {
+        color: #94a3b8;
+        font-size: 12px;
+    }
+
+    .dashboard-section-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #0f172a;
+        margin: 4px 0;
+    }
+
+    .dashboard-divider {
+        border-top: 1px solid rgba(148, 163, 184, 0.15);
+        margin: 18px 0;
+    }
+
+    .dashboard-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .dashboard-card-link .dashboard-card {
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .dashboard-card-link:hover .dashboard-card {
+        transform: translateY(-2px);
+        border-color: rgba(59, 130, 246, 0.6);
+        box-shadow: 0 14px 34px rgba(37, 99, 235, 0.18);
+    }
+
+    .dashboard-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .dashboard-list li {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: #475569;
+    }
+
+    .dashboard-list span.count {
+        color: #0f172a;
+        font-weight: 600;
+    }
+
+    .dark .dashboard-title,
+    .dark .dashboard-section-title,
+    .dark .dashboard-card .value {
+        color: #e2e8f0;
+    }
+
+    .dark .dashboard-subtitle,
+    .dark .dashboard-card h3,
+    .dark .dashboard-card .muted,
+    .dark .dashboard-list li {
+        color: #94a3b8;
+    }
+
+    .dark .dashboard-card {
+        background: #0f172a;
+        border-color: #1f2937;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .dark .dashboard-list span.count {
+        color: #e2e8f0;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-    <section class="dashboard-shell">
-        <div>
-            <div class="dashboard-title">Admin Overview</div>
-            <div class="dashboard-subtitle">Key finance and visa performance metrics for the last 12 months.</div>
-        </div>
-
-        <div class="dashboard-section-title">Invoices &amp; Earnings</div>
-        <div class="dashboard-grid kpi-grid">
-            {% for kpi in dashboard.invoice_kpis %}
-                {% if kpi.url %}
-                    <a class="dashboard-card-link" href="{{ kpi.url }}">
-                        <div class="dashboard-card">
-                            <h3>{{ kpi.label }}</h3>
-                            <div class="value">{{ kpi.value }}</div>
-                        </div>
-                    </a>
-                {% else %}
-                    <div class="dashboard-card">
-                        <h3>{{ kpi.label }}</h3>
-                        <div class="value">{{ kpi.value }}</div>
-                    </div>
-                {% endif %}
-            {% empty %}
-                <div class="dashboard-card">
-                    <div class="muted">No KPI data available yet.</div>
-                </div>
-            {% endfor %}
-        </div>
-
-        <div class="dashboard-divider"></div>
-        <div class="dashboard-section-title">Visa Success Rate</div>
-        <div class="dashboard-grid kpi-grid">
-            {% for kpi in dashboard.visa_kpis %}
-                <div class="dashboard-card">
-                    <h3>{{ kpi.label }}</h3>
-                    <div class="value">{{ kpi.value }}</div>
-                </div>
-            {% endfor %}
-        </div>
-
-        <div class="dashboard-divider"></div>
-        <div class="dashboard-section-title">Operations</div>
-        <div class="dashboard-grid kpi-grid">
-            {% for kpi in dashboard.ops_kpis %}
-                {% if kpi.url %}
-                    <a class="dashboard-card-link" href="{{ kpi.url }}">
-                        <div class="dashboard-card">
-                            <h3>{{ kpi.label }}</h3>
-                            <div class="value">{{ kpi.value }}</div>
-                        </div>
-                    </a>
-                {% else %}
-                    <div class="dashboard-card">
-                        <h3>{{ kpi.label }}</h3>
-                        <div class="value">{{ kpi.value }}</div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-            <div class="dashboard-card">
-                <h3>Top Destinations</h3>
-                <ul class="dashboard-list">
-                    {% if dashboard.top_destinations %}
-                        {% for destination in dashboard.top_destinations %}
-                            <li>
-                                <span>{{ destination.label }}</span>
-                                <span class="count">{{ destination.count }}</span>
-                            </li>
-                        {% endfor %}
-                    {% else %}
-                        <li>No destination data yet.</li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-
-        <div class="dashboard-divider"></div>
-        <div class="dashboard-section-title">Revenue &amp; Performance</div>
-        <div class="dashboard-grid chart-grid">
-            <div class="dashboard-card chart-card">
-                <h3>Revenue Received (Monthly)</h3>
-                <canvas id="revenueChart" class="chart-canvas"></canvas>
-            </div>
-            <div class="dashboard-card chart-card">
-                <h3>Invoice Status</h3>
-                <canvas id="statusChart" class="chart-canvas"></canvas>
-            </div>
-            <div class="dashboard-card chart-card">
-                <h3>Approvals vs Rejections</h3>
-                <canvas id="approvalChart" class="chart-canvas"></canvas>
-            </div>
-            
-        </div>
-    </section>
-
-    <div class="flex flex-col lg:flex-row lg:gap-8">
-        <div class="grow">
-            {% include "unfold/helpers/app_list_default.html" %}
-        </div>
-
-        {% if user.is_active %}
-            {% include "admin/partials/collapsible_history.html" %}
-        {% endif %}
+<section class="dashboard-shell">
+    <div>
+        <div class="dashboard-title">Admin Overview</div>
+        <div class="dashboard-subtitle">Key finance and visa performance metrics for the last 12 months.</div>
     </div>
 
-    <script id="dashboard-data" type="application/json">{{ chart_data|safe }}</script>
-    <script>
-        (function() {
-            const raw = document.getElementById('dashboard-data');
-            if (!raw) return;
-            const data = JSON.parse(raw.textContent || '{}');
+    <div class="dashboard-section-title">Invoices &amp; Earnings</div>
+    <div class="dashboard-grid kpi-grid">
+        {% for kpi in dashboard.invoice_kpis %}
+        {% if kpi.url %}
+        <a class="dashboard-card-link" href="{{ kpi.url }}">
+            <div class="dashboard-card">
+                <h3>{{ kpi.label }}</h3>
+                <div class="value">{{ kpi.value }}</div>
+            </div>
+        </a>
+        {% else %}
+        <div class="dashboard-card">
+            <h3>{{ kpi.label }}</h3>
+            <div class="value">{{ kpi.value }}</div>
+        </div>
+        {% endif %}
+        {% empty %}
+        <div class="dashboard-card">
+            <div class="muted">No KPI data available yet.</div>
+        </div>
+        {% endfor %}
+    </div>
 
-            const isDark = document.documentElement.classList.contains('dark') || document.body.classList.contains('dark');
-            const textColor = isDark ? '#e2e8f0' : '#0f172a';
-            const gridColor = isDark ? '#1f2937' : '#e2e8f0';
+    <div class="dashboard-divider"></div>
+    <div class="dashboard-section-title">Visa Success Rate</div>
+    <div class="dashboard-grid kpi-grid">
+        {% for kpi in dashboard.visa_kpis %}
+        <div class="dashboard-card">
+            <h3>{{ kpi.label }}</h3>
+            <div class="value">{{ kpi.value }}</div>
+        </div>
+        {% endfor %}
+    </div>
 
-            Chart.defaults.color = textColor;
-            Chart.defaults.borderColor = gridColor;
-            const axisTickColor = '#ffffff';
-            const axisGridColor = isDark ? 'rgba(148, 163, 184, 0.15)' : 'rgba(148, 163, 184, 0.25)';
-            const titleColor = '#ffffff';
-            const axisOptions = {
-                ticks: { color: axisTickColor, font: { size: 11 } },
-                grid: { color: axisGridColor },
-                title: { display: true, color: titleColor, font: { size: 12, weight: '600' } },
-            };
-            const legendOptions = {
-                labels: { color: axisTickColor, font: { size: 11 }, padding: 16, boxWidth: 18 },
-            };
-            const titleOptions = {
-                display: true,
-                color: titleColor,
-                font: { size: 13, weight: '600' },
-                padding: { bottom: 10 },
-            };
-            const tooltipOptions = {
-                backgroundColor: isDark ? '#0f172a' : '#ffffff',
-                titleColor: '#ffffff',
-                bodyColor: '#ffffff',
-                borderColor: isDark ? '#1f2937' : '#e2e8f0',
-                borderWidth: 1,
-            };
-            const baseLayout = {
-                padding: { top: 10, right: 10, bottom: 35, left: 10 },
-            };
+    <div class="dashboard-divider"></div>
+    <div class="dashboard-section-title">Operations</div>
+    <div class="dashboard-grid kpi-grid">
+        {% for kpi in dashboard.ops_kpis %}
+        {% if kpi.url %}
+        <a class="dashboard-card-link" href="{{ kpi.url }}">
+            <div class="dashboard-card">
+                <h3>{{ kpi.label }}</h3>
+                <div class="value">{{ kpi.value }}</div>
+            </div>
+        </a>
+        {% else %}
+        <div class="dashboard-card">
+            <h3>{{ kpi.label }}</h3>
+            <div class="value">{{ kpi.value }}</div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <div class="dashboard-card">
+            <h3>Top Destinations</h3>
+            <ul class="dashboard-list">
+                {% if dashboard.top_destinations %}
+                {% for destination in dashboard.top_destinations %}
+                <li>
+                    <span>{{ destination.label }}</span>
+                    <span class="count">{{ destination.count }}</span>
+                </li>
+                {% endfor %}
+                {% else %}
+                <li>No destination data yet.</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
 
-            const revenueCtx = document.getElementById('revenueChart');
-            if (revenueCtx) {
-                new Chart(revenueCtx, {
-                    type: 'line',
-                    data: {
-                        labels: data.revenue.labels || [],
-                        datasets: [{
-                            label: 'Revenue',
-                            data: data.revenue.data || [],
-                            borderColor: '#2563eb',
-                            backgroundColor: 'rgba(37, 99, 235, 0.15)',
-                            tension: 0.3,
-                            fill: true,
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        layout: baseLayout,
-                        plugins: {
-                            legend: { display: false },
-                            title: { ...titleOptions, text: 'Revenue Received (Monthly)' },
-                            tooltip: tooltipOptions,
+    <div class="dashboard-divider"></div>
+    <div class="dashboard-section-title">Revenue &amp; Performance</div>
+    <div class="dashboard-grid kpi-grid revenue-kpis">
+        {% for kpi in dashboard.performance_kpis %}
+        <div class="dashboard-card">
+            <h3>{{ kpi.label }}</h3>
+            <div class="value">{{ kpi.value }}</div>
+            {% if kpi.muted %}
+            <div class="muted">{{ kpi.muted }}</div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="dashboard-card">
+            <div class="muted">No performance data yet.</div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="dashboard-grid chart-grid">
+        <div class="dashboard-card chart-card">
+            <h3>Revenue Received (Monthly)</h3>
+            <canvas id="revenueChart" class="chart-canvas"></canvas>
+        </div>
+        <div class="dashboard-card chart-card">
+            <h3>Invoice Status</h3>
+            <canvas id="statusChart" class="chart-canvas"></canvas>
+        </div>
+        <div class="dashboard-card chart-card">
+            <h3>Approvals vs Rejections</h3>
+            <canvas id="approvalChart" class="chart-canvas"></canvas>
+        </div>
+    </div>
+    <div class="dashboard-grid chart-grid">
+        <div class="dashboard-card chart-card">
+            <h3>Visa Applications by Stage</h3>
+            <canvas id="stageChart" class="chart-canvas"></canvas>
+        </div>
+        <div class="dashboard-card chart-card">
+            <h3>Visa Type Mix</h3>
+            <canvas id="visaTypeChart" class="chart-canvas"></canvas>
+        </div>
+        <div class="dashboard-card chart-card">
+            <h3>Payment Methods</h3>
+            <canvas id="paymentMethodChart" class="chart-canvas"></canvas>
+        </div>
+    </div>
+</section>
+
+<div class="flex flex-col lg:flex-row lg:gap-8">
+    <div class="grow">
+        {% include "unfold/helpers/app_list_default.html" %}
+    </div>
+
+    {% if user.is_active %}
+    {% include "admin/partials/collapsible_history.html" %}
+    {% endif %}
+</div>
+
+<script id="dashboard-data" type="application/json">{{ chart_data|safe }}</script>
+<script>
+    (function () {
+        const raw = document.getElementById('dashboard-data');
+        if (!raw) return;
+        const data = JSON.parse(raw.textContent || '{}');
+
+        const root = document.documentElement;
+        const body = document.body;
+        const themeAttr = root.getAttribute('data-theme') || body.getAttribute('data-theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDarkColor = (color) => {
+            if (!color || color === 'transparent') return false;
+            const match = color.match(/rgba?\((\d+)[\s,]+(\d+)[\s,]+(\d+)/i);
+            if (!match) return false;
+            const r = Number(match[1]);
+            const g = Number(match[2]);
+            const b = Number(match[3]);
+            const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+            return luminance < 0.5;
+        };
+        let isDark =
+            root.classList.contains('dark') ||
+            body.classList.contains('dark') ||
+            localStorage.getItem('theme') === 'dark';
+
+        if (!isDark) {
+            if (themeAttr === 'dark') {
+                isDark = true;
+            } else if (themeAttr === 'light') {
+                isDark = false;
+            }
+        }
+        if (isDark === false) {
+            const sampleCard = document.querySelector('.dashboard-card') || body;
+            if (sampleCard) {
+                const bgColor = getComputedStyle(sampleCard).backgroundColor;
+                isDark = isDarkColor(bgColor);
+            } else {
+                isDark = prefersDark;
+            }
+        }
+        const sampleCard = document.querySelector('.dashboard-card') || body;
+        const sampleTitle = document.querySelector('.dashboard-card h3')
+            || document.querySelector('.dashboard-section-title')
+            || sampleCard;
+        const sampleValue = document.querySelector('.dashboard-card .value') || sampleTitle;
+        const sampleMuted = document.querySelector('.dashboard-card .muted');
+        const computedTitleColor = sampleTitle ? getComputedStyle(sampleTitle).color : null;
+        const computedValueColor = sampleValue ? getComputedStyle(sampleValue).color : null;
+        const computedMutedColor = sampleMuted ? getComputedStyle(sampleMuted).color : null;
+
+        const primaryText = isDark ? '#e2e8f0' : '#0f172a';
+        const secondaryText = isDark ? '#94a3b8' : '#64748b';
+        const mutedText = isDark ? '#94a3b8' : '#64748b';
+
+        const textColor = primaryText;
+        const gridColor = isDark ? '#1f2937' : '#e2e8f0';
+        const axisTickColor = primaryText;
+        const axisGridColor = isDark ? 'rgba(148, 163, 184, 0.15)' : 'rgba(148, 163, 184, 0.25)';
+        const titleColor = primaryText;
+        const tooltipTextColor = primaryText;
+
+        Chart.defaults.color = textColor;
+        Chart.defaults.borderColor = gridColor;
+
+        const currencyCode = data.currency || 'GBP';
+        let currencyFormatter;
+        let compactFormatter;
+        try {
+            currencyFormatter = new Intl.NumberFormat('en-GB', { style: 'currency', currency: currencyCode });
+        } catch (err) {
+            currencyFormatter = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+        }
+        try {
+            compactFormatter = new Intl.NumberFormat('en-GB', { notation: 'compact', maximumFractionDigits: 1 });
+        } catch (err) {
+            compactFormatter = new Intl.NumberFormat('en-GB');
+        }
+        const formatCurrency = (value) => currencyFormatter.format(Number(value || 0));
+        const formatCompact = (value) => compactFormatter.format(Number(value || 0));
+        const percentage = (value, total) => (total ? ((value / total) * 100).toFixed(1) : '0.0');
+
+        const palette = {
+            blue: '#3b82f6',
+            sky: '#38bdf8',
+            green: '#22c55e',
+            amber: '#f59e0b',
+            orange: '#f97316',
+            red: '#ef4444',
+            slate: '#94a3b8',
+        };
+        const multiColors = [
+            palette.blue,
+            palette.sky,
+            palette.green,
+            palette.amber,
+            palette.orange,
+            palette.red,
+            '#a855f7',
+            '#14b8a6',
+            '#eab308',
+        ];
+        const axisOptions = {
+            ticks: { color: axisTickColor, font: { size: 11 } },
+            grid: { color: axisGridColor },
+            title: { display: true, color: titleColor, font: { size: 12, weight: '600' } },
+        };
+        const legendOptions = {
+            labels: { color: primaryText, font: { size: 11 }, padding: 16, boxWidth: 16 },
+        };
+        const titleOptions = {
+            display: true,
+            color: titleColor,
+            font: { size: 13, weight: '600' },
+            padding: { bottom: 10 },
+        };
+        const tooltipOptions = {
+            backgroundColor: isDark ? '#0b1220' : '#ffffff',
+            titleColor: tooltipTextColor,
+            bodyColor: tooltipTextColor,
+            borderColor: isDark ? '#1f2937' : '#e2e8f0',
+            borderWidth: 1,
+            padding: 10,
+        };
+        const baseLayout = {
+            padding: { top: 8, right: 12, bottom: 30, left: 12 },
+        };
+        const centerTextPlugin = {
+            id: 'centerText',
+            beforeDraw(chart, _args, options) {
+                if (!options || !options.text || !chart.chartArea) return;
+                const { ctx, chartArea } = chart;
+                const x = (chartArea.left + chartArea.right) / 2;
+                const y = (chartArea.top + chartArea.bottom) / 2;
+
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = options.color || textColor;
+                ctx.font = `600 ${options.valueSize || 20}px sans-serif`;
+                ctx.fillText(options.text, x, y - 6);
+
+                if (options.subtext) {
+                    ctx.fillStyle = options.subColor || mutedText;
+                    ctx.font = `12px sans-serif`;
+                    ctx.fillText(options.subtext, x, y + 14);
+                }
+                ctx.restore();
+            },
+        };
+
+        const revenueCtx = document.getElementById('revenueChart');
+        if (revenueCtx) {
+            const revenueCanvas = revenueCtx.getContext('2d');
+            const gradient = revenueCanvas.createLinearGradient(0, 0, 0, 260);
+            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.35)');
+            gradient.addColorStop(1, 'rgba(59, 130, 246, 0.02)');
+            new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: data.revenue.labels || [],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: data.revenue.data || [],
+                        borderColor: palette.blue,
+                        backgroundColor: gradient,
+                        borderWidth: 2,
+                        tension: 0.35,
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
+                        pointBackgroundColor: palette.blue,
+                        pointBorderWidth: 0,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: baseLayout,
+                    plugins: {
+                        legend: { display: false },
+                        title: { ...titleOptions, text: 'Revenue Received (Monthly)' },
+                        tooltip: {
+                            ...tooltipOptions,
+                            callbacks: {
+                                label: (context) => `${context.dataset.label}: ${formatCurrency(context.parsed.y)}`,
+                            },
                         },
-                        scales: {
-                            x: {
-                                ...axisOptions,
-                                ticks: {
-                                    ...axisOptions.ticks,
-                                    maxRotation: 45,
-                                    minRotation: 45,
-                                    autoSkip: true,
-                                    maxTicksLimit: 6,
-                                    padding: 8,
+                    },
+                    scales: {
+                        x: {
+                            ...axisOptions,
+                            ticks: {
+                                ...axisOptions.ticks,
+                                maxRotation: 45,
+                                minRotation: 45,
+                                autoSkip: true,
+                                maxTicksLimit: 6,
+                                padding: 8,
+                            },
+                            title: { ...axisOptions.title, text: 'Month', padding: { top: 10 } },
+                        },
+                        y: {
+                            ...axisOptions,
+                            beginAtZero: true,
+                            ticks: {
+                                ...axisOptions.ticks,
+                                callback: (value) => formatCompact(value),
+                            },
+                            title: { ...axisOptions.title, text: 'Amount', padding: { bottom: 10 } },
+                        },
+                    },
+                }
+            });
+        }
+
+        const statusCtx = document.getElementById('statusChart');
+        if (statusCtx) {
+            const statusLabels = data.invoice_status.labels || [];
+            const statusData = data.invoice_status.data || [];
+            const statusTotal = statusData.reduce((sum, value) => sum + Number(value || 0), 0);
+            new Chart(statusCtx, {
+                type: 'bar',
+                data: {
+                    labels: statusLabels,
+                    datasets: [{
+                        label: 'Invoices',
+                        data: statusData,
+                        backgroundColor: [palette.slate, palette.sky, palette.green, palette.orange, palette.red],
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        maxBarThickness: 24,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: baseLayout,
+                    plugins: {
+                        legend: { display: false },
+                        title: { ...titleOptions, text: 'Invoice Status' },
+                        tooltip: {
+                            ...tooltipOptions,
+                            displayColors: true,
+                            callbacks: {
+                                label: (context) => {
+                                    const value = context.parsed.x;
+                                    const pct = percentage(value, statusTotal);
+                                    return `${context.label}: ${value} (${pct}%)`;
                                 },
-                                title: { ...axisOptions.title, text: 'Month', padding: { top: 10 } },
-                            },
-                            y: {
-                                ...axisOptions,
-                                beginAtZero: true,
-                                title: { ...axisOptions.title, text: 'Amount', padding: { bottom: 10 } },
                             },
                         },
-                    }
-                });
-            }
-
-            const statusCtx = document.getElementById('statusChart');
-            if (statusCtx) {
-                new Chart(statusCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: data.invoice_status.labels || [],
-                        datasets: [{
-                            label: 'Invoices',
-                            data: data.invoice_status.data || [],
-                            backgroundColor: ['#94a3b8', '#38bdf8', '#22c55e', '#f97316', '#ef4444'],
-                        }]
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        layout: baseLayout,
-                        plugins: {
-                            legend: { display: false },
-                            title: { ...titleOptions, text: 'Invoice Status' },
-                            tooltip: tooltipOptions,
-                        },
-                        scales: {
-                            x: {
-                                ...axisOptions,
-                                ticks: { ...axisOptions.ticks, maxRotation: 0, minRotation: 0, padding: 10 },
-                                title: { ...axisOptions.title, text: 'Status', padding: { top: 12 } },
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            ...axisOptions,
+                            ticks: {
+                                ...axisOptions.ticks,
+                                precision: 0,
+                                callback: (value) => formatCompact(value),
+                                padding: 8,
                             },
-                            y: {
-                                ...axisOptions,
-                                beginAtZero: true,
-                                ticks: { ...axisOptions.ticks, precision: 0 },
-                                title: { ...axisOptions.title, text: 'Count', padding: { bottom: 10 } },
-                            },
+                            title: { ...axisOptions.title, text: 'Invoices', padding: { top: 12 } },
                         },
-                    }
-                });
-            }
-
-            const approvalCtx = document.getElementById('approvalChart');
-            if (approvalCtx) {
-                new Chart(approvalCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: data.approvals.labels || [],
-                        datasets: [{
-                            data: data.approvals.data || [],
-                            backgroundColor: ['#22c55e', '#ef4444'],
-                        }]
+                        y: {
+                            ...axisOptions,
+                            ticks: { ...axisOptions.ticks, padding: 8 },
+                            title: { ...axisOptions.title, text: 'Status', padding: { bottom: 10 } },
+                        },
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        layout: baseLayout,
-                        plugins: {
-                            legend: { position: 'bottom', ...legendOptions },
-                            title: { ...titleOptions, text: 'Approvals vs Rejections' },
-                            tooltip: tooltipOptions,
-                        },
-                    }
-                });
-            }
+                }
+            });
+        }
 
-            
-        })();
-    </script>
+        const approvalCtx = document.getElementById('approvalChart');
+        if (approvalCtx) {
+            const approvalLabels = data.approvals.labels || [];
+            const approvalData = data.approvals.data || [];
+            const approvalTotal = approvalData.reduce((sum, value) => sum + Number(value || 0), 0);
+            const approvalRate = percentage(approvalData[0] || 0, approvalTotal);
+            new Chart(approvalCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: approvalLabels,
+                    datasets: [{
+                        data: approvalData,
+                        backgroundColor: [palette.green, palette.red],
+                        borderWidth: 0,
+                        hoverOffset: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: baseLayout,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: textColor,
+                                fontColor: textColor,
+                                font: { size: 11 },
+                                padding: 16,
+                                boxWidth: 16,
+                            },
+                        },
+                        title: { ...titleOptions, text: 'Approvals vs Rejections' },
+                        tooltip: {
+                            ...tooltipOptions,
+                            callbacks: {
+                                label: (context) => {
+                                    const value = context.parsed;
+                                    const pct = percentage(value, approvalTotal);
+                                    return `${context.label}: ${value} (${pct}%)`;
+                                },
+                            },
+                        },
+                        centerText: {
+                            text: `${approvalRate}%`,
+                            subtext: 'Approval Rate',
+                            valueSize: 22,
+                        },
+                    },
+                    cutout: '70%',
+                }
+            }, [centerTextPlugin]);
+        }
+
+        const stageCtx = document.getElementById('stageChart');
+        if (stageCtx) {
+            const stageLabels = data.visa_stages.labels || [];
+            const stageData = data.visa_stages.data || [];
+            new Chart(stageCtx, {
+                type: 'bar',
+                data: {
+                    labels: stageLabels,
+                    datasets: [{
+                        label: 'Applications',
+                        data: stageData,
+                        backgroundColor: multiColors.slice(0, stageLabels.length),
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        maxBarThickness: 20,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: baseLayout,
+                    plugins: {
+                        legend: { display: false },
+                        title: { ...titleOptions, text: 'Visa Applications by Stage' },
+                        tooltip: {
+                            ...tooltipOptions,
+                            callbacks: {
+                                label: (context) => `${context.label}: ${context.parsed.x}`,
+                            },
+                        },
+                    },
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            ...axisOptions,
+                            ticks: {
+                                ...axisOptions.ticks,
+                                precision: 0,
+                                callback: (value) => formatCompact(value),
+                            },
+                            title: { ...axisOptions.title, text: 'Applications', padding: { top: 12 } },
+                        },
+                        y: {
+                            ...axisOptions,
+                            ticks: { ...axisOptions.ticks, padding: 8 },
+                            title: { ...axisOptions.title, text: 'Stage', padding: { bottom: 10 } },
+                        },
+                    },
+                }
+            });
+        }
+
+        const visaTypeCtx = document.getElementById('visaTypeChart');
+        if (visaTypeCtx) {
+            const visaTypeLabels = data.visa_types.labels || [];
+            const visaTypeData = data.visa_types.data || [];
+            const visaTypeTotal = visaTypeData.reduce((sum, value) => sum + Number(value || 0), 0);
+            new Chart(visaTypeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: visaTypeLabels,
+                    datasets: [{
+                        data: visaTypeData,
+                        backgroundColor: multiColors.slice(0, visaTypeLabels.length),
+                        borderWidth: 0,
+                        hoverOffset: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: baseLayout,
+                    plugins: {
+                        legend: { position: 'bottom', ...legendOptions },
+                        title: { ...titleOptions, text: 'Visa Type Mix' },
+                        tooltip: {
+                            ...tooltipOptions,
+                            callbacks: {
+                                label: (context) => {
+                                    const value = context.parsed;
+                                    const pct = percentage(value, visaTypeTotal);
+                                    return `${context.label}: ${value} (${pct}%)`;
+                                },
+                            },
+                        },
+                        centerText: {
+                            text: `${visaTypeTotal}`,
+                            subtext: 'Total Applications',
+                            valueSize: 20,
+                        },
+                    },
+                    cutout: '70%',
+                }
+            }, [centerTextPlugin]);
+        }
+
+        const paymentMethodCtx = document.getElementById('paymentMethodChart');
+        if (paymentMethodCtx) {
+            const methodLabels = data.payment_methods.labels || [];
+            const methodData = data.payment_methods.data || [];
+            const methodTotal = methodData.reduce((sum, value) => sum + Number(value || 0), 0);
+            new Chart(paymentMethodCtx, {
+                type: 'bar',
+                data: {
+                    labels: methodLabels,
+                    datasets: [{
+                        label: 'Payments',
+                        data: methodData,
+                        backgroundColor: multiColors.slice(0, methodLabels.length),
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        maxBarThickness: 28,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: baseLayout,
+                    plugins: {
+                        legend: { display: false },
+                        title: { ...titleOptions, text: 'Payment Methods' },
+                        tooltip: {
+                            ...tooltipOptions,
+                            callbacks: {
+                                label: (context) => {
+                                    const value = context.parsed.y;
+                                    const pct = percentage(value, methodTotal);
+                                    return `${context.label}: ${value} (${pct}%)`;
+                                },
+                            },
+                        },
+                    },
+                    scales: {
+                        x: {
+                            ...axisOptions,
+                            ticks: { ...axisOptions.ticks, padding: 8 },
+                            title: { ...axisOptions.title, text: 'Method', padding: { top: 12 } },
+                        },
+                        y: {
+                            ...axisOptions,
+                            beginAtZero: true,
+                            ticks: {
+                                ...axisOptions.ticks,
+                                precision: 0,
+                                callback: (value) => formatCompact(value),
+                            },
+                            title: { ...axisOptions.title, text: 'Payments', padding: { bottom: 10 } },
+                        },
+                    },
+                }
+            });
+        }
+    })();
+</script>
 {% endblock %}

@@ -240,10 +240,7 @@ class ClientAdmin(ModelAdmin):
         "client_id",
         "full_name_display",
         "email",
-        "phone",
-        "nationality",
         "client_status_badge",
-        "passport_number",
         "created_at",
         "actions_column",
     ]
@@ -670,7 +667,6 @@ class VisaApplicationAdmin(ModelAdmin):
         "stage_badge",
         "appointment_date",
         "decision_badge",
-        "assigned_agent",
         "created_at",
         "actions_column",
     ]
@@ -1401,9 +1397,7 @@ class InvoiceAdmin(ModelAdmin):
         "client_name",
         "visa_applications_display",
         "total_amount",
-        "currency",
         "status_badge",
-        "invoice_date",
         "due_date",
         "created_at",
         "actions_column",
