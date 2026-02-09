@@ -351,6 +351,11 @@
             if (!raw) return;
             const data = JSON.parse(raw.textContent || '{}');
 
+            // Register the plugin
+            if (typeof ChartDataLabels !== 'undefined') {
+                Chart.register(ChartDataLabels);
+            }
+
             destroyCharts();
 
             const isDark = getThemeState();
@@ -411,7 +416,20 @@
                 borderWidth: 1,
                 padding: 10,
             };
-            const baseLayout = { padding: { top: 8, right: 12, bottom: 30, left: 12 } };
+
+            // Data Labels Options
+            const datalabelsOptions = {
+                color: isDark ? '#e2e8f0' : '#0f172a',
+                font: { size: 11, weight: 'bold' },
+                formatter: (value) => value > 0 ? value : '', // Try to hide 0s if preferred, or keep them
+                anchor: 'end',
+                align: 'end',
+                offset: -4,
+            };
+            // For horizontal bars, we might want 'end' 'end' or 'end' 'start' depending on space.
+            // For now, let's use a smart default.
+
+            const baseLayout = { padding: { top: 8, right: 20, bottom: 30, left: 12 } }; // Added right padding for labels
 
             const centerTextPlugin = {
                 id: 'centerText',
@@ -468,6 +486,7 @@
                         layout: baseLayout,
                         plugins: {
                             legend: { display: false },
+                            datalabels: { display: false }, // Disable for line chart
                             title: { ...titleOptions, text: 'Revenue Received (Monthly)' },
                             tooltip: {
                                 ...tooltipOptions,
@@ -516,6 +535,11 @@
                         layout: baseLayout,
                         plugins: {
                             legend: { display: false },
+                            datalabels: {
+                                ...datalabelsOptions,
+                                align: 'end',
+                                anchor: 'end',
+                            },
                             title: { ...titleOptions, text: 'Invoice Status' },
                             tooltip: {
                                 ...tooltipOptions,
@@ -569,6 +593,18 @@
                         layout: baseLayout,
                         plugins: {
                             legend: { position: 'bottom', ...legendOptions },
+                            datalabels: {
+                                ...datalabelsOptions,
+                                color: '#ffffff', // Always white inside doughnut
+                                anchor: 'center',
+                                align: 'center',
+                                offset: 0,
+                                formatter: (value, ctx) => {
+                                    if (value === 0) return '';
+                                    const pct = percentage(value, approvalTotal);
+                                    return `${value} (${pct}%)`;
+                                }
+                            },
                             title: { ...titleOptions, text: 'Approvals vs Rejections' },
                             tooltip: {
                                 ...tooltipOptions,
@@ -614,6 +650,11 @@
                         layout: baseLayout,
                         plugins: {
                             legend: { display: false },
+                            datalabels: {
+                                ...datalabelsOptions,
+                                align: 'end',
+                                anchor: 'end',
+                            },
                             title: { ...titleOptions, text: 'Visa Applications by Stage' },
                             tooltip: {
                                 ...tooltipOptions,
@@ -660,6 +701,14 @@
                         layout: baseLayout,
                         plugins: {
                             legend: { position: 'bottom', ...legendOptions },
+                            datalabels: {
+                                ...datalabelsOptions,
+                                color: '#ffffff',
+                                anchor: 'center',
+                                align: 'center',
+                                offset: 0,
+                                formatter: (value) => value > 0 ? value : ''
+                            },
                             title: { ...titleOptions, text: 'Visa Type Mix' },
                             tooltip: {
                                 ...tooltipOptions,
@@ -707,6 +756,7 @@
                         layout: baseLayout,
                         plugins: {
                             legend: { display: false },
+                            datalabels: datalabelsOptions, // Vertical bar default 'end', 'end' works well
                             title: { ...titleOptions, text: 'Payment Methods' },
                             tooltip: {
                                 ...tooltipOptions,
