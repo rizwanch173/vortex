@@ -11,6 +11,7 @@
 {% block extrahead %}
 {{ block.super }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 <style>
     .dashboard-shell {
         display: flex;
@@ -259,22 +260,22 @@
     </div>
     <div class="dashboard-grid chart-grid">
         <div class="dashboard-card chart-card">
-            <h3>Revenue Received (Monthly)</h3>
-            <canvas id="revenueChart" class="chart-canvas"></canvas>
+            <h3>Visa Applications by Stage</h3>
+            <canvas id="stageChart" class="chart-canvas"></canvas>
         </div>
         <div class="dashboard-card chart-card">
             <h3>Invoice Status</h3>
             <canvas id="statusChart" class="chart-canvas"></canvas>
         </div>
         <div class="dashboard-card chart-card">
-            <h3>Approvals vs Rejections</h3>
-            <canvas id="approvalChart" class="chart-canvas"></canvas>
+            <h3>Revenue Received (Monthly)</h3>
+            <canvas id="revenueChart" class="chart-canvas"></canvas>
         </div>
     </div>
     <div class="dashboard-grid chart-grid">
         <div class="dashboard-card chart-card">
-            <h3>Visa Applications by Stage</h3>
-            <canvas id="stageChart" class="chart-canvas"></canvas>
+            <h3>Approvals vs Rejections</h3>
+            <canvas id="approvalChart" class="chart-canvas"></canvas>
         </div>
         <div class="dashboard-card chart-card">
             <h3>Visa Type Mix</h3>
@@ -391,7 +392,7 @@
             const axisOptions = {
                 ticks: { color: axisTickColor, font: { size: 11 } },
                 grid: { color: axisGridColor },
-                title: { display: true, color: titleColor, font: { size: 12, weight: '600' } },
+                title: { display: true, color: titleColor, font: { size: 12, weight: '600' }, align: 'center' },
             };
             const legendOptions = {
                 labels: { color: primaryText, font: { size: 11 }, padding: 16, boxWidth: 16 },
