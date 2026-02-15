@@ -1,0 +1,153 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page Not Found | Vortex Ease</title>
+  <link rel="shortcut icon" href="{% static 'img/logos/favicon.ico' %}">
+  <style>
+    :root {
+      --brand-blue: #003a66;
+      --brand-red: #e02454;
+      --text-main: #102030;
+      --text-muted: #5f6d79;
+      --surface: #ffffff;
+      --line: rgba(16, 32, 48, 0.12);
+      --shadow: 0 24px 65px rgba(0, 37, 66, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(1200px 500px at -10% -20%, rgba(224, 36, 84, 0.17), transparent 55%),
+        radial-gradient(1000px 460px at 110% 110%, rgba(0, 58, 102, 0.17), transparent 52%),
+        linear-gradient(135deg, #f7fbff 0%, #f1f6fb 100%);
+      display: grid;
+      place-items: center;
+      padding: 28px;
+    }
+
+    .card {
+      width: min(760px, 100%);
+      border-radius: 24px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 34px 30px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 150px;
+      max-width: 45vw;
+      margin-bottom: 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 7px 14px;
+      border: 1px solid rgba(224, 36, 84, 0.25);
+      background: rgba(224, 36, 84, 0.07);
+      color: var(--brand-red);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-size: 0.8rem;
+      margin-bottom: 16px;
+    }
+
+    .code {
+      font-size: clamp(3rem, 11vw, 6.2rem);
+      line-height: 1;
+      margin: 0;
+      color: var(--brand-blue);
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 14px 0 10px;
+      font-size: clamp(1.3rem, 4.5vw, 2rem);
+      color: var(--brand-blue);
+    }
+
+    p {
+      margin: 0 auto 22px;
+      max-width: 600px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 150px;
+      padding: 11px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, #003a66, #145995);
+      box-shadow: 0 10px 25px rgba(0, 58, 102, 0.28);
+    }
+
+    .btn-secondary {
+      color: var(--brand-blue);
+      border: 1px solid rgba(0, 58, 102, 0.25);
+      background: #fff;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        border-radius: 18px;
+        padding: 26px 18px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <img class="logo" src="{% static 'img/logos/final_logo.png' %}" alt="Vortex Ease">
+    <div class="badge">PAGE NOT FOUND</div>
+    <p class="code">404</p>
+    <h1>This page does not exist</h1>
+    <p>The link may be incorrect or the page may have been moved. Use one of the options below to continue.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="{% url 'home' %}">Go to Homepage</a>
+      <a class="btn btn-secondary" href="{% url 'contact' %}">Contact Support</a>
+    </div>
+  </main>
+</body>
+</html>
