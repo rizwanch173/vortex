@@ -378,3 +378,8 @@ def invoice_download_public(request: HttpRequest, invoice_id: int):
         f'attachment; filename="invoice_{context["display_invoice_id"]}.pdf"'
     )
     return response
+
+
+def custom_404(request: HttpRequest, exception):
+    """Render branded 404 page."""
+    return render(request, "404.html", status=404)
