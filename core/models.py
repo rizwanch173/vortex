@@ -29,6 +29,7 @@ class Client(models.Model):
         ("uk", "UK"),
         ("au", "AU"),
         ("nz", "NZ"),
+        ("turkey_evisa", "Turkey E-visa"),
     ]
 
     PREFERRED_CONTACT_CHOICES = [
@@ -511,6 +512,7 @@ class Pricing(models.Model):
         ("uk", "UK"),
         ("au", "AU"),
         ("nz", "NZ"),
+        ("turkey_evisa", "Turkey E-visa"),
     ]
 
     CURRENCY_CHOICES = [
@@ -571,6 +573,8 @@ class Pricing(models.Model):
             # Default pricing: Schengen = 125, others = 150
             if visa_type == "schengen":
                 return 125.00
+            if visa_type == "turkey_evisa":
+                return 50.00
             return 150.00
 
 
