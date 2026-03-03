@@ -4,7 +4,7 @@
     Description: Immigration and Visa Consulting HTML Template
     Author: Chitrakoot Web
     Version: 1.0
-        
+
     ---------------------------------- */
 
 !(function (t) {
@@ -23,8 +23,8 @@
   t("#preloader").fadeOut("normall", function () {
     t(this).remove();
   }),
-    s.on("scroll", function () {
-      var e = s.scrollTop(),
+    window.addEventListener("scroll", function () {
+      var e = window.pageYOffset,
         a = t(".navbar-brand img"),
         o = t(".navbar-brand.logodefault img");
       e <= 50
@@ -33,12 +33,12 @@
         : (t("header").removeClass("fixedHeader").addClass("scrollHeader"),
           a.attr("src", "/static/img/logos/logo.png")),
         o.attr("src", "/static/img/logos/logo.png");
-    }),
-    s.on("scroll", function () {
-      500 < t(this).scrollTop()
+    }, { passive: true }),
+    window.addEventListener("scroll", function () {
+      500 < window.pageYOffset
         ? t(".scroll-to-top").fadeIn(400)
         : t(".scroll-to-top").fadeOut(400);
-    }),
+    }, { passive: true }),
     t(".scroll-to-top").on("click", function (e) {
       e.preventDefault(), t("html, body").animate({ scrollTop: 0 }, 600);
     }),

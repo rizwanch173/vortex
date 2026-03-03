@@ -115,6 +115,7 @@ def contact(request: HttpRequest):
         email = request.POST.get("email", "").strip()
         subject = request.POST.get("subject", "").strip()
         message = request.POST.get("message", "").strip()
+        route = request.POST.get("route", "").strip()
 
         # Validate required fields
         if not name or not email or not subject or not message:
@@ -130,6 +131,27 @@ def contact(request: HttpRequest):
                 "visa_countries": visa_countries_config.countries
             })
 
+        # Validate subject against route
+        study_subjects = ['UK Student Visa', 'Study Visa - General Enquiry']
+        visit_subjects = [f"{c.name} Tourist Visa" for c in visa_countries_config.countries]
+        all_subjects = study_subjects + visit_subjects
+
+        if route == 'study' and subject not in study_subjects:
+            messages.error(request, "Please select a valid study visa enquiry type.")
+            return render(request, "contact_us.html", {
+                "visa_countries": visa_countries_config.countries
+            })
+        elif route == 'visit' and subject not in visit_subjects:
+            messages.error(request, "Please select a valid tourist/visit visa enquiry type.")
+            return render(request, "contact_us.html", {
+                "visa_countries": visa_countries_config.countries
+            })
+        elif subject not in all_subjects:
+            messages.error(request, "Please select a valid enquiry type.")
+            return render(request, "contact_us.html", {
+                "visa_countries": visa_countries_config.countries
+            })
+
         # Prepare email content
         email_subject = f"Contact Form Inquiry: {subject}"
         email_message = f"""
@@ -138,6 +160,7 @@ You have received a new contact form inquiry:
 Name: {name}
 Email: {email}
 Subject: {subject}
+Route: {route or 'not specified'}
 
 Message:
 {message}
@@ -383,3 +406,40 @@ def invoice_download_public(request: HttpRequest, invoice_id: int):
 def custom_404(request: HttpRequest, exception):
     """Render branded 404 page."""
     return render(request, "404.html", status=404)
+
+
+# ── Study Visa Views ────────────────────────────────────────────────────────────
+
+def study_visa_hub(request: HttpRequest):
+    """Study Visa hub / landing page — /study-visa/"""
+    return render(request, "study_visa/index.html")
+
+
+def study_visa_uk(request: HttpRequest):
+    """UK Study Visa pillar page — /study-visa/uk/"""
+    return render(request, "study_visa/uk/index.html")
+
+
+def study_visa_uk_requirements(request: HttpRequest):
+    """UK Study Visa requirements — /study-visa/uk/requirements/"""
+    return render(request, "study_visa/uk/requirements.html")
+
+
+def study_visa_uk_process(request: HttpRequest):
+    """UK Study Visa step-by-step process — /study-visa/uk/process/"""
+    return render(request, "study_visa/uk/process.html")
+
+
+def study_visa_uk_fees(request: HttpRequest):
+    """UK Study Visa fees — /study-visa/uk/fees/"""
+    return render(request, "study_visa/uk/fees.html")
+
+
+def study_visa_uk_faqs(request: HttpRequest):
+    """UK Study Visa FAQs — /study-visa/uk/faqs/"""
+    return render(request, "study_visa/uk/faqs.html")
+
+
+def study_visa_uk_universities(request: HttpRequest):
+    """UK Universities support page — /study-visa/uk/universities/"""
+    return render(request, "study_visa/uk/universities.html")

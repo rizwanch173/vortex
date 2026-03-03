@@ -105,51 +105,14 @@
                   class="col-md-6 col-lg-4 wow fadeIn"
                   data-wow-delay="600ms"
                 >
-                  <h3>Newsletter</h3>
-                  <form
-                    class="quform"
-                    action="https://abroad.websitelayout.net/quform/newsletter-two.php"
-                    method="post"
-                    enctype="multipart/form-data"
-                    onclick=""
-                  >
-                    <div class="quform-elements">
-                      <div class="row">
-                        <!-- Begin Text input element -->
-                        <div class="col-md-12">
-                          <div class="quform-element mb-0">
-                            <div class="quform-input">
-                              <input
-                                class="form-control"
-                                id="email_address"
-                                type="text"
-                                name="email_address"
-                                placeholder="Subscribe with us"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <!-- End Text input element -->
-
-                        <!-- Begin Submit button -->
-                        <div class="col-md-12 mt-2">
-                          <div class="quform-submit-inner">
-                            <button
-                              class="butn white-hover text-center border-0 d-block m-0 w-100"
-                              type="submit"
-                              disabled
-                            >
-                              Subscribe
-                            </button>
-                          </div>
-                          <div class="quform-loading-wrap text-start mt-3">
-                            <span class="quform-loading"></span>
-                          </div>
-                        </div>
-                        <!-- End Submit button -->
-                      </div>
-                    </div>
-                  </form>
+                  <h3>Services</h3>
+                  <ul class="ps-0 mb-0">
+                    <li><a href="{% url 'services' %}">Visit Visa</a></li>
+                    <li><a href="{% url 'study_visa_hub' %}">Study Visa</a></li>
+                    <li><a href="{% url 'study_visa_uk' %}">UK Student Visa</a></li>
+                    <li><a href="{% url 'study_visa_uk_requirements' %}">UK Requirements</a></li>
+                    <li><a href="{% url 'study_visa_uk_process' %}">Application Process</a></li>
+                  </ul>
                 </div>
               </div>
             </div>

@@ -19,4 +19,13 @@ urlpatterns = [
     path("invoice/<int:invoice_id>/pay/", views.invoice_pay, name="invoice_pay"),
     path("invoice/<int:invoice_id>/preview/", views.invoice_preview_public, name="invoice_preview_public"),
     path("invoice/<int:invoice_id>/download/", views.invoice_download_public, name="invoice_download_public"),
+
+    # ── Study Visa Section ──────────────────────────────────────────────────────
+    path("study-visa/", views.study_visa_hub, name="study_visa_hub"),
+    path("study-visa/uk/", views.study_visa_uk, name="study_visa_uk"),
+    path("study-visa/uk/requirements/", views.study_visa_uk_requirements, name="study_visa_uk_requirements"),
+    path("study-visa/uk/process/", views.study_visa_uk_process, name="study_visa_uk_process"),
+    path("study-visa/uk/fees/", views.study_visa_uk_fees, name="study_visa_uk_fees"),
+    path("study-visa/uk/faqs/", views.study_visa_uk_faqs, name="study_visa_uk_faqs"),
+    path("study-visa/uk/universities/", views.study_visa_uk_universities, name="study_visa_uk_universities"),
 ]

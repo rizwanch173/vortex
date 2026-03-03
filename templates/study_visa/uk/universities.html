@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}UK Universities We Support - Study in the UK - Vortex Ease{% endblock %}
+
+{% block meta_description %}Vortex Ease helps students apply to UK universities and obtain their Student Visa. We support applicants targeting Russell Group and a wide range of UK institutions.{% endblock %}
+
+{% block content %}
+
+<section class="page-title-section bg-img cover-background"
+  data-overlay-dark="0"
+  data-background="{% static 'img/bg/page-title.png' %}">
+  <div class="container">
+    <div class="title-info">
+      <h1 class="display-18 display-md-14 display-xl-12">UK Universities We Support</h1>
+    </div>
+    <div class="breadcrumbs-info">
+      <ul class="ps-0">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'study_visa_hub' %}">Study Visa</a></li>
+        <li><a href="{% url 'study_visa_uk' %}">United Kingdom</a></li>
+        <li><a href="#">Universities</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="row mt-n2-9">
+      <div class="col-lg-8 mt-2-9">
+
+        <!-- Top CTA -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mb-2-9 wow fadeInUp" data-wow-delay="100ms"
+          style="background: linear-gradient(135deg, #003a66 0%, #005a99 100%); border-radius: 10px;">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h2 class="h4 text-white mb-1">Applying to a UK University? We Help You Every Step of the Way.</h2>
+              <p class="text-white mb-0 opacity9 small">From institution selection to CAS receipt and visa application - Vortex Ease makes the journey straightforward.</p>
+            </div>
+            <div class="col-md-4 mt-3 mt-md-0 text-md-end">
+              <a href="{% url 'contact' %}?route=study" class="butn white md"><span>Book Free Assessment</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Introduction -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">Helping You Get Into UK Universities</h2>
+          <p class="mb-3">Whether you are applying to one of the UK's prestigious Russell Group universities, a post-1992 institution, or a specialist college, Vortex Ease can support your application journey. We help students from a wide range of academic backgrounds identify institutions that match their profile, guide them through the university application process, and then support their UK Student Visa application once an offer has been received.</p>
+          <p class="mb-3">An important requirement for any UK Student Visa application is that your chosen institution must hold a valid UKVI Sponsor Licence and appear on the official Register of Licensed Sponsors. Not all UK educational institutions are licensed sponsors - and applying to an unlicensed institution means you will not be able to obtain a CAS, and therefore cannot apply for a Student Visa. Vortex Ease verifies sponsor licence status as part of our standard service, so you can be confident your institution qualifies before you commit to an application.</p>
+        </div>
+
+        <!-- What We Help With -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">How We Support Your University Application</h2>
+          <ul class="list-unstyled mb-0">
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Course and institution shortlisting - matching your academic background, English language scores, and career goals to appropriate UK universities and colleges</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Sponsor Licence verification - confirming your chosen institution appears on the UKVI Register of Licensed Sponsors before you proceed</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Personal statement and application document guidance - helping you present your academic history and motivations clearly and compellingly</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Post-offer guidance - advising you on what to do once you receive a conditional or unconditional offer, including meeting outstanding conditions</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>CAS receipt and next steps - once your CAS is issued, we move immediately into the visa application stage with your documents ready</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- University Type Cards -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">Types of Universities We Work With</h2>
+          <p class="mb-3">We support students applying across all tiers of UK higher and further education. The institutions below represent the main categories - our guidance applies to any UKVI-licensed institution within these groups.</p>
+          <div class="row mt-n1-9">
+            <div class="col-sm-6 mt-1-9">
+              <div class="p-3 border rounded h-100">
+                <h4 class="h5 mb-2"><i class="ti-star text-secondary me-2"></i>Russell Group Universities</h4>
+                <p class="small mb-0">The Russell Group comprises 24 leading research-intensive universities in the UK, including UCL, the University of Manchester, the University of Edinburgh, King's College London, and the University of Bristol. These institutions consistently rank highly in global university rankings and attract significant research funding.</p>
+              </div>
+            </div>
+            <div class="col-sm-6 mt-1-9">
+              <div class="p-3 border rounded h-100">
+                <h4 class="h5 mb-2"><i class="ti-star text-secondary me-2"></i>Post-1992 Universities</h4>
+                <p class="small mb-0">Post-1992 universities - sometimes called modern universities - offer a wide range of vocational and academic courses. These institutions often offer strong industry links and professional course pathways, making them an excellent choice for many international students.</p>
+              </div>
+            </div>
+            <div class="col-sm-6 mt-1-9">
+              <div class="p-3 border rounded h-100">
+                <h4 class="h5 mb-2"><i class="ti-star text-secondary me-2"></i>Specialist Institutions</h4>
+                <p class="small mb-0">The UK has a strong tradition of specialist higher education institutions, including world-class art and design colleges, music conservatoires, and stand-alone business schools. Many of these hold UKVI Sponsor Licences and welcome international applicants.</p>
+              </div>
+            </div>
+            <div class="col-sm-6 mt-1-9">
+              <div class="p-3 border rounded h-100">
+                <h4 class="h5 mb-2"><i class="ti-star text-secondary me-2"></i">Further Education Colleges</h4>
+                <p class="small mb-0">Foundation year programmes and further education (FE) colleges allow students to build academic skills and achieve the qualifications needed for entry to degree-level study. Many are UKVI-licensed sponsors and can support Student Visa applications for eligible international students.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="mt-2-9 p-3 wow fadeInUp" data-wow-delay="200ms"
+          style="background:#f8f9fa; border-left:4px solid #003a66; border-radius:4px;">
+          <p class="small mb-0 text-muted">
+            <strong>Note:</strong> Vortex Ease does not represent or partner with any specific UK university. We help students identify suitable institutions and navigate the visa process. University admission decisions are made solely by the institutions. Only universities registered as UKVI-licensed sponsors can issue a CAS.
+          </p>
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 text-center wow fadeInUp" data-wow-delay="200ms">
+          <h3 class="h3 mb-2">Ready to Find the Right UK University for You?</h3>
+          <p class="mb-3">Contact Vortex Ease today and let us help you identify the right institution, confirm their sponsor status, and take you from application to visa approval.</p>
+          <a href="{% url 'contact' %}?route=study" class="butn md me-2"><span>Get in Touch</span></a>
+          <a href="{% url 'study_visa_uk' %}" class="butn secondary md"><span>UK Student Visa Overview →</span></a>
+        </div>
+
+      </div>
+
+      <!-- ── SIDEBAR ── -->
+      <div class="col-lg-4 mt-2-9">
+        <div class="sidebar ps-xl-4">
+          <div class="widget wow fadeInUp" data-wow-delay="200ms">
+            <div class="widget-content p-1-6 primary-shadow">
+              <h4 class="h5 mb-3">Contact Information</h4>
+              <div class="mb-3">
+                <p class="mb-1"><strong>Phone:</strong></p>
+                <p class="mb-0">+44 7539 080846</p>
+              </div>
+              <div class="mb-3">
+                <p class="mb-1"><strong>Email:</strong></p>
+                <p class="mb-0">contact@vortexease.com</p>
+              </div>
+              <div class="mt-3">
+                <a href="{% url 'contact' %}?route=study" class="butn md"><span>Book Free Assessment</span></a>
+              </div>
+            </div>
+          </div>
+          <div class="widget mt-2-9 wow fadeInUp" data-wow-delay="300ms">
+            <div class="widget-content p-1-6 primary-shadow">
+              <h4 class="h5 mb-3">UK Study Visa Pages</h4>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><a href="{% url 'study_visa_uk' %}"><i class="ti-arrow-right text-secondary me-2"></i>Overview</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_requirements' %}"><i class="ti-arrow-right text-secondary me-2"></i>Requirements</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_process' %}"><i class="ti-arrow-right text-secondary me-2"></i>Application Process</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_fees' %}"><i class="ti-arrow-right text-secondary me-2"></i>Fees &amp; Costs</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_faqs' %}"><i class="ti-arrow-right text-secondary me-2"></i>FAQs</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_universities' %}"><i class="ti-arrow-right text-secondary me-2"></i>Universities We Support</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

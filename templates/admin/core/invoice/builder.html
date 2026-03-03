@@ -295,7 +295,7 @@
                         <option value="">-- Select a client --</option>
                         {% for client in clients %}
                             <option value="{{ client.pk }}" {% if client.pk|stringformat:"s" == selected_client_id|stringformat:"s" %}selected{% endif %}>
-                                {{ client.full_name }} — {{ client.email }}
+                                {{ client.full_name }} - {{ client.email }}
                             </option>
                         {% endfor %}
                     </select>
@@ -540,7 +540,7 @@
                 const display = app.name || app.display || ('Application #' + app.id);
                 const price = parseFloat(app.price || 0);
                 const symbol = currencySymbol(app.currency || 'GBP');
-                options += `<option value="${app.id}" data-price="${price}" data-currency="${app.currency || 'GBP'}" data-name="${display}">${display} — ${symbol}${price.toFixed(2)}</option>`;
+                options += `<option value="${app.id}" data-price="${price}" data-currency="${app.currency || 'GBP'}" data-name="${display}">${display} - ${symbol}${price.toFixed(2)}</option>`;
             });
             select.innerHTML = options;
             select.disabled = false;

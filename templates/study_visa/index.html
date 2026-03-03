@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Study Visa Services | UK University Student Visa - Vortex Ease{% endblock %}
+
+{% block meta_description %}Vortex Ease offers expert study visa guidance for students applying to UK universities. End-to-end support from eligibility to approval. Book a free assessment today.{% endblock %}
+
+{% block content %}
+
+<!-- PAGE TITLE BANNER -->
+<section class="page-title-section bg-img cover-background"
+  data-overlay-dark="0"
+  data-background="{% static 'img/bg/page-title.png' %}">
+  <div class="container">
+    <div class="title-info">
+      <h1 class="display-18 display-md-14 display-xl-12">Study Visa Services</h1>
+    </div>
+    <div class="breadcrumbs-info">
+      <ul class="ps-0">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="#">Study Visa</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<section>
+  <div class="container">
+    <div class="row mt-n2-9">
+
+      <!-- ── LEFT: Main Content ─────────────────────────────────────────── -->
+      <div class="col-lg-8 mt-2-9">
+
+        <!-- Top CTA -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mb-2-9 wow fadeInUp" data-wow-delay="100ms"
+          style="background: linear-gradient(135deg, #003a66 0%, #005a99 100%); border-radius: 10px;">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h2 class="h4 text-white mb-2">Start Your UK University Journey Today</h2>
+              <p class="text-white mb-0 opacity9">Get a free eligibility assessment and find out exactly what you need to secure your UK Student Visa.</p>
+            </div>
+            <div class="col-md-4 mt-3 mt-md-0 text-md-end">
+              <a href="{% url 'contact' %}?route=study" class="butn white md"><span>Book Free Assessment</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Introduction -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">Study Visa Support - Tailored for Students Heading to the UK</h2>
+          <p class="mb-3">Every year, thousands of international students make the UK their destination for world-class higher education - and for good reason. The UK is home to some of the most respected universities on the planet, and a UK Student Visa (officially called the Student Route) is your gateway to joining them. But the application process involves multiple moving parts: a Confirmation of Acceptance for Studies (CAS), financial evidence, English language tests, and more. That is where Vortex Ease comes in.</p>
+          <p class="mb-3">At Vortex Ease, we specialise in student visa guidance for applicants targeting UK universities and colleges. Our team walks you through every step - from checking your initial eligibility and selecting the right institution, to preparing your documents, completing the UKVI application, and supporting you right up to your biometric appointment. We keep the process clear, organised, and stress-free so you can focus on what matters: your studies.</p>
+          <a href="{% url 'study_visa_uk' %}" class="butn md"><span>UK Student Visa →</span></a>
+        </div>
+
+        <!-- What We Help With -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">What We Help With</h2>
+          <p class="mb-3">Whether you are applying for the first time or extending an existing student visa, here is what our service covers:</p>
+          <ul class="list-unstyled mb-0">
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>University and course shortlisting based on your academic background and career goals</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Confirming your chosen institution holds a valid UKVI Sponsor Licence</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>CAS number guidance - understanding what it contains and how to use it in your application</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Full document preparation and review - passport, financial evidence, English language certificates, and more</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>UKVI online application form guidance and Immigration Health Surcharge (IHS) payment support</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Biometric appointment booking and post-decision guidance, including BRP collection advice</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Step-by-Step Process Preview -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">How It Works - Application Process</h2>
+          <p class="mb-3">We break the UK Student Visa application into six clear stages so you always know where you stand and what comes next.</p>
+          <div class="row mt-n1-9">
+            <div class="col-sm-6 col-lg-4 mt-1-9">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:40px;height:40px;font-weight:700;">1</div>
+                </div>
+                <div class="flex-grow-1">
+                  <h4 class="h6 mb-1">Free Assessment</h4>
+                  <p class="small mb-0">We review your academic profile, nationality, and intended course to confirm your eligibility.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 mt-1-9">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:40px;height:40px;font-weight:700;">2</div>
+                </div>
+                <div class="flex-grow-1">
+                  <h4 class="h6 mb-1">University Selection</h4>
+                  <p class="small mb-0">We help you identify UKVI-licensed institutions and courses that match your goals.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 mt-1-9">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:40px;height:40px;font-weight:700;">3</div>
+                </div>
+                <div class="flex-grow-1">
+                  <h4 class="h6 mb-1">Document Preparation</h4>
+                  <p class="small mb-0">We provide a personalised document checklist and review everything before submission.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 mt-1-9">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:40px;height:40px;font-weight:700;">4</div>
+                </div>
+                <div class="flex-grow-1">
+                  <h4 class="h6 mb-1">Visa Application</h4>
+                  <p class="small mb-0">We guide you through the UKVI online form, fee payments, and IHS submission.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 mt-1-9">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:40px;height:40px;font-weight:700;">5</div>
+                </div>
+                <div class="flex-grow-1">
+                  <h4 class="h6 mb-1">Biometrics</h4>
+                  <p class="small mb-0">We advise on booking your UKVCAS appointment and what to bring on the day.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4 mt-1-9">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:40px;height:40px;font-weight:700;">6</div>
+                </div>
+                <div class="flex-grow-1">
+                  <h4 class="h6 mb-1">Decision &amp; Travel</h4>
+                  <p class="small mb-0">Once approved, we help you understand your BRP collection and travel requirements.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-2-9">
+            <a href="{% url 'study_visa_uk_process' %}" class="butn md"><span>Full Process Guide →</span></a>
+          </div>
+        </div>
+
+        <!-- Why Choose Us -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">Why Choose Vortex Ease for Your Study Visa?</h2>
+          <ul class="list-unstyled mb-0">
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span><strong>End-to-End Support:</strong> We stay with you from your very first eligibility check through to your arrival in the UK - no passing you between departments, no confusing handoffs.</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span><strong>Document Review:</strong> Our team reviews every document in your application before it is submitted, reducing the risk of errors that could delay or jeopardise your visa.</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span><strong>UK-Focused Expertise:</strong> We work exclusively with the UK Student Route - so our guidance is deep, specific, and up to date with current UKVI requirements.</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span><strong>Transparent Fees:</strong> We explain all costs upfront - both our service fee and the UKVI government fees - so there are no surprises along the way.</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span><strong>Dedicated Consultant:</strong> You work with a named consultant who knows your case - not a call centre. We communicate clearly and respond promptly.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Countries We Cover (Scalable) -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">Study Destinations We Support</h2>
+          <p class="mb-3">We currently support applications for study in the United Kingdom. We are expanding our services to cover additional destinations in the near future.</p>
+          <div class="row mt-n1-9">
+            <div class="col-sm-6 col-md-4 mt-1-9">
+              <a href="{% url 'study_visa_uk' %}" class="text-decoration-none">
+                <div class="country-card text-center p-3">
+                  <div class="country-flag mb-2">
+                    <img src="https://flagcdn.com/w80/gb.png" alt="United Kingdom" class="img-fluid rounded-circle shadow-sm" style="width:60px;height:60px;object-fit:cover;" />
+                  </div>
+                  <h5 class="h6 mb-1 font-weight-600">United Kingdom</h5>
+                  <p class="small text-muted mb-0">Student Visa (Available Now)</p>
+                </div>
+              </a>
+            </div>
+            <div class="col-sm-6 col-md-4 mt-1-9">
+              <div class="country-card text-center p-3" style="opacity:0.5;">
+                <div class="country-flag mb-2">
+                  <img src="https://flagcdn.com/w80/ca.png" alt="Canada" class="img-fluid rounded-circle shadow-sm" style="width:60px;height:60px;object-fit:cover;" />
+                </div>
+                <h5 class="h6 mb-1 font-weight-600">Canada</h5>
+                <p class="small text-muted mb-0">Coming Soon</p>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4 mt-1-9">
+              <div class="country-card text-center p-3" style="opacity:0.5;">
+                <div class="country-flag mb-2">
+                  <img src="https://flagcdn.com/w80/au.png" alt="Australia" class="img-fluid rounded-circle shadow-sm" style="width:60px;height:60px;object-fit:cover;" />
+                </div>
+                <h5 class="h6 mb-1 font-weight-600">Australia</h5>
+                <p class="small text-muted mb-0">Coming Soon</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mid-page CTA -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 text-center wow fadeInUp" data-wow-delay="200ms">
+          <h3 class="h3 mb-2">Not Sure If You Qualify? Let Us Check for Free.</h3>
+          <p class="mb-3">Book a free no-obligation assessment and we will review your profile, confirm your eligibility, and explain exactly what your application needs.</p>
+          <a href="{% url 'contact' %}?route=study" class="butn md me-2"><span>Get in Touch</span></a>
+          <a href="{% url 'study_visa_uk' %}" class="butn secondary md"><span>UK Study Visa Info</span></a>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="mt-2-9 p-3 wow fadeInUp" data-wow-delay="200ms"
+          style="background:#f8f9fa; border-left:4px solid #003a66; border-radius:4px;">
+          <p class="small mb-0 text-muted">
+            <strong>Important:</strong> Vortex Ease provides visa guidance and application support. Final visa decisions are made solely by UK Visas and Immigration (UKVI) and official government authorities. We do not guarantee visa approvals.
+          </p>
+        </div>
+
+      </div>
+      <!-- ── END LEFT ───────────────────────────────────────────────────── -->
+
+      <!-- ── RIGHT: Sidebar ─────────────────────────────────────────────── -->
+      <div class="col-lg-4 mt-2-9">
+        <div class="sidebar ps-xl-4">
+
+          <!-- Contact Widget -->
+          <div class="widget wow fadeInUp" data-wow-delay="200ms">
+            <div class="widget-content p-1-6 primary-shadow">
+              <h4 class="h5 mb-3">Book a Free Assessment</h4>
+              <p class="small mb-3">Speak directly with our team for a no-obligation, free eligibility review. We will guide you through every step.</p>
+              <div class="mb-3">
+                <p class="mb-1"><strong>Phone:</strong></p>
+                <p class="mb-0">+44 7539 080846</p>
+              </div>
+              <div class="mb-3">
+                <p class="mb-1"><strong>Email:</strong></p>
+                <p class="mb-0">contact@vortexease.com</p>
+              </div>
+              <div class="mt-3 d-grid gap-2">
+                <a href="{% url 'contact' %}?route=study" class="butn md"><span>Get in Touch</span></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Nav: Study Visa Pages -->
+          <div class="widget mt-2-9 wow fadeInUp" data-wow-delay="300ms">
+            <div class="widget-content p-1-6 primary-shadow">
+              <h4 class="h5 mb-3">UK Study Visa Pages</h4>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><a href="{% url 'study_visa_uk' %}"><i class="ti-arrow-right text-secondary me-2"></i>UK Student Visa Overview</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_requirements' %}"><i class="ti-arrow-right text-secondary me-2"></i>Requirements</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_process' %}"><i class="ti-arrow-right text-secondary me-2"></i>Application Process</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_fees' %}"><i class="ti-arrow-right text-secondary me-2"></i>Fees &amp; Costs</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_faqs' %}"><i class="ti-arrow-right text-secondary me-2"></i>FAQs</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_universities' %}"><i class="ti-arrow-right text-secondary me-2"></i>Universities We Support</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Also Looking For -->
+          <div class="widget mt-2-9 wow fadeInUp" data-wow-delay="400ms">
+            <div class="widget-content p-1-6 primary-shadow">
+              <h4 class="h5 mb-3">Also Need a Visit Visa?</h4>
+              <p class="small mb-3">We also specialise in tourist and visit visas for Schengen, USA, Canada, Australia, and more.</p>
+              <a href="{% url 'services' %}" class="butn md"><span>Visit Visa Services</span></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- ── END RIGHT ──────────────────────────────────────────────────── -->
+
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

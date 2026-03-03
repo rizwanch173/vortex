@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}UK Study Visa FAQs - Frequently Asked Questions - Vortex Ease{% endblock %}
+
+{% block meta_description %}Answers to the most common UK Student Visa questions - eligibility, documents, processing times, finances, and more. Expert guidance from Vortex Ease.{% endblock %}
+
+{% block content %}
+
+<section class="page-title-section bg-img cover-background"
+  data-overlay-dark="0"
+  data-background="{% static 'img/bg/page-title.png' %}">
+  <div class="container">
+    <div class="title-info">
+      <h1 class="display-18 display-md-14 display-xl-12">UK Student Visa - FAQs</h1>
+    </div>
+    <div class="breadcrumbs-info">
+      <ul class="ps-0">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'study_visa_hub' %}">Study Visa</a></li>
+        <li><a href="{% url 'study_visa_uk' %}">United Kingdom</a></li>
+        <li><a href="#">FAQs</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="row mt-n2-9">
+      <div class="col-lg-8 mt-2-9">
+
+        <!-- Top CTA -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mb-2-9 wow fadeInUp" data-wow-delay="100ms"
+          style="background: linear-gradient(135deg, #003a66 0%, #005a99 100%); border-radius: 10px;">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h2 class="h4 text-white mb-1">Got Questions About Your UK Student Visa? We Have Answers.</h2>
+              <p class="text-white mb-0 opacity9 small">Book a free consultation and speak directly with our team for personalised guidance.</p>
+            </div>
+            <div class="col-md-4 mt-3 mt-md-0 text-md-end">
+              <a href="{% url 'contact' %}?route=study" class="butn white md"><span>Book Free Assessment</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-4 text-center">Common Questions - UK Student Visa</h2>
+          <div class="accordion" id="studyFaqAccordion">
+
+            <!-- Q1 -->
+            <div class="accordion-item mb-3">
+              <h3 class="accordion-header" id="sfaq1">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#scollapse1" aria-expanded="true" aria-controls="scollapse1">
+                  Who needs a UK Student Visa?
+                </button>
+              </h3>
+              <div id="scollapse1" class="accordion-collapse collapse show" aria-labelledby="sfaq1" data-bs-parent="#studyFaqAccordion">
+                <div class="accordion-body">Most international students from outside the UK need a UK Student Visa (Student Route) if they intend to study at a UK university, college, or independent school. Citizens of the UK, Irish nationals, and those with settled or pre-settled status under the EU Settlement Scheme are generally exempt. Nationals of some countries can study for short periods without a visa - Vortex Ease can confirm whether this applies to you during your free assessment.</div>
+              </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="accordion-item mb-3">
+              <h3 class="accordion-header" id="sfaq2">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scollapse2" aria-expanded="false" aria-controls="scollapse2">
+                  What is a CAS and when will my university issue it?
+                </button>
+              </h3>
+              <div id="scollapse2" class="accordion-collapse collapse" aria-labelledby="sfaq2" data-bs-parent="#studyFaqAccordion">
+                <div class="accordion-body">A CAS (Confirmation of Acceptance for Studies) is a unique 14-digit reference number your institution issues once you have met all conditions of your offer. It contains your course details, tuition fee amount, start date, and personal information. You cannot apply for a UK Student Visa without it. Universities typically issue a CAS 6 to 10 weeks before the course start date - though this varies by institution. Contact your admissions department if yours has not arrived within this window.</div>
+              </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="accordion-item mb-3">
+              <h3 class="accordion-header" id="sfaq3">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scollapse3" aria-expanded="false" aria-controls="scollapse3">
+                  How much money do I need to show in my bank account?
+                </button>
+              </h3>
+              <div id="scollapse3" class="accordion-collapse collapse" aria-labelledby="sfaq3" data-bs-parent="#studyFaqAccordion">
+                <div class="accordion-body">The amount you need to show depends on where your course is located, the length of your course, and your tuition fees. Generally speaking, you must demonstrate you can cover: your first-year tuition fees (as stated on your CAS) plus a set living cost maintenance amount per month for up to 9 months of study. For London-based courses, the monthly maintenance figure is higher than for courses outside London. These figures are set by UKVI and are subject to change - always verify the current amounts at the time of your application. Vortex Ease will confirm the exact figure for your specific case.</div>
+              </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="accordion-item mb-3">
+              <h3 class="accordion-header" id="sfaq4">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scollapse4" aria-expanded="false" aria-controls="scollapse4">
+                  How long does the UK Student Visa application take to process?
+                </button>
+              </h3>
+              <div id="scollapse4" class="accordion-collapse collapse" aria-labelledby="sfaq4" data-bs-parent="#studyFaqAccordion">
+                <div class="accordion-body">Standard processing times for UK Student Visa applications made outside the UK are typically around 3 weeks, though this is a general estimate and is not guaranteed. During peak application periods (such as June to September), demand is high and processing may take longer. Priority processing (typically 5 working days) and super-priority processing (typically 1 working day) are available at additional cost for applicants in many countries. We recommend applying as early as possible once your CAS has been issued.</div>
+              </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="accordion-item mb-3">
+              <h3 class="accordion-header" id="sfaq5">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scollapse5" aria-expanded="false" aria-controls="scollapse5">
+                  Can I work in the UK while on a Student Visa?
+                </button>
+              </h3>
+              <div id="scollapse5" class="accordion-collapse collapse" aria-labelledby="sfaq5" data-bs-parent="#studyFaqAccordion">
+                <div class="accordion-body">Yes - most UK Student Visa holders are permitted to work a limited number of hours per week. For students studying at degree level or above at a Higher Education Provider (HEP), the limit is typically up to 20 hours per week during term time, with no restriction during official vacations. For students studying below degree level (such as foundation or further education courses), the limit is typically up to 10 hours per week during term time. You are not permitted to be self-employed or engage in business activity. Always check the specific conditions on your vignette and BRP.</div>
+              </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="accordion-item mb-3">
+              <h3 class="accordion-header" id="sfaq6">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scollapse6" aria-expanded="false" aria-controls="scollapse6">
+                  What English language tests are accepted for a UK Student Visa?
+                </button>
+              </h3>
+              <div id="scollapse6" class="accordion-collapse collapse" aria-labelledby="sfaq6" data-bs-parent="#studyFaqAccordion">
+                <div class="accordion-body">UKVI requires you to demonstrate English language ability through an approved Secure English Language Test (SELT). Accepted tests include IELTS Academic (from an approved SELT provider), TOEFL iBT, and PTE Academic. The minimum scores required vary depending on whether you are studying at degree level or below degree level, and your institution may set higher requirements than UKVI's minimum. Nationals of majority-English-speaking countries as listed by UKVI - including Australia, Canada, New Zealand, and the USA - are generally exempt. Applicants who have previously studied a degree taught entirely in English may also be exempt.</div>
+              </div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="accordion-item mb-3">
+              <h3 class="accordion-header" id="sfaq7">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scollapse7" aria-expanded="false" aria-controls="scollapse7">
+                  Can I bring my family with me on a UK Student Visa?
+                </button>
+              </h3>
+              <div id="scollapse7" class="accordion-collapse collapse" aria-labelledby="sfaq7" data-bs-parent="#studyFaqAccordion">
+                <div class="accordion-body">Whether you can bring dependants (your partner or children) depends on your course level and when your course started. Students studying a government-sponsored course, or studying a course at postgraduate level or above at a Higher Education Provider, may be eligible to bring dependants. From January 2024, the UK government introduced restrictions limiting most international students from bringing dependants unless they are on a government-sponsored course or a postgraduate research programme. Vortex Ease will advise you on whether you qualify based on your specific course and institution.</div>
+              </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="accordion-item mb-3">
+              <h3 class="accordion-header" id="sfaq8">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scollapse8" aria-expanded="false" aria-controls="scollapse8">
+                  What happens if my UK Student Visa application is refused?
+                </button>
+              </h3>
+              <div id="scollapse8" class="accordion-collapse collapse" aria-labelledby="sfaq8" data-bs-parent="#studyFaqAccordion">
+                <div class="accordion-body">If your UK Student Visa application is refused, you will receive a refusal notice explaining the reasons for the decision. Unlike some visa categories, there is no right of appeal for a refused Student Visa in most circumstances - however, you can reapply if you believe you can address the reasons for refusal. Vortex Ease can review your refusal notice with you, identify where your application fell short, and help you prepare a stronger reapplication. Contact us as soon as possible after receiving a refusal so we can assess your options quickly.</div>
+              </div>
+            </div>
+
+            <!-- Q9 -->
+            <div class="accordion-item mb-3">
+              <h3 class="accordion-header" id="sfaq9">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scollapse9" aria-expanded="false" aria-controls="scollapse9">
+                  When is the earliest I can apply for my UK Student Visa?
+                </button>
+              </h3>
+              <div id="scollapse9" class="accordion-collapse collapse" aria-labelledby="sfaq9" data-bs-parent="#studyFaqAccordion">
+                <div class="accordion-body">You can submit your UK Student Visa application up to 6 months before your course start date. However, you cannot apply before your CAS has been assigned by your institution - and your CAS itself typically has a validity of 6 months from the date of assignment. If you are applying from within the UK (switching or extending), different timings may apply, and you must apply before your existing visa expires. We always recommend applying as early as possible once your documents are ready.</div>
+              </div>
+            </div>
+
+            <!-- Q10 -->
+            <div class="accordion-item mb-3">
+              <h3 class="accordion-header" id="sfaq10">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scollapse10" aria-expanded="false" aria-controls="scollapse10">
+                  How does Vortex Ease help with my UK Student Visa application?
+                </button>
+              </h3>
+              <div id="scollapse10" class="accordion-collapse collapse" aria-labelledby="sfaq10" data-bs-parent="#studyFaqAccordion">
+                <div class="accordion-body">Vortex Ease provides end-to-end guidance throughout your UK Student Visa application. We begin with a free eligibility assessment to confirm your profile meets UKVI requirements. We then provide a personalised document checklist, review all your documents before submission, and walk you through every section of the UKVI online application form. We advise on your biometric appointment booking and what to bring on the day. After a decision is made, we help you understand your next steps - including BRP collection and course arrival requirements. Our goal is to make your application as accurate and well-prepared as possible.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Still Have Questions CTA -->
+        <div class="text-center mt-2-9 p-1-6 p-sm-1-9 primary-shadow wow fadeInUp" data-wow-delay="200ms">
+          <h3 class="h4 mb-2">Still have questions?</h3>
+          <p class="mb-3">Our team is available to answer any question - whether you are just starting your research or ready to begin your application today.</p>
+          <a href="{% url 'contact' %}?route=study" class="butn md me-2"><span>Get in Touch</span></a>
+          <a href="{% url 'study_visa_uk_process' %}" class="butn secondary md"><span>How It Works →</span></a>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="mt-2-9 p-3" style="background:#f8f9fa; border-left:4px solid #003a66; border-radius:4px;">
+          <p class="small mb-0 text-muted">
+            <strong>Important:</strong> Answers are provided for general guidance only based on standard UKVI policies. Rules and requirements are subject to change. Vortex Ease provides application support and guidance - final decisions rest with UKVI. We do not guarantee visa approvals.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- ── SIDEBAR ── -->
+      <div class="col-lg-4 mt-2-9">
+        <div class="sidebar ps-xl-4">
+          <div class="widget wow fadeInUp" data-wow-delay="200ms">
+            <div class="widget-content p-1-6 primary-shadow">
+              <h4 class="h5 mb-3">Contact Information</h4>
+              <div class="mb-3">
+                <p class="mb-1"><strong>Phone:</strong></p>
+                <p class="mb-0">+44 7539 080846</p>
+              </div>
+              <div class="mb-3">
+                <p class="mb-1"><strong>Email:</strong></p>
+                <p class="mb-0">contact@vortexease.com</p>
+              </div>
+              <div class="mt-3">
+                <a href="{% url 'contact' %}?route=study" class="butn md"><span>Book Free Assessment</span></a>
+              </div>
+            </div>
+          </div>
+          <div class="widget mt-2-9 wow fadeInUp" data-wow-delay="300ms">
+            <div class="widget-content p-1-6 primary-shadow">
+              <h4 class="h5 mb-3">UK Study Visa Pages</h4>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><a href="{% url 'study_visa_uk' %}"><i class="ti-arrow-right text-secondary me-2"></i>Overview</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_requirements' %}"><i class="ti-arrow-right text-secondary me-2"></i>Requirements</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_process' %}"><i class="ti-arrow-right text-secondary me-2"></i>Application Process</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_fees' %}"><i class="ti-arrow-right text-secondary me-2"></i>Fees &amp; Costs</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_faqs' %}"><i class="ti-arrow-right text-secondary me-2"></i>FAQs</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_universities' %}"><i class="ti-arrow-right text-secondary me-2"></i>Universities We Support</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

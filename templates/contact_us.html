@@ -145,6 +145,15 @@ data-background="{% static 'img/bg/page-title.png' %}"
           enctype="multipart/form-data"
         >
           {% csrf_token %}
+          <input type="hidden" name="route" id="route-input" value="" />
+
+          <!-- Route selector: shown only when route is unknown -->
+          <div id="ve-route-selector" class="mb-4 p-3 rounded" style="background:#f0f4f8; border:1px solid #d0d8e4; display:none;">
+            <p class="mb-2 fw-bold">What are you enquiring about?</p>
+            <button type="button" class="butn md me-2 mb-2" id="ve-route-study"><span>Study Visa (UK)</span></button>
+            <button type="button" class="butn secondary md mb-2" id="ve-route-visit"><span>Visit / Tourist Visa</span></button>
+          </div>
+
           <div class="quform-elements">
             <div class="row">
               <!-- Begin Text input element -->
@@ -205,25 +214,33 @@ data-background="{% static 'img/bg/page-title.png' %}"
                         required
                         style="display: none;"
                       >
-                        <option value="">Select a country</option>
+                        <option value="">Select a subject</option>
                         {% for country in visa_countries %}
-                        <option value="{{ country.name }} Tourist Visa" data-image="{{ country.image }}">
+                        <option value="{{ country.name }} Tourist Visa" data-image="{{ country.image }}" data-route="visit">
                           {{ country.name }} Tourist Visa
                         </option>
                         {% endfor %}
+                        <option value="UK Student Visa" data-route="study">UK Student Visa</option>
+                        <option value="Study Visa - General Enquiry" data-route="study">Study Visa - General Enquiry</option>
                       </select>
                       <div class="custom-select-wrapper">
                         <div class="custom-select-trigger">
-                          <span class="select-value">Select a country</span>
+                          <span class="select-value">Select a subject</span>
                           <span class="select-arrow">▼</span>
                         </div>
                         <div class="custom-select-options">
                           {% for country in visa_countries %}
-                          <div class="custom-select-option" data-value="{{ country.name }} Tourist Visa">
+                          <div class="custom-select-option" data-value="{{ country.name }} Tourist Visa" data-route="visit">
                             <img src="{{ country.image }}" alt="{{ country.name }}" class="country-flag-small" />
                             <span>{{ country.name }} Tourist Visa</span>
                           </div>
                           {% endfor %}
+                          <div class="custom-select-option" data-value="UK Student Visa" data-route="study">
+                            <span>UK Student Visa</span>
+                          </div>
+                          <div class="custom-select-option" data-value="Study Visa - General Enquiry" data-route="study">
+                            <span>Study Visa - General Enquiry</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -303,10 +320,88 @@ data-background="{% static 'img/bg/page-title.png' %}"
       data-wow-delay="400ms"
     >
       <div>
-        <img src="{% static 'img/content/contact-04.jpg' %}" alt="..." />
+        <img src="{% static 'img/content/contact-04.jpg' %}" alt="..." loading="lazy" />
       </div>
     </div>
   </div>
 </div>
 </section>
 {% endblock content%}
+
+{% block extra_js %}
+<script>
+(function () {
+  var STORAGE_KEY = 've_route';
+
+  // Only filter if ?route= is explicitly in the URL
+  var params = new URLSearchParams(window.location.search);
+  var route = params.get('route');
+
+  if (route) {
+    // Route came from a page link — save it and filter
+    localStorage.setItem(STORAGE_KEY, route);
+    applyRoute(route);
+  } else {
+    // Direct visit — show all options and offer the selector
+    document.getElementById('ve-route-selector').style.display = 'block';
+  }
+
+  // Selector button handlers
+  document.getElementById('ve-route-study').addEventListener('click', function () {
+    setRoute('study');
+  });
+  document.getElementById('ve-route-visit').addEventListener('click', function () {
+    setRoute('visit');
+  });
+
+  function setRoute(r) {
+    localStorage.setItem(STORAGE_KEY, r);
+    document.getElementById('ve-route-selector').style.display = 'none';
+    applyRoute(r);
+  }
+
+  function applyRoute(r) {
+    // Update hidden input
+    document.getElementById('route-input').value = r;
+
+    // Filter hidden <select> options
+    var hiddenSelect = document.getElementById('subject');
+    var hiddenOptions = hiddenSelect.querySelectorAll('option');
+    hiddenOptions.forEach(function (opt) {
+      if (!opt.value) return; // keep placeholder
+      var optRoute = opt.getAttribute('data-route');
+      if (optRoute && optRoute !== r) {
+        opt.style.display = 'none';
+        opt.disabled = true;
+      } else {
+        opt.style.display = '';
+        opt.disabled = false;
+      }
+    });
+
+    // Filter custom UI options
+    var customOptions = document.querySelectorAll('.custom-select-option');
+    customOptions.forEach(function (opt) {
+      var optRoute = opt.getAttribute('data-route');
+      if (optRoute && optRoute !== r) {
+        opt.style.display = 'none';
+      } else {
+        opt.style.display = '';
+      }
+    });
+
+    // Update trigger placeholder label
+    var triggerLabel = document.querySelector('.custom-select-trigger .select-value');
+    if (triggerLabel && triggerLabel.textContent === 'Select a subject') {
+      triggerLabel.textContent = r === 'study' ? 'Select a study service' : 'Select a country';
+    }
+
+    // Update hidden select placeholder
+    var placeholderOpt = hiddenSelect.querySelector('option[value=""]');
+    if (placeholderOpt) {
+      placeholderOpt.textContent = r === 'study' ? 'Select a study service' : 'Select a country';
+    }
+  }
+})();
+</script>
+{% endblock extra_js %}

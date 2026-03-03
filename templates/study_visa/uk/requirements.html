@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}UK Student Visa Requirements - Vortex Ease{% endblock %}
+
+{% block meta_description %}Full checklist of UK Student Visa requirements - documents, financial evidence, English language tests, and eligibility criteria explained by Vortex Ease.{% endblock %}
+
+{% block content %}
+
+<section class="page-title-section bg-img cover-background"
+  data-overlay-dark="0"
+  data-background="{% static 'img/bg/page-title.png' %}">
+  <div class="container">
+    <div class="title-info">
+      <h1 class="display-18 display-md-14 display-xl-12">UK Student Visa Requirements</h1>
+    </div>
+    <div class="breadcrumbs-info">
+      <ul class="ps-0">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'study_visa_hub' %}">Study Visa</a></li>
+        <li><a href="{% url 'study_visa_uk' %}">United Kingdom</a></li>
+        <li><a href="#">Requirements</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="row mt-n2-9">
+      <div class="col-lg-8 mt-2-9">
+
+        <!-- Top CTA -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mb-2-9 wow fadeInUp" data-wow-delay="100ms"
+          style="background: linear-gradient(135deg, #003a66 0%, #005a99 100%); border-radius: 10px;">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h2 class="h4 text-white mb-1">Check Your Requirements Today - Free Consultation Available</h2>
+              <p class="text-white mb-0 opacity9 small">Our advisers will review your documents and confirm your eligibility before you submit a single form.</p>
+            </div>
+            <div class="col-md-4 mt-3 mt-md-0 text-md-end">
+              <a href="{% url 'contact' %}?route=study" class="butn white md"><span>Get in Touch</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Eligibility -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">Eligibility Criteria</h2>
+          <p class="mb-3">To be eligible for the UK Student Visa (Student Route), you must satisfy a set of requirements established by UK Visas and Immigration (UKVI). These requirements apply whether you are applying from outside the UK or switching from another visa category within the UK. The core criteria are: you must have an offer from a UKVI-licensed sponsor, hold a CAS reference number, meet the financial maintenance requirements, and meet the English language requirement.</p>
+          <ul class="list-unstyled mb-0">
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>You must have been accepted by a UK institution that holds a valid UKVI Sponsor Licence. You can verify your institution's status on the official UKVI Register of Licensed Sponsors.</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Your institution must have issued you a CAS (Confirmation of Acceptance for Studies) - a unique reference number that contains your course details, tuition fee amount, and start date.</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>You must be aged 16 or over. Applicants under 18 studying at an independent school may need to satisfy additional safeguarding requirements.</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>You must not fall for refusal under the general grounds for refusal - for example, you must not have a criminal record that would make you inadmissible, and you must not have breached UK immigration conditions previously.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Document Checklist -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">Document Checklist</h2>
+          <p class="mb-3">The documents listed below are generally required for a UK Student Visa application. Individual requirements may vary depending on your nationality, the type of course, and your personal circumstances. Vortex Ease will provide you with a personalised document checklist during your consultation.</p>
+          <h3 class="h5 mb-2">Identity &amp; Travel Documents</h3>
+          <ul class="list-unstyled mb-3">
+            <li class="d-flex align-items-start display-29 mb-2">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Valid passport - your passport should have at least 6 months of validity beyond your intended travel date to the UK</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-2">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Passport-size photograph meeting UKVI's specified dimensions and quality requirements</span>
+            </li>
+          </ul>
+          <h3 class="h5 mb-2">Academic Documents</h3>
+          <ul class="list-unstyled mb-3">
+            <li class="d-flex align-items-start display-29 mb-2">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>University or college offer letter confirming your accepted place on a course</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-2">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>CAS reference number issued by your UKVI-licensed institution</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-2">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Transcripts and certificates from previous academic qualifications (as required by your institution or UKVI)</span>
+            </li>
+          </ul>
+          <h3 class="h5 mb-2">Financial Evidence</h3>
+          <ul class="list-unstyled mb-3">
+            <li class="d-flex align-items-start display-29 mb-2">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Bank statements showing you hold the required amount of funds for the stipulated holding period (typically 28 consecutive days)</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-2">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Official financial sponsor letter (if your fees and living costs are being funded by a third-party sponsor such as a government body or employer)</span>
+            </li>
+          </ul>
+          <h3 class="h5 mb-2">English Language</h3>
+          <ul class="list-unstyled mb-0">
+            <li class="d-flex align-items-start display-29 mb-2">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Approved English language test certificate (such as IELTS Academic, TOEFL iBT, or PTE Academic) showing scores that meet UKVI's minimum requirements, unless an exemption applies</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Financial Requirements Block -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">Financial Requirements</h2>
+          <p class="mb-3">To meet the financial requirement, you must demonstrate that you can cover both your tuition fees and your living costs for the duration of your course (up to a maximum of 9 months of living costs). The funds must generally be held in your account - or an official sponsors account - for a consecutive 28-day period ending no more than 31 days before your application date. The exact amounts required are set by UKVI and are subject to change. For courses in London, a higher living cost figure applies compared to outside London. Vortex Ease will always advise you on the current figures relevant to your application.</p>
+          <p class="mb-3">Acceptable forms of financial evidence include bank statements from a regulated financial institution, official financial sponsor letters, and government or international scholarship award letters. Offshore funds, money held in fixed-term bonds, or overdraft facilities are generally not acceptable. Our team will review your financial evidence before submission to avoid common pitfalls.</p>
+        </div>
+
+        <!-- English Language Requirements -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 wow fadeInUp" data-wow-delay="200ms">
+          <h2 class="h2 mb-3">English Language Requirements</h2>
+          <p class="mb-3">For most UK Student Visa applications, you must provide a Secure English Language Test (SELT) result. This is because UKVI requires evidence from specific approved testing centres. The minimum scores required depend on your course level and institution requirements. Your university curriculum may set higher requirements than UKVI's minimum, so always check both.</p>
+          <ul class="list-unstyled mb-0">
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>IELTS Academic (from an approved SELT provider): typically a minimum of 5.5 overall with no component below 5.5 for degree-level study, though university requirements often specify higher scores</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>TOEFL iBT and PTE Academic (Pearson) are also accepted from approved SELT providers - scores must meet both UKVI minimums and your institution's stated entry requirements</span>
+            </li>
+            <li class="d-flex align-items-start display-29 mb-3">
+              <i class="ti-check text-secondary pe-3 font-weight-800 pt-2"></i>
+              <span>Nationals of majority-English-speaking countries (as listed by UKVI, including Australia, Canada, New Zealand, USA, and others) are generally exempt from the English language requirement. Applicants who have completed a degree taught in English at a UKVI-listed institution may also be exempt.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Mid CTA -->
+        <div class="p-1-6 p-sm-1-9 primary-shadow mt-2-9 text-center wow fadeInUp" data-wow-delay="200ms">
+          <h3 class="h3 mb-2">Have All Your Documents Ready? Let's Review Them.</h3>
+          <p class="mb-3">Our team will check every document before you apply, so you can submit with confidence. Get in touch for a free consultation.</p>
+          <a href="{% url 'contact' %}?route=study" class="butn md me-2"><span>Get in Touch</span></a>
+          <a href="{% url 'study_visa_uk_process' %}" class="butn secondary md"><span>View Application Process →</span></a>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="mt-2-9 p-3" style="background:#f8f9fa; border-left:4px solid #003a66; border-radius:4px;">
+          <p class="small mb-0 text-muted">
+            <strong>Important:</strong> Requirements listed are for general guidance only and are based on standard UKVI policies. Individual circumstances may vary. Vortex Ease provides guidance and support - final decisions are made by UKVI. We do not guarantee visa approvals.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- ── SIDEBAR ─────────────────────────────────────────────────────── -->
+      <div class="col-lg-4 mt-2-9">
+        <div class="sidebar ps-xl-4">
+          <div class="widget wow fadeInUp" data-wow-delay="200ms">
+            <div class="widget-content p-1-6 primary-shadow">
+              <h4 class="h5 mb-3">Contact Information</h4>
+              <div class="mb-3">
+                <p class="mb-1"><strong>Phone:</strong></p>
+                <p class="mb-0">+44 7539 080846</p>
+              </div>
+              <div class="mb-3">
+                <p class="mb-1"><strong>Email:</strong></p>
+                <p class="mb-0">contact@vortexease.com</p>
+              </div>
+              <div class="mt-3">
+                <a href="{% url 'contact' %}?route=study" class="butn md"><span>Book Free Assessment</span></a>
+              </div>
+            </div>
+          </div>
+          <div class="widget mt-2-9 wow fadeInUp" data-wow-delay="300ms">
+            <div class="widget-content p-1-6 primary-shadow">
+              <h4 class="h5 mb-3">UK Study Visa Pages</h4>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><a href="{% url 'study_visa_uk' %}"><i class="ti-arrow-right text-secondary me-2"></i>Overview</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_requirements' %}"><i class="ti-arrow-right text-secondary me-2"></i>Requirements</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_process' %}"><i class="ti-arrow-right text-secondary me-2"></i>Application Process</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_fees' %}"><i class="ti-arrow-right text-secondary me-2"></i>Fees &amp; Costs</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_faqs' %}"><i class="ti-arrow-right text-secondary me-2"></i>FAQs</a></li>
+                <li class="mb-2"><a href="{% url 'study_visa_uk_universities' %}"><i class="ti-arrow-right text-secondary me-2"></i>Universities We Support</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

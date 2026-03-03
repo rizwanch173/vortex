@@ -16,7 +16,7 @@
     />
     <meta
       name="description"
-      content="Vortex Ease - Expert visa services and immigration consulting for Schengen, USA, Canada, Australia, and more. Get your tourist, student, and business visas with 99% approval rate."
+      content="{% block meta_description %}Vortex Ease - Expert visa services and immigration consulting for Schengen, USA, Canada, Australia, and more. Get your tourist, student, and business visas with 99% approval rate.{% endblock %}"
     />
     <title>
       {% block title %}Vortex Ease - Visa Services & Immigration Consulting{% endblock %}
@@ -435,15 +435,19 @@
             option.addEventListener('click', function() {
               const value = this.getAttribute('data-value');
               const text = this.querySelector('span').textContent;
-              const img = this.querySelector('img').cloneNode(true);
+              const imgEl = this.querySelector('img');
 
               hiddenSelect.value = value;
 
               // Update trigger display
               const selectValue = selectTrigger.querySelector('.select-value');
               selectValue.innerHTML = '';
-              selectValue.appendChild(img);
-              selectValue.appendChild(document.createTextNode(' ' + text));
+              if (imgEl) {
+                selectValue.appendChild(imgEl.cloneNode(true));
+                selectValue.appendChild(document.createTextNode(' ' + text));
+              } else {
+                selectValue.textContent = text;
+              }
 
               // Update selected state
               selectOptions.forEach(opt => opt.classList.remove('selected'));
@@ -486,6 +490,8 @@
 {##}
 {#    <!-- form scripts js -->#}
 {#    <script src="{% static 'quform/js/scripts.js' %}"></script>#}
+
+    {% block extra_js %}{% endblock %}
 </body>
 
 

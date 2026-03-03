@@ -1,3 +1,25 @@
+/* ── Scroll Performance ─────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Promote header to its own compositing layer to avoid repaint on scroll */
+header {
+  will-change: transform;
+}
+
+/* Hardware-accelerate the hero slider to prevent jank during transitions */
+.slider-fade1 {
+  transform: translateZ(0);
+}
+
+/* Prevent Owl Carousel items from triggering layout reflows */
+.owl-carousel .owl-item {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+/* ────────────────────────────────────────────────────────────────────────── */
+
 #preloader {
   position: fixed;
   top: 0;
@@ -218,6 +240,7 @@ a:active {
   font-size: 16px;
   line-height: normal;
   transition-duration: 0.3s;
+  text-align: center;
 }
 .butn.secondary {
   background-color: #003a66;
