@@ -235,6 +235,25 @@ class ClientAdmin(ModelAdmin):
         """Hide Visa Applications and Payments inlines."""
         return []
 
+    # Customize the form to fix date picker for birth year selection
+    def get_form(self, request, obj=None, **kwargs):
+        """Customize the form to fix date_of_birth widget."""
+        form = super().get_form(request, obj, **kwargs)
+        # Apply date input widget that allows full year range selection
+        form.base_fields['date_of_birth'].widget = forms.DateInput(
+            attrs={
+                'type': 'date',
+                'placeholder': 'YYYY-MM-DD',
+            }
+        )
+        return form
+
+    # Load custom JavaScript for date picker
+    class Media:
+        js = (
+            'admin/js/client_date_picker.js',
+        )
+
     # List Display
     list_display = [
         "client_id",

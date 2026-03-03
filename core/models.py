@@ -73,7 +73,7 @@ class Client(models.Model):
     gender = models.CharField(
         max_length=10,
         choices=GENDER_CHOICES,
-        default="other",
+        default="male",
         verbose_name="Gender",
     )
 
