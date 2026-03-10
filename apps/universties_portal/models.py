@@ -28,6 +28,8 @@ class Course(models.Model):
     requirements = models.TextField(null=True, blank=True)
     raw_payload = models.JSONField(default=dict, blank=True)
 
+    
+
     class Meta:
         ordering = ["course_id"]
         indexes = [
