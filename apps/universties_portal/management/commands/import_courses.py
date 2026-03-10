@@ -82,6 +82,7 @@ class Command(BaseCommand):
         total_rows_seen = 0
         upserted_count = 0
         skipped_rows = 0
+        duplicate_rows_dropped = 0
         buffer = []
 
         try:
@@ -127,7 +128,9 @@ class Command(BaseCommand):
                 processed_pages += 1
 
                 if len(buffer) >= batch_size:
-                    upserted_count += self._flush_buffer(buffer, batch_size)
+                    upserted_rows, dropped_rows = self._flush_buffer(buffer, batch_size)
+                    upserted_count += upserted_rows
+                    duplicate_rows_dropped += dropped_rows
                     buffer = []
 
                 self.stdout.write(
@@ -139,7 +142,9 @@ class Command(BaseCommand):
                     time.sleep(sleep_time)
 
             if buffer:
-                upserted_count += self._flush_buffer(buffer, batch_size)
+                upserted_rows, dropped_rows = self._flush_buffer(buffer, batch_size)
+                upserted_count += upserted_rows
+                duplicate_rows_dropped += dropped_rows
 
         finally:
             session.close()
@@ -147,7 +152,8 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(
                 f"Import finished. pages_processed={processed_pages}, rows_seen={total_rows_seen}, "
-                f"rows_upserted={upserted_count}, rows_skipped={skipped_rows}, last_page={current_page - 1}"
+                f"rows_upserted={upserted_count}, rows_skipped={skipped_rows}, "
+                f"duplicate_rows_dropped={duplicate_rows_dropped}, last_page={current_page - 1}"
             )
         )
 
@@ -178,14 +184,27 @@ class Command(BaseCommand):
         raise CommandError(f"Page {page} failed after {retries} attempts: {last_error}")
 
     def _flush_buffer(self, buffer, batch_size):
+        deduped_by_course_id = {}
+        for obj in buffer:
+            deduped_by_course_id[obj.course_id] = obj
+        deduped_rows = list(deduped_by_course_id.values())
+        dropped_rows = len(buffer) - len(deduped_rows)
+
+        if dropped_rows:
+            self.stdout.write(
+                self.style.WARNING(
+                    f"Dropped {dropped_rows} duplicate rows in current batch before upsert."
+                )
+            )
+
         Course.objects.bulk_create(
-            buffer,
+            deduped_rows,
             batch_size=batch_size,
             update_conflicts=True,
             update_fields=self.update_fields,
             unique_fields=["course_id"],
         )
-        return len(buffer)
+        return len(deduped_rows), dropped_rows
 
     def _build_course_obj(self, item):
         course_id = self._as_int(item.get("course_id"))
