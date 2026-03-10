@@ -20,14 +20,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from core.admin_site import admin_site
+from apps.core.admin_site import admin_site
 
 urlpatterns = [
     path("admin/", admin_site.urls),
-    path("", include("core.urls")),
+    path("", include("apps.core.urls")),
 ]
 
-handler404 = "core.views.custom_404"
+handler404 = "apps.core.views.custom_404"
 
 # Serve media files in development
 if settings.DEBUG:

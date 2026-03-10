@@ -39,14 +39,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "core",
+    "apps.core",
+    "apps.universties_portal"
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "core.middleware.Custom404Middleware",
+    "apps.core.middleware.Custom404Middleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -164,6 +165,6 @@ EMAIL_HOST_PASSWORD = 'Vortex@AcUK008'
 DEFAULT_FROM_EMAIL = f"Vortex Ease <{EMAIL_HOST_USER}>"
 
 if ENVIRONMENT != "production" or DEBUG:
-    EMAIL_BACKEND = "core.email_backend.InsecureTLSBackend"
+    EMAIL_BACKEND = "apps.core.email_backend.InsecureTLSBackend"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
