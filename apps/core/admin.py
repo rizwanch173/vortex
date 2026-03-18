@@ -1728,6 +1728,7 @@ class InvoiceAdmin(ModelAdmin):
                             "price": float(ia.unit_price),
                             "currency": invoice_obj.currency or "GBP",
                             "discount": float(discount_share) if discount_share else 0,
+                            "custom_description": ia.custom_description or "",
                         })
                     items_payload = json.dumps(items_list)
 
@@ -1842,10 +1843,12 @@ class InvoiceAdmin(ModelAdmin):
                     if item_discount > price:
                         item_discount = price
                     discount_total += item_discount
+                    custom_desc = (item.get("custom_description") or "").strip() or None
                     InvoiceApplication.objects.create(
                         invoice=invoice,
                         visa_application=visa_app,
                         unit_price=price,
+                        custom_description=custom_desc,
                     )
                     created_items += 1
                     # If pricing carries currency, remember it
@@ -2184,7 +2187,7 @@ class InvoiceAdmin(ModelAdmin):
         for invoice_app in invoice.invoice_applications.select_related("visa_application"):
             app = invoice_app.visa_application
             items.append({
-                "description": f"{app.get_visa_type_display()} - Service Charges",
+                "description": invoice_app.custom_description or f"{app.get_visa_type_display()} - Service Charges",
                 "price": invoice_app.unit_price,
                 "qty": 1,
                 "total": invoice_app.unit_price,

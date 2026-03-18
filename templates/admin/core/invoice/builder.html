@@ -147,6 +147,15 @@
         color: #6b7280;
         font-size: 13px;
     }
+    .item-row.item-row-app {
+        grid-template-columns: 0.8fr 1fr 0.22fr auto;
+        align-items: start;
+    }
+    @media (max-width: 900px) {
+        .item-row.item-row-app {
+            grid-template-columns: 1fr;
+        }
+    }
     .badge {
         display: inline-flex;
         align-items: center;
@@ -560,33 +569,29 @@
 
             items.forEach((item, idx) => {
                 const row = document.createElement('div');
-                row.className = 'item-row';
+                row.className = 'item-row item-row-app';
 
                 const title = document.createElement('div');
                 const priceVal = parseFloat(item.price || 0);
                 title.innerHTML = `<h4>${item.name}</h4><div class="subline">${currencySymbol(item.currency)}${priceVal.toFixed(2)}</div>`;
 
-                const discountWrap = document.createElement('div');
-                discountWrap.innerHTML = '<label style="margin:0; color:#374151; font-weight:600;">Discount</label>';
-                const discountInput = document.createElement('input');
-                discountInput.type = 'number';
-                discountInput.step = '0.01';
-                discountInput.min = '0';
-                discountInput.value = item.discount || 0;
-                discountInput.style.width = '100%';
-                discountInput.style.padding = '8px';
-                discountInput.style.borderRadius = '8px';
-                discountInput.style.border = '1px solid #d1d5db';
-                discountInput.addEventListener('input', () => {
-                    let val = parseFloat(discountInput.value || 0);
-                    if (isNaN(val) || val < 0) val = 0;
-                    const price = parseFloat(item.price || 0);
-                    if (val > price) val = price;
-                    discountInput.value = val.toFixed(2);
-                    items[idx].discount = val;
-                    recalcTotals();
+                const descWrap = document.createElement('div');
+                descWrap.innerHTML = '<label style="margin:0;color:#374151;font-weight:600;font-size:12px;">Label on invoice</label>';
+                const descInput = document.createElement('input');
+                descInput.type = 'text';
+                descInput.value = item.custom_description || item.name || '';
+                descInput.placeholder = item.name || '';
+                descInput.style.cssText = 'width:100%;padding:6px 8px;border-radius:8px;border:1px solid #d1d5db;font-size:13px;';
+                descInput.addEventListener('input', () => {
+                    items[idx].custom_description = descInput.value;
+                    itemsJsonField.value = JSON.stringify(items);
                 });
-                discountWrap.appendChild(discountInput);
+                descWrap.appendChild(descInput);
+
+                const discountWrap = document.createElement('div');
+                const discountAmt = parseFloat(item.discount || 0);
+                discountWrap.style.alignSelf = 'center';
+                discountWrap.innerHTML = `<label style="margin:0;color:#374151;font-weight:600;font-size:12px;">Discount</label><span style="font-size:14px;color:#6b7280;">${currencySymbol(item.currency)}${discountAmt.toFixed(2)}</span>`;
 
                 const actionWrap = document.createElement('div');
                 const actionLabel = document.createElement('span');
@@ -612,6 +617,7 @@
                 actionWrap.appendChild(removeBtn);
 
                 row.appendChild(title);
+                row.appendChild(descWrap);
                 row.appendChild(discountWrap);
                 row.appendChild(actionWrap);
                 itemsList.appendChild(row);
@@ -761,7 +767,8 @@
                 name: selected.name || selected.display || selected.text || ('Application #' + selected.id),
                 price: priceVal,
                 currency: selected.currency || 'GBP',
-                discount: discountVal
+                discount: discountVal,
+                custom_description: ''
             });
 
             itemDiscountInput.value = '0';
