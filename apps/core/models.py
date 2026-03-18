@@ -599,6 +599,13 @@ class InvoiceApplication(models.Model):
         verbose_name="Unit Price",
         help_text="Price at the time of invoice creation"
     )
+    custom_description = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Custom Description",
+        help_text="Optional override for the invoice line item description"
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
 
     class Meta:

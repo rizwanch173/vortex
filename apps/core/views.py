@@ -332,7 +332,7 @@ def _build_invoice_context(invoice, request: HttpRequest | None = None):
     for invoice_app in invoice.invoice_applications.select_related("visa_application"):
         app = invoice_app.visa_application
         items.append({
-            "description": f"{app.get_visa_type_display()} - {app.get_stage_display()}",
+            "description": f"{app.get_visa_type_display()} - Service Charges",
             "price": invoice_app.unit_price,
             "qty": 1,
             "total": invoice_app.unit_price,

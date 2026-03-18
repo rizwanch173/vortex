@@ -1724,7 +1724,7 @@ class InvoiceAdmin(ModelAdmin):
                         app = ia.visa_application
                         items_list.append({
                             "id": app.pk,
-                            "name": f"{app.get_visa_type_display()} - {app.get_stage_display()}",
+                            "name": f"{app.get_visa_type_display()} - Service Charges",
                             "price": float(ia.unit_price),
                             "currency": invoice_obj.currency or "GBP",
                             "discount": float(discount_share) if discount_share else 0,
@@ -1983,7 +1983,7 @@ class InvoiceAdmin(ModelAdmin):
 
                     apps_data.append({
                         'id': app.pk,
-                        'name': f"{app.get_visa_type_display()} - {app.get_stage_display()}",
+                        'name': f"{app.get_visa_type_display()} - Service Charges",
                         'price': f"{price_float:.2f}",
                         'currency': currency
                     })
@@ -2053,7 +2053,7 @@ class InvoiceAdmin(ModelAdmin):
             for ia in invoice.invoice_applications.all():
                 selected_apps.append({
                     'id': ia.visa_application.pk,
-                    'display': f"{ia.visa_application.get_visa_type_display()} - {ia.visa_application.get_stage_display()}",
+                    'display': f"{ia.visa_application.get_visa_type_display()} - Service Charges",
                     'price': float(ia.unit_price)
                 })
 
@@ -2100,7 +2100,7 @@ class InvoiceAdmin(ModelAdmin):
             for ia in invoice.invoice_applications.all():
                 selected_apps.append({
                     'id': ia.visa_application.pk,
-                    'display': f"{ia.visa_application.get_visa_type_display()} - {ia.visa_application.get_stage_display()}",
+                    'display': f"{ia.visa_application.get_visa_type_display()} - Service Charges",
                     'price': float(ia.unit_price)
                 })
 
@@ -2184,7 +2184,7 @@ class InvoiceAdmin(ModelAdmin):
         for invoice_app in invoice.invoice_applications.select_related("visa_application"):
             app = invoice_app.visa_application
             items.append({
-                "description": f"{app.get_visa_type_display()} - {app.get_stage_display()}",
+                "description": f"{app.get_visa_type_display()} - Service Charges",
                 "price": invoice_app.unit_price,
                 "qty": 1,
                 "total": invoice_app.unit_price,
