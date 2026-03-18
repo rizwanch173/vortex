@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}
-  Terms and Conditions
-{% endblock title %}
+{% block title %}Terms and Conditions - VortexEase Visa Services{% endblock title %}
 
-{% block content%}
+{% block meta_description %}Read the full Terms and Conditions for VortexEase visa consultancy services including tourist visa, UK student visa, service fees, refund policy, limitations of liability, and client obligations.{% endblock %}
+
+{% block content %}
 <section
   class="page-title-section bg-img cover-background"
   data-overlay-dark="0"
@@ -25,53 +25,535 @@
 
 <section>
   <div class="container">
-    <div class="row mt-n2-9">
+    <div class="row">
       <div class="col-lg-12 mt-2-9">
         <div class="p-1-6 p-sm-1-9 primary-shadow">
-          <div class="mb-1-9 wow fadeInUp" data-wow-delay="200ms">
+
+          <!-- Last Updated -->
+          <p class="text-muted small mb-1-9">
+            <strong>Last Updated:</strong> March 2025 &nbsp;&nbsp;|&nbsp;&nbsp;
+            <strong>Effective Date:</strong> March 2025 &nbsp;&nbsp;|&nbsp;&nbsp;
+            <strong>Version:</strong> 2.0
+          </p>
+
+          <!-- ── INTRODUCTION ───────────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
             <h2 class="h2 mb-3">Terms and Conditions</h2>
-            <p class="mb-4">
-              Please read these terms and conditions carefully before using our services.
+            <p class="mb-3">
+              Welcome to <strong>VortexEase</strong>. These Terms and Conditions ("Terms", "Agreement") constitute
+              a legally binding contract between you ("Client", "you", "your") and <strong>VortexEase</strong>
+              ("Company", "we", "us", "our"), a professional visa and immigration consultancy service. By accessing
+              our website, requesting a consultation, or engaging any of our services, you unconditionally agree
+              to be bound by these Terms in their entirety.
             </p>
-
-            <h3 class="h4 mb-3">1. Service Agreement</h3>
-            <p class="mb-4">
-              By engaging VortexEase services, you agree to these terms and conditions. Our services include visa consultation, application assistance, and document preparation support.
+            <p class="mb-3">
+              These Terms apply to all visitors, registered users, and clients of VortexEase, whether accessing
+              our services online, by telephone, by email, or in person. They govern tourist visa services,
+              UK Student Visa assistance, general immigration consultancy, document preparation, and all related
+              advisory services offered under the VortexEase brand.
             </p>
-
-            <h3 class="h4 mb-3">2. Service Fees</h3>
-            <p class="mb-4">
-              All service fees are clearly stated before engagement. Fees are non-refundable once services have commenced, except as required by law or as explicitly stated in our refund policy.
-            </p>
-
-            <h3 class="h4 mb-3">3. Client Responsibilities</h3>
-            <p class="mb-4">
-              Clients are responsible for providing accurate and complete information, submitting required documents on time, and paying all applicable fees to embassies and government agencies.
-            </p>
-
-            <h3 class="h4 mb-3">4. Visa Approval</h3>
-            <p class="mb-4">
-              While we provide expert guidance and assistance, visa approval is ultimately at the discretion of the relevant embassy or immigration authority. We cannot guarantee visa approval.
-            </p>
-
-            <h3 class="h4 mb-3">5. Limitation of Liability</h3>
-            <p class="mb-4">
-              VortexEase is not liable for any delays, rejections, or decisions made by immigration authorities. We provide consultation and assistance services only.
-            </p>
-
-            <h3 class="h4 mb-3">6. Privacy Policy</h3>
-            <p class="mb-4">
-              Your personal information will be kept confidential and used only for the purpose of providing our services, in accordance with our privacy policy.
-            </p>
-
-            <h3 class="h4 mb-3">7. Changes to Terms</h3>
             <p class="mb-0">
-              We reserve the right to modify these terms and conditions at any time. Continued use of our services constitutes acceptance of any changes.
+              <strong>Please read these Terms carefully and in full before using our services.</strong> If you
+              do not agree with any part of these Terms, you must not use our services. If you have any questions
+              about these Terms, please <a href="{% url 'contact' %}">contact us</a> before proceeding.
             </p>
           </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 1. DEFINITIONS ─────────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">1. Definitions and Interpretation</h3>
+            <p class="mb-3">Throughout these Terms, the following definitions apply unless the context requires otherwise:</p>
+            <ul class="mb-3" style="list-style: disc; padding-left: 1.8rem;">
+              <li class="mb-2"><strong>"Services"</strong> means all visa consultancy, advisory, document preparation, application assistance, and related services provided by VortexEase.</li>
+              <li class="mb-2"><strong>"Client"</strong> means any individual or entity who engages, purchases, or requests Services from VortexEase.</li>
+              <li class="mb-2"><strong>"Application"</strong> means any visa, entry clearance, or immigration application submitted on behalf of, or with the assistance of, VortexEase.</li>
+              <li class="mb-2"><strong>"Immigration Authority"</strong> means any embassy, consulate, visa application centre, border agency, or government body responsible for processing visa or immigration applications.</li>
+              <li class="mb-2"><strong>"Fees"</strong> means any consultancy fees, service charges, or disbursements charged by VortexEase for its services, excluding any fees payable directly to Immigration Authorities.</li>
+              <li class="mb-2"><strong>"Government Fees"</strong> means visa application fees, biometric fees, Immigration Health Surcharge (IHS), courier charges, and any other fees payable directly to Immigration Authorities or third-party service providers involved in the application process.</li>
+              <li class="mb-2"><strong>"Personal Data"</strong> means any information relating to an identified or identifiable natural person, as defined under applicable data protection legislation including the UK GDPR and the Data Protection Act 2018.</li>
+              <li class="mb-2"><strong>"Website"</strong> means the VortexEase website and all associated pages, subdomains, and digital platforms operated by VortexEase.</li>
+              <li class="mb-2"><strong>"Working Day"</strong> means any day other than a Saturday, Sunday, or UK public holiday.</li>
+            </ul>
+            <p class="mb-0">
+              Words importing the singular shall include the plural and vice versa. References to "including" shall mean "including without limitation". Section headings are provided for convenience only and shall not affect interpretation of these Terms.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 2. SERVICES ────────────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">2. Description of Services</h3>
+            <p class="mb-3">
+              VortexEase provides professional immigration consultancy and visa assistance services. Our Services are advisory in nature and are designed to assist clients in navigating complex immigration processes. The scope and nature of Services available to any individual client will be communicated in advance of commencement. Our core service categories include, but are not limited to, the following:
+            </p>
+
+            <h5 class="mb-2">2.1 Tourist and Visit Visa Services</h5>
+            <p class="mb-3">
+              We assist clients in preparing and submitting applications for tourist, leisure, and short-stay visit visas to multiple destinations including Schengen Area countries (France, Germany, Spain, Italy, Netherlands, and others), the United States of America, Canada, Australia, New Zealand, and other destinations as may be available from time to time. Our tourist visa services typically include document checklist preparation, application form review and completion guidance, cover letter and supporting statement drafting, appointment scheduling guidance, financial documentation review and advice, travel itinerary structuring, and pre-interview mock sessions where applicable. Each country has its own specific application requirements, and VortexEase will advise you on the requirements relevant to your application destination.
+            </p>
+
+            <h5 class="mb-2">2.2 UK Student Visa Services</h5>
+            <p class="mb-3">
+              We provide comprehensive guidance for clients applying for a UK Student Visa under the UK Visas and Immigration (UKVI) points-based system. This is one of our core service areas and covers the complete journey from university selection to visa decision. Our UK Student Visa service typically includes initial eligibility assessment, guidance on university and course selection, advice on IELTS and other English language test requirements, guidance on Confirmation of Acceptance for Studies (CAS), financial requirements assessment and bank statement review, Statement of Purpose (SOP) drafting and review support, full document collation checklist, Immigration Health Surcharge (IHS) payment guidance, UK Visas and Immigration online application form assistance, biometric appointment guidance, and post-decision support including advice on visa conditions and what to expect on arrival in the UK.
+            </p>
+
+            <h5 class="mb-2">2.3 General Immigration Consultancy</h5>
+            <p class="mb-3">
+              We offer broader immigration advisory services including eligibility assessments for various immigration routes, immigration pathway analysis, general enquiry handling on immigration options, and guidance on switching visa categories or extending leave to remain where within our areas of expertise. General consultancy sessions may be subject to a fixed or hourly fee, which will be communicated prior to engagement.
+            </p>
+
+            <h5 class="mb-2">2.4 Document Preparation and Review</h5>
+            <p class="mb-3">
+              We assist in reviewing, structuring, and organising supporting documents including bank statements and financial evidence, sponsorship letters, invitation letters, employment and payslip documentation, property and accommodation evidence, travel itineraries, previously issued visas, and other documentation required by Immigration Authorities. Our document reviews are advisory only. VortexEase does not authenticate, certify, notarise, or formally verify documents, and clients remain solely responsible for the accuracy and authenticity of all documents provided.
+            </p>
+
+            <p class="mb-0">
+              VortexEase reserves the right to decline or discontinue Services at any time if we determine that a request falls outside our current service scope, is potentially unlawful, or if we determine that proceeding would not be in the genuine interests of the client.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 3. ELIGIBILITY ─────────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">3. Eligibility and Engagement</h3>
+            <p class="mb-3">
+              To use VortexEase Services, you must be at least 18 years of age. Individuals under 18 may only engage our Services with the express written consent of a parent or legal guardian, who shall assume full legal responsibility under these Terms on behalf of the minor. By requesting or using our Services, you represent and warrant that you are legally capable of entering into binding contracts in your jurisdiction of residence and that all information you provide is true, accurate, current, and complete to the best of your knowledge.
+            </p>
+            <p class="mb-3">
+              VortexEase reserves the right to carry out reasonable due diligence on prospective clients before commencing a service engagement and to request proof of identity, nationality, or other documentation if required. We reserve the right to refuse Services to any individual or organisation, without being required to provide reasons for that refusal, where we consider it appropriate to do so.
+            </p>
+            <p class="mb-0">
+              VortexEase reserves the right to immediately terminate an engagement at any time if we discover that false or misleading information has been provided during the registration, consultation, or application process, or if the client's conduct gives rise to concerns about the integrity of the application process.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 4. CLIENT OBLIGATIONS ───────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">4. Client Obligations and Responsibilities</h3>
+            <p class="mb-3">
+              Your active cooperation and the accuracy of the information and documents you provide are fundamental to the success of any visa application process. By engaging VortexEase, you agree to the following obligations, breach of which may result in termination of the engagement and could have serious consequences for your immigration application:
+            </p>
+
+            <h5 class="mb-2">4.1 Accuracy and Completeness of Information</h5>
+            <p class="mb-3">
+              You must provide complete, truthful, and accurate information at all stages of the consultancy and application process. This includes, but is not limited to, your full name, date of birth, nationality and citizenship, current and previous passport details, complete travel history, full immigration history (including any previous visa refusals, removals, overstays, or bans), educational qualifications and certificates, financial circumstances, employment status and history, family circumstances, accommodation details, and any other information that is, or may reasonably be considered, material to your visa application. Providing false, misleading, or incomplete information to VortexEase or to any Immigration Authority is a serious matter. It can result in visa refusal, cancellation of an existing visa, a prolonged or permanent ban from the destination country, deportation, or criminal prosecution under that country's immigration laws. VortexEase accepts absolutely no liability for consequences arising from inaccurate, incomplete, or misleading information provided by the client.
+            </p>
+
+            <h5 class="mb-2">4.2 Disclosure of Previous Refusals and Immigration History</h5>
+            <p class="mb-3">
+              You must fully and proactively disclose any previous visa refusals, cancellations, overstays, deportations, or entry bans for any country. This information is not only required by Immigration Authorities but is essential for VortexEase to provide you with accurate advice on your application prospects and the most appropriate immigration route. Failure to disclose such information, even if you consider it minor, may render our advice ineffective and may expose you to legal risk if a subsequent application is found to contain misleading omissions.
+            </p>
+
+            <h5 class="mb-2">4.3 Timely Document Submission</h5>
+            <p class="mb-3">
+              You are responsible for supplying all required supporting documents within the timescales communicated to you by VortexEase. Visa applications are subject to strict deadlines imposed by Immigration Authorities, including application windows, appointment slots, and CAS expiry dates. Delays in providing documents to VortexEase may result in missed deadlines, application window closures, the expiry of conditional offers or CAS letters, or appointment cancellations, none of which VortexEase can be held responsible for. We are dependent on the timely provision of your documents to deliver our services effectively.
+            </p>
+
+            <h5 class="mb-2">4.4 Payment of Government and Third-Party Fees</h5>
+            <p class="mb-3">
+              You are solely responsible for paying all fees levied directly by Immigration Authorities, embassies, consulates, visa application centres, English language test providers, document courier services, and any other third parties involved in the visa process. These Government Fees are entirely separate from and in addition to VortexEase's consultancy fees. VortexEase does not collect, hold, or process Government Fees on your behalf unless this has been explicitly agreed in writing through a separate arrangement. You should budget for Government Fees independently and ensure payment is made promptly to avoid delays to your application.
+            </p>
+
+            <h5 class="mb-2">4.5 Compliance with Immigration Laws</h5>
+            <p class="mb-3">
+              You agree to comply fully with all immigration laws, rules, conditions, and regulations applicable to any visa application you submit, any leave to remain in a destination country, and the overall immigration process. You must not engage VortexEase to assist with any application, document, or submission that is fraudulent, deceptive, or contrary to the laws of any jurisdiction. VortexEase will not knowingly assist in the submission of false information and will terminate any engagement immediately and without refund if fraudulent intent is discovered or reasonably suspected.
+            </p>
+
+            <h5 class="mb-2">4.6 Responsive Communication</h5>
+            <p class="mb-3">
+              You are responsible for maintaining regular and responsive communication with VortexEase throughout the service engagement. This includes monitoring and replying to emails within a reasonable timeframe (typically 48 hours), attending scheduled consultations punctually, providing responses to queries, and informing VortexEase promptly of any changes to your personal circumstances that may be relevant to your application.
+            </p>
+
+            <h5 class="mb-2">4.7 Final Decision-Making</h5>
+            <p class="mb-0">
+              While VortexEase provides professional guidance and recommendations, the final decision in respect of all choices connected with your immigration journey, including the destination country, university, course, application route, timing of application, and whether to proceed with or withdraw an application, rests entirely with you. VortexEase provides advice; it does not and cannot make binding decisions on your behalf. You are encouraged to seek independent legal advice if you have any doubts about any aspect of the process.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 5. SERVICE FEES ────────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">5. Service Fees and Payment Terms</h3>
+
+            <h5 class="mb-2">5.1 Fee Communication</h5>
+            <p class="mb-3">
+              VortexEase service fees are communicated to clients in writing prior to the commencement of any paid service engagement. All fees are quoted in Great British Pounds (GBP) or, where applicable, the relevant local currency, and are inclusive of VAT where this applies. Fees may be structured as a fixed package price, milestone-based payments, or an agreed hourly rate, depending on the nature and complexity of the service. No paid work will commence until the fee structure has been agreed upon in writing by both parties.
+            </p>
+
+            <h5 class="mb-2">5.2 Payment Methods and Timing</h5>
+            <p class="mb-3">
+              Accepted payment methods include bank transfer (BACS/CHAPS), debit card, credit card, and other methods as may be specified at the time of invoicing. Payment must be received as cleared funds before Services commence unless an alternative payment schedule has been agreed in writing. VortexEase reserves the right to suspend, withhold, or decline to continue Services if payment has not been received as agreed.
+            </p>
+
+            <h5 class="mb-2">5.3 Non-Refundable Nature of Consultancy Fees</h5>
+            <p class="mb-3">
+              VortexEase consultancy fees are <strong>non-refundable</strong> once the service engagement has commenced, regardless of the eventual outcome of any visa application. This is because our fees represent the investment of professional time, expertise, knowledge, resources, and overhead costs in the service process itself, not the outcome of a government decision made by an Immigration Authority. A visa refusal, delay, or change in your personal circumstances does not automatically entitle you to a refund of VortexEase consultancy fees once work has begun.
+            </p>
+
+            <h5 class="mb-2">5.4 Government Fees Are Separate and Non-Refundable by VortexEase</h5>
+            <p class="mb-3">
+              Any fees paid by you directly to embassies, consulates, visa application centres, the Home Office, courier services, biometric providers, English language test centres, or other third parties in connection with your visa application are entirely outside the control of VortexEase and are not refundable by us under any circumstances. Whether such Government Fees are partially or fully refundable is governed entirely by the applicable policies of the relevant authority or provider, and VortexEase can take no responsibility for advising on or securing such refunds.
+            </p>
+
+            <h5 class="mb-2">5.5 Immigration Health Surcharge (IHS)</h5>
+            <p class="mb-3">
+              For clients applying for a UK Student Visa, the Immigration Health Surcharge (IHS) is a mandatory fee payable to UK Visas and Immigration as part of your visa application. This fee is set and collected by the UK Government and is entirely separate from VortexEase's consultancy fees. The IHS is generally non-refundable if your visa is refused, and VortexEase has no control over or liability for this charge. Clients are responsible for researching and budgeting for the current IHS rates applicable to their application.
+            </p>
+
+            <h5 class="mb-2">5.6 Late Payment</h5>
+            <p class="mb-0">
+              In the event of late payment of VortexEase invoices, we reserve the right to immediately suspend Services without liability until the outstanding amount is settled in full. Statutory interest on overdue amounts may be applied at the rate applicable under the Late Payment of Commercial Debts (Interest) Act 1998 or other applicable legislation. VortexEase also reserves the right to recover reasonable costs of debt recovery as permitted by law.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 6. REFUND POLICY ───────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">6. Refund and Cancellation Policy</h3>
+
+            <h5 class="mb-2">6.1 Cancellation Before Services Commence</h5>
+            <p class="mb-3">
+              If you wish to cancel your service engagement before any consultancy work has commenced and before any consultation session has taken place, you may request a refund of any advance fee paid. Such cancellations must be submitted in writing within 48 hours of payment. VortexEase may deduct a reasonable administrative processing charge from any refund in this circumstance.
+            </p>
+
+            <h5 class="mb-2">6.2 Cancellation After Services Have Commenced</h5>
+            <p class="mb-3">
+              Once a consultation session has taken place, a document review has been conducted, a Statement of Purpose has been drafted, or any other substantive application work has begun, cancellation of the engagement will not entitle you to a full refund. In such cases, VortexEase may consider a partial refund at its sole discretion, calculated proportionally to the remaining work outstanding at the time of cancellation, minus costs already incurred. No partial refund will be considered where the cancellation arises as a result of the client's own breach of obligations under these Terms.
+            </p>
+
+            <h5 class="mb-2">6.3 Visa Refusals Do Not Entitle Refunds</h5>
+            <p class="mb-3">
+              A visa refusal by an Immigration Authority does not constitute grounds for a refund of VortexEase consultancy fees. Our fees are charged in consideration for professional advisory, document preparation, and application assistance services provided to you, not for any guaranteed visa outcome. The visa decision itself is made by a sovereign government authority, and its decisions are entirely outside VortexEase's control. In the event of a refusal, VortexEase will work with you to review the decision reasons and advise on re-application or appeal options, which may attract additional service fees.
+            </p>
+
+            <h5 class="mb-2">6.4 How to Request a Refund</h5>
+            <p class="mb-0">
+              All refund requests must be submitted in writing via our official contact channels, clearly stating the reason for the request and the service to which it relates. VortexEase will consider each request on its individual merits. Our decision regarding refund eligibility is final, subject to applicable consumer protection legislation. Where a refund is approved, it will be processed within 14 working days to the original payment method used.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 7. NO VISA GUARANTEE ──────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">7. No Guarantee of Visa Approval</h3>
+            <p class="mb-3">
+              VortexEase is an independent immigration consultancy and is <strong>not affiliated with, endorsed by, or acting on behalf of</strong> any embassy, consulate, government body, UK Visas and Immigration (UKVI), the UK Home Office, Her Majesty's Passport Office, or any foreign immigration, border, or government authority whatsoever.
+            </p>
+            <p class="mb-3">
+              All visa, entry clearance, and immigration decisions are made exclusively by the relevant Immigration Authority in accordance with that country's immigration rules, policies, and the specific merits of each individual application at the time of the decision. VortexEase has no influence over, advance knowledge of, or ability to predict the decisions made by any Immigration Authority.
+            </p>
+            <p class="mb-3">
+              <strong>VortexEase does not and cannot guarantee visa approval, entry clearance, or any specific immigration outcome.</strong> Any assessments made by our consultants regarding the viability or likely success of a particular application are professional judgements based on the information available to us and the immigration rules as understood at the time of advice. Such assessments do not and cannot constitute guarantees or warranties of outcome. Immigration rules, policies, and processing standards are subject to change, in some cases with little or no prior notice, and application outcomes can be affected by a wide range of factors entirely outside VortexEase's control, including but not limited to: legislative changes, shifts in government policy, individual case officer interpretation and discretion, geopolitical circumstances, the applicant's updated personal circumstances, changes in financial standing, new travel or immigration history arising after our consultation, and the overall volume of applications being processed by the authority at the time.
+            </p>
+            <p class="mb-0">
+              By engaging VortexEase, you acknowledge and accept that professional immigration consultancy assistance of the kind we provide does not alter the authority of the Immigration Authority to make its own independent decision, and that a visa refusal remains a possible outcome of any application, regardless of the thoroughness of preparation. You proceed with any application on the basis of your own fully informed consent and decision.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 8. DOCUMENTATION ───────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">8. Document Responsibility and Authenticity</h3>
+
+            <h5 class="mb-2">8.1 Your Responsibility for Document Authenticity</h5>
+            <p class="mb-3">
+              You are solely and completely responsible for ensuring that all documents submitted to VortexEase and to any Immigration Authority are genuine, accurate, up-to-date, and legally obtained. VortexEase does not independently verify, authenticate, or certify the authenticity of documents provided by clients. Submitting fraudulent, forged, fabricated, or knowingly misleading documents to any Immigration Authority is a very serious criminal matter in virtually all jurisdictions, and can result in immediate visa refusal, permanent ineligibility for future visas to that country or other countries, removal from the country, a criminal prosecution, and additional civil liability. If VortexEase at any time has reason to believe that documents it has been provided with may be fraudulent, it will immediately suspend the engagement and reserves the right to report the matter to relevant authorities.
+            </p>
+
+            <h5 class="mb-2">8.2 Document Retention</h5>
+            <p class="mb-3">
+              VortexEase will retain copies of key documents provided during your service engagement, securely and in encrypted form, in accordance with our Privacy Policy and applicable data protection legislation. Documents and related records may be retained for up to 7 years from the end of the engagement, for compliance, record-keeping, and audit purposes. Upon written request, we will confirm what documents we hold relating to you and will arrange for their secure deletion once the required retention period has expired and there is no outstanding legal obligation to retain them.
+            </p>
+
+            <h5 class="mb-2">8.3 Certified Translations and Notarisation</h5>
+            <p class="mb-0">
+              Where Immigration Authorities require documents to be submitted with certified English translations, notarised copies, apostilles, or other forms of official attestation, it is the client's sole responsibility to obtain these from suitably qualified, accredited, or regulated translators, notaries, or solicitors. VortexEase may, as a courtesy, provide referrals to third-party translation or notarisation services but does not endorse or accept any responsibility for the quality, accuracy, or acceptance of services provided by third parties.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 9. LIMITATION OF LIABILITY ────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">9. Limitation of Liability</h3>
+
+            <h5 class="mb-2">9.1 Scope of Liability Exclusion</h5>
+            <p class="mb-3">
+              To the fullest extent permitted by applicable law, VortexEase shall not be liable for any direct, indirect, incidental, special, consequential, punitive, or exemplary damages arising out of or in connection with your use of our Services or any visa application outcome or process, including but not limited to: visa refusal or cancellation at any stage, entry denial at a port of immigration, deportation or removal, delays in processing by any Immigration Authority, the loss or damage of documents in transit, loss of pre-booked travel (including flights, accommodation, or travel insurance), financial losses of any kind, loss of employment or career opportunities resulting from any visa decision, loss of a university place or academic year, or any other direct or indirect loss arising from or connected to decisions made by Immigration Authorities or third parties.
+            </p>
+
+            <h5 class="mb-2">9.2 Cap on Financial Liability</h5>
+            <p class="mb-3">
+              Where VortexEase's liability cannot be wholly excluded by law, our total aggregate liability to you in respect of all claims of any nature arising under or in connection with these Terms and our provision of Services, whether in contract, tort (including negligence), breach of statutory duty, or otherwise, shall not exceed the total consultancy fees paid by you to VortexEase in the 12-month period immediately preceding the event or circumstances giving rise to the claim.
+            </p>
+
+            <h5 class="mb-2">9.3 Exclusion of Consequential and Indirect Loss</h5>
+            <p class="mb-3">
+              VortexEase expressly excludes all liability for loss of income, loss of actual or anticipated profit, loss of business opportunity, loss of anticipated savings, loss of data, loss of goodwill or reputation, business interruption, wasted expenditure, or any other indirect, special, incidental, or consequential loss howsoever arising, whether foreseeable or not and whether or not VortexEase has been specifically advised of the possibility of such a loss occurring.
+            </p>
+
+            <h5 class="mb-2">9.4 Processing Timelines and Delays</h5>
+            <p class="mb-3">
+              VortexEase provides guidance on expected or typical visa processing timescales based on published guidance and our experience. However, we cannot guarantee or warrant the accuracy of any processing timescale estimates, as all processing times are entirely under the control of the relevant Immigration Authority and are affected by numerous factors outside our knowledge or control. We shall not be liable for any loss resulting from delays in visa processing, changes in advertised processing times, or the failure of any Immigration Authority to process an application within any quoted or expected timeframe.
+            </p>
+
+            <h5 class="mb-2">9.5 Statutory Rights Unaffected</h5>
+            <p class="mb-0">
+              Nothing in these Terms shall exclude or limit VortexEase's liability for: death or personal injury caused by our proven negligence; fraud or fraudulent misrepresentation by VortexEase; any breach of the terms implied by sections 3, 4 and 5 of the Supply of Goods and Services Act 1982; or any other category of liability that cannot legally be excluded or limited under applicable consumer protection law. Your statutory rights as a consumer are not affected by these Terms.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 10. CONFIDENTIALITY ────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">10. Confidentiality</h3>
+            <p class="mb-3">
+              VortexEase treats all information disclosed by clients as strictly confidential. We recognise that clients share highly sensitive personal, financial, and immigration-related information with us in the context of a professional advisory relationship, and we take our obligations of confidentiality extremely seriously. No client information will be disclosed to any third party except in the following circumstances:
+            </p>
+            <ul class="mb-3" style="list-style: disc; padding-left: 1.8rem;">
+              <li class="mb-2">Where disclosure is necessary to process your visa application (for example, preparing and submitting documents to an Immigration Authority, visa application centre, or supporting university);</li>
+              <li class="mb-2">Where you have provided explicit written consent for specific information to be shared with a named third party;</li>
+              <li class="mb-2">Where disclosure is required by law, a binding court order, a regulatory body with jurisdiction, or a law enforcement authority with lawful authority to demand the information;</li>
+              <li class="mb-2">Where disclosure is genuinely necessary to prevent serious harm to you or a third party;</li>
+              <li class="mb-2">Where VortexEase engages verified third-party service suppliers (such as secure document couriers or certified translators) who are bound by appropriate confidentiality obligations.</li>
+            </ul>
+            <p class="mb-0">
+              Our obligations of confidentiality to clients survive the termination of any service engagement and continue indefinitely unless subject to a lawful requirement to disclose. Individuals who work for or with VortexEase are also bound by confidentiality obligations that mirror those contained in this clause.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 11. DATA PROTECTION ────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">11. Data Protection and Privacy</h3>
+            <p class="mb-3">
+              VortexEase is committed to handling your personal data responsibly and in full compliance with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018. VortexEase acts as a data controller in respect of personal data collected from and about clients. The lawful bases on which we process your data include the performance of a contract with you (being the delivery of visa consultancy services) and our legitimate business interests in operating a professional immigration consultancy.
+            </p>
+            <p class="mb-3">
+              The categories of personal data we collect and process may include your full name and identity documents, date of birth, nationality and citizenship details, current and historical passport information, contact details (email, phone, address), travel and immigration history, educational records and qualifications, financial information and bank statements, employment records, family circumstances, biometric data (where processed as part of a government application), and any other information that is necessary or reasonably required for the provision of our Services.
+            </p>
+            <p class="mb-3">
+              Under UK data protection law, you have the following rights in respect of your personal data held by VortexEase: the right to access a copy of your data; the right to correct inaccurate data; the right to request erasure of your data (where applicable); the right to restrict or object to processing; and the right to data portability in certain circumstances. To exercise any of these rights, please submit a written request to VortexEase through our contact channels. We will acknowledge your request within 5 working days and respond substantively within 30 days.
+            </p>
+            <p class="mb-0">
+              VortexEase does not sell, rent, trade, or commercially exploit your personal data. For full details of our data practices, including how we collect, use, store, protect, and retain your data, please refer to our Privacy Policy, which is available on our website and forms part of our overall policy framework. By using our Services you confirm that you have read and accepted the terms of our Privacy Policy.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 12. INTELLECTUAL PROPERTY ──────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">12. Intellectual Property Rights</h3>
+            <p class="mb-3">
+              All content published on or forming part of the VortexEase website and service materials, including text, articles, guides, templates, graphics, logos, icons, images, photographs, audio, video content, data compilations, proprietary processes, software code, and the selection, arrangement, and compilation of information, is either the exclusive property of VortexEase or is used under licence from its respective owners. All such content is protected by applicable intellectual property laws, including copyright, trade mark, and database rights under English law.
+            </p>
+            <p class="mb-3">
+              You are granted a limited, personal, non-exclusive, non-transferable, revocable licence to access and use the website and its content solely for the purpose of evaluating and using VortexEase's Services for your own, non-commercial needs. You have no right to reproduce, redistribute, publish, commercially exploit, create derivative works from, publicly display, transmit, broadcast, or otherwise use any part of our website content or service materials without the prior express written consent of VortexEase.
+            </p>
+            <p class="mb-0">
+              Documents, letters, Statements of Purpose, cover letters, templates, or other written materials prepared by VortexEase as part of your service engagement are created for your individual, single use in connection with your specific visa application. These materials may not be copied, altered, shared with other applicants, or in any way used commercially without the prior written agreement of VortexEase. Notwithstanding such preparation, VortexEase retains the underlying intellectual property rights in any templates, frameworks, or structures used in creating such documents.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 13. THIRD PARTY SERVICES ──────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">13. Third-Party Services and External Links</h3>
+            <p class="mb-3">
+              In the course of providing Services, VortexEase may recommend or refer clients to third-party service providers including, but not limited to: English language testing organisations (such as IELTS, TOEFL, PTE Academic, and others), UKVI-approved biometric service providers, UK university admissions portals, certified translation services, document notarisation and attestation services, professional courier companies, accommodation platforms, airline booking services, and travel insurance providers. Any such recommendations are provided as a professional courtesy and are based on our general experience. VortexEase does not represent, endorse, warranty, or accept any liability whatsoever for the quality, pricing, availability, or suitability of any third-party service, nor for any acts, errors, omissions, delays, or failures on the part of any third-party provider.
+            </p>
+            <p class="mb-3">
+              Our website may from time to time contain links or references to external third-party websites. The inclusion of any such link does not constitute an endorsement of that website or its content by VortexEase. We are not responsible for the content, privacy practices, accuracy, legality, or security of third-party websites, and you access them entirely at your own risk and subject to their own terms and conditions.
+            </p>
+            <p class="mb-0">
+              Where VortexEase engages third-party contractors or sub-processors in the delivery of its services (for example, to provide certified translation or secure document courier services), VortexEase will take reasonable steps to ensure such parties operate under appropriate contractual and confidentiality obligations. However, VortexEase shall not be liable for any loss, damage, or delay caused by third-party contractors beyond what may be legally required.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 14. COMMUNICATION ──────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">14. Communication, Notices, and Records</h3>
+            <p class="mb-3">
+              All formal communications between you and VortexEase must be made in writing and submitted via the official contact methods published on our website (email or the contact form). Oral communications, including telephone or video consultations, do not in themselves constitute binding variations to these Terms or formal agreements and must be confirmed in writing to be legally relied upon. VortexEase may use telephone and video consultations as a mode of service delivery, but any advice or commitments arising from such communications will be confirmed in writing upon request.
+            </p>
+            <p class="mb-3">
+              You agree to receive service-related and administrative communications from VortexEase by email. You are responsible for ensuring that the email address you have provided to us is current, active, and regularly monitored, including any spam or junk email folders. VortexEase will not be held responsible for communications that do not reach you due to inaccurate contact details, a full inbox, overzealous spam filters, or any other technical factor on your end. You are responsible for keeping your contact details with us up to date.
+            </p>
+            <p class="mb-0">
+              Where notices are required to be given under these Terms, they shall be deemed effective when sent by email to the last known email address for the receiving party. VortexEase may also from time to time send clients informational updates on immigration rule changes, service developments, or relevant news. You may opt out of non-essential marketing communications at any time; however, you cannot opt out of service-related communications that are necessary for the delivery of contracted services.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 15. COMPLAINTS ────────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">15. Complaints Procedure</h3>
+            <p class="mb-3">
+              VortexEase is committed to providing high-quality, professional service. If you are dissatisfied with any aspect of the Services you have received, we strongly encourage you to raise the matter with us at the earliest opportunity. Many concerns can be resolved quickly and informally through direct communication with the consultant responsible for your case.
+            </p>
+            <p class="mb-3">
+              Formal complaints must be submitted in writing to VortexEase through our official contact channels. Your complaint should clearly describe the nature of your concern, the specific service involved, the relevant dates, and the outcome you are seeking. Upon receipt of a formal written complaint, VortexEase will: acknowledge receipt within 5 working days; investigate the matter thoroughly and fairly; and provide a substantive written response within 20 working days. If the investigation requires additional time, we will notify you before the 20-day period expires and provide an expected response date.
+            </p>
+            <p class="mb-0">
+              If you remain dissatisfied with our response after following this process, you may seek independent legal advice, contact the relevant trading standards authority, or pursue alternative dispute resolution as set out in Section 19 of these Terms.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 16. PROHIBITED USE ─────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">16. Prohibited Conduct</h3>
+            <p class="mb-3">
+              By using VortexEase's website and Services, you agree that you will not engage in any of the following prohibited activities:
+            </p>
+            <ul class="mb-3" style="list-style: disc; padding-left: 1.8rem;">
+              <li class="mb-2">Providing fraudulent, forged, fabricated, or intentionally misleading information or documentation at any stage of the service process;</li>
+              <li class="mb-2">Impersonating another person or entity, or falsely claiming to have authority to act on their behalf;</li>
+              <li class="mb-2">Using our services to facilitate, support, or assist illegal immigration, human trafficking, or any other unlawful immigration-related activity;</li>
+              <li class="mb-2">Submitting or encouraging the submission of any application that you know or suspect to be fraudulent or based on misrepresentation;</li>
+              <li class="mb-2">Scraping, crawling, mining, or harvesting data from our website, systems, or client database by any means and for any purpose without our prior written consent;</li>
+              <li class="mb-2">Attempting to gain unauthorised access to our systems, databases, accounts, or any restricted areas of our website;</li>
+              <li class="mb-2">Transmitting or introducing spam, unsolicited communications, malware, viruses, ransomware, or any other harmful, disruptive, or malicious code or content;</li>
+              <li class="mb-2">Reproducing, copying, reselling, or commercially exploiting any of VortexEase's service materials, templates, intellectual property, or proprietary methods without written authorisation;</li>
+              <li class="mb-2">Engaging in any conduct that is abusive, threatening, or harassing toward VortexEase staff members.</li>
+            </ul>
+            <p class="mb-0">
+              Any breach of these prohibitions may result in the immediate termination of your engagement without refund, referral to relevant law enforcement or regulatory authorities, and civil legal action where appropriate.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 17. INDEMNIFICATION ────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">17. Indemnification</h3>
+            <p class="mb-0">
+              You agree to fully indemnify, defend, and hold harmless VortexEase, its directors, officers, employees, agents, contractors, successors, and assigns from and against any and all claims, liabilities, demands, damages, judgments, awards, losses, fines, penalties, costs, and expenses (including reasonable legal fees and disbursements) arising out of or relating to: (a) your breach of any provision of these Terms; (b) your provision of false, inaccurate, or materially misleading information to VortexEase or to any Immigration Authority; (c) your submission of fraudulent, forged, or unauthorised documents in connection with any visa application; (d) your violation of any applicable law, regulation, or immigration rule; (e) any claim by a third party arising from your conduct or use of our Services; or (f) any consequence arising from decisions you make in connection with, or following, advice provided by VortexEase.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 18. TERMINATION ────────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">18. Termination of Engagement</h3>
+            <p class="mb-3">
+              Either party may terminate a VortexEase service engagement by providing written notice to the other party. Upon termination, the following shall apply:
+            </p>
+            <ul class="mb-3" style="list-style: disc; padding-left: 1.8rem;">
+              <li class="mb-2">You will remain liable for all service fees incurred, accrued, or due up to and including the effective date of termination;</li>
+              <li class="mb-2">VortexEase will immediately cease all active work on your application or matter;</li>
+              <li class="mb-2">Any original documents in VortexEase's physical possession will be returned to you upon written request, subject to clearance of any outstanding fees;</li>
+              <li class="mb-2">VortexEase will provide you with a summary of completed work and any key information you may require to continue the application independently or through another provider, subject to any applicable fee for this work;</li>
+              <li class="mb-2">Sections of these Terms that by their nature are intended to survive termination (including but not limited to Sections 9, 10, 11, 12, and 17) shall remain in full force and effect after termination.</li>
+            </ul>
+            <p class="mb-0">
+              VortexEase reserves the right to terminate a service engagement immediately and without prior notice, and without liability to refund any fees paid, in any case where we have reasonable grounds to believe that: the client has engaged in fraud or misrepresentation; the client has provided forged or materially false documentation; the client's conduct is abusive, threatening, or in breach of these Terms; or continuing the engagement would place VortexEase or any third party at legal or reputational risk.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 19. GOVERNING LAW ──────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">19. Governing Law and Jurisdiction</h3>
+            <p class="mb-3">
+              These Terms and Conditions and any dispute, claim, or obligation arising out of or in connection with them or their subject matter or formation, including non-contractual disputes or claims, shall be governed by and construed in accordance with the laws of England and Wales. Subject to the paragraph below, the courts of England and Wales shall have exclusive jurisdiction to settle any dispute or claim arising out of or in connection with these Terms.
+            </p>
+            <p class="mb-3">
+              Prior to initiating any formal legal proceedings, both parties agree to attempt in good faith to resolve any dispute informally. The party wishing to raise a dispute must notify the other in writing, and both parties agree to allow a minimum of 30 days for good-faith informal negotiation before any claim is issued in court. This obligation does not restrict either party from seeking urgent injunctive or other interim relief from a court of competent jurisdiction.
+            </p>
+            <p class="mb-0">
+              Nothing in this clause shall deprive you of any statutory right you may have as a consumer to commence proceedings in the courts of your country of habitual residence under applicable consumer protection legislation in your jurisdiction.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 20. FORCE MAJEURE ──────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">20. Force Majeure</h3>
+            <p class="mb-0">
+              VortexEase shall not be held liable for any failure or delay in performing its obligations under these Terms where such failure or delay arises from any cause beyond VortexEase's reasonable control. Such causes include, but are not limited to: acts of God, natural disasters, fire, flood, drought, earthquake, or extreme weather events; armed conflict, terrorism, civil unrest, or acts of a government enemy; pandemic, epidemic, or public health emergency; changes in law, regulation, or government policy (including changes to immigration rules or embassy operations); actions or omissions of government authorities, embassy or consulate closures, or strikes by public service bodies; power cuts, telecommunications failures, or internet service outages; industrial disputes or strikes (other than those involving VortexEase employees); or any other circumstances that VortexEase could not reasonably have anticipated or prevented. In such circumstances, VortexEase will notify you as soon as reasonably practicable and will use reasonable endeavours to resume the provision of Services at the earliest practicable opportunity.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 21. AMENDMENTS ────────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">21. Amendments to These Terms</h3>
+            <p class="mb-3">
+              VortexEase reserves the right to update, modify, or replace any part of these Terms at any time at its sole discretion, to reflect changes in the law, our services, business practices, or for any other legitimate reason. Changes will take effect immediately upon publication of the revised Terms on our website, with the "Last Updated" date revised to reflect the date of amendment. We will not individually notify existing clients of minor or routine changes. It is your responsibility to review these Terms periodically and remain aware of any updates.
+            </p>
+            <p class="mb-0">
+              Your continued use of VortexEase's website or engagement of our Services after any changes are published on this page will constitute your acceptance of the revised Terms. If you do not agree to any revised Terms, you must discontinue use of our Services and notify us in writing. Where a material change is made that affects clients with an active, ongoing service engagement, VortexEase will use reasonable efforts to notify such clients directly and allow a reasonable opportunity to review the change before it applies to their engagement.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 22. SEVERABILITY ───────────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">22. Severability</h3>
+            <p class="mb-0">
+              If any provision, clause, or sub-clause of these Terms is found by any court or tribunal of competent jurisdiction to be invalid, unlawful, void, or unenforceable, whether in whole or in part, such provision shall, to the extent required, be deemed severed from these Terms and shall not affect the ongoing validity and full enforceability of the remaining provisions, which shall continue in full force and effect. Where a provision can be modified to the minimum extent necessary to make it valid, lawful, and enforceable, it shall be so modified and treated accordingly.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 23. ENTIRE AGREEMENT ───────────────────────────────────── -->
+          <div class="mb-1-9 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">23. Entire Agreement</h3>
+            <p class="mb-0">
+              These Terms, together with our Privacy Policy and any written service agreement, engagement letter, or proposal document provided to you separately in connection with a specific service, constitute the entire agreement between you and VortexEase with respect to the Services and supersede all prior negotiations, representations, warranties, understandings, arrangements, and agreements, whether oral or written, between the parties relating to their subject matter. No variation to these Terms shall be effective unless it is agreed in writing and confirmed by an authorised representative of VortexEase. No waiver by VortexEase of any breach by you of these Terms shall be construed as a waiver of any subsequent breach. Nothing in these Terms shall create or imply a partnership, joint venture, agency, employment, or franchise relationship between you and VortexEase.
+            </p>
+          </div>
+
+          <hr class="my-1-9" />
+
+          <!-- ── 24. CONTACT ────────────────────────────────────────────── -->
+          <div class="mb-0 wow fadeInUp" data-wow-delay="100ms">
+            <h3 class="h4 mb-3">24. Contact Information</h3>
+            <p class="mb-3">
+              If you have any questions, concerns, or requests regarding these Terms and Conditions, if you wish to exercise any of your legal rights, or if you need to submit a formal complaint, please contact VortexEase through the details below or by visiting our <a href="{% url 'contact' %}">Contact page</a>:
+            </p>
+            <div class="p-1-6 bg-light rounded mb-1-9">
+              <p class="mb-2"><strong>VortexEase - Visa &amp; Immigration Consultancy</strong></p>
+              <p class="mb-2"><strong>Enquiries:</strong> <a href="{% url 'contact' %}">Submit an enquiry via our contact form</a></p>
+              <p class="mb-2"><strong>Services Covered:</strong> UK Student Visa &bull; Schengen Area Visa &bull; US Tourist Visa &bull; Canada Visitor Visa &bull; Australia Visitor Visa &bull; New Zealand Visitor Visa</p>
+              <p class="mb-0"><strong>Business Hours:</strong> Monday - Friday, 9:00 AM - 6:00 PM (UK Time)</p>
+            </div>
+            <p class="text-muted small mb-0">
+              These Terms and Conditions were last reviewed and updated in <strong>March 2025</strong>.
+              VortexEase reserves the right to update these Terms at any time. The current, in-force version
+              will always be available on this page. We recommend saving or printing a copy of these Terms for
+              your records at the time you engage our services.
+            </p>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 </section>
-{% endblock content%}
+{% endblock content %}
