@@ -1,5 +1,5 @@
 {% load static %}
-<section class="bg-img cover-background" data-background="{% static 'img/bg/bg-01.jpg' %}" style="padding: 55px 0px;">
+<section class="bg-img cover-background" data-background="{% static 'img/bg/bg-01.jpg' %}" data-background-lazy="true" style="padding: 55px 0px;">
   <div class="container">
     <div class="mb-2-6 mb-lg-6 mx-auto text-center wow fadeIn w-md-80 w-lg-60 w-xl-50" data-wow-delay="100ms">
       <span class="text-uppercase text-primary letter-spacing-2 font-weight-800">{{ context.title }}</span>
@@ -17,7 +17,16 @@
                 <div class="contentDiv">
                 </div>
                 <div class="imageSide">
-                  <img src="{% static review.image %}" alt="" />
+                  <img
+                    src="{% static review.image %}"
+                    alt=""
+                    class="testimonial-review-image"
+                    width="{{ review.image_width|default:'885' }}"
+                    height="{{ review.image_height|default:'599' }}"
+                    sizes="(max-width: 991px) 92vw, 780px"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
               </div>
             </div>

@@ -10,6 +10,33 @@
 !(function (t) {
   "use strict";
   var s = t(window);
+  function r(e) {
+    var a = t(e).attr("data-background");
+    a && t(e).css("background-image", "url(" + a + ")");
+  }
+  function l() {
+    var e = document.querySelectorAll(
+      '.parallax[data-background-lazy="true"], .bg-img[data-background-lazy="true"]'
+    );
+    if (!e.length) return;
+    if (!("IntersectionObserver" in window)) {
+      e.forEach(function (e) {
+        r(e);
+      });
+      return;
+    }
+    var a = new IntersectionObserver(
+      function (e, a) {
+        e.forEach(function (e) {
+          e.isIntersecting && (r(e.target), a.unobserve(e.target));
+        });
+      },
+      { rootMargin: "200px 0px" }
+    );
+    e.forEach(function (e) {
+      a.observe(e);
+    });
+  }
   function a() {
     var e, a;
     (e = t(".full-screen")),
@@ -25,14 +52,16 @@
   }),
     window.addEventListener("scroll", function () {
       var e = window.pageYOffset,
-        a = t(".navbar-brand img"),
-        o = t(".navbar-brand.logodefault img");
+        a = t(".navbar-brand img");
       e <= 50
-        ? (t("header").removeClass("scrollHeader").addClass("fixedHeader"),
-          a.attr("src", "/static/img/logos/logo-inner.png"))
-        : (t("header").removeClass("fixedHeader").addClass("scrollHeader"),
-          a.attr("src", "/static/img/logos/logo.png")),
-        o.attr("src", "/static/img/logos/logo.png");
+        ? t("header").removeClass("scrollHeader").addClass("fixedHeader")
+        : t("header").removeClass("fixedHeader").addClass("scrollHeader"),
+        a.each(function () {
+          var a = t(this),
+            o = a.data("top-src") || a.attr("src"),
+            i = a.data("scrolled-src") || o;
+          a.attr("src", e <= 50 ? o : i);
+        });
     }, { passive: true }),
     window.addEventListener("scroll", function () {
       500 < window.pageYOffset
@@ -42,13 +71,10 @@
     t(".scroll-to-top").on("click", function (e) {
       e.preventDefault(), t("html, body").animate({ scrollTop: 0 }, 600);
     }),
-    t(".parallax,.bg-img").each(function (e) {
-      t(this).attr("data-background") &&
-        t(this).css(
-          "background-image",
-          "url(" + t(this).data("background") + ")"
-        );
+    t('.parallax,.bg-img').not('[data-background-lazy="true"]').each(function () {
+      r(this);
     }),
+    l(),
     new WOW({
       boxClass: "wow",
       animateClass: "animated",

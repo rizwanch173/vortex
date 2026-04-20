@@ -1,10 +1,15 @@
 import os
-import yaml
 import random
 import re
+from functools import lru_cache
+from pathlib import Path
+
+import yaml
+from PIL import Image
 from django.conf import settings
 from .context_schema import LandingConfig, Testimonial, VisaServiceCountries
 
+@lru_cache(maxsize=None)
 def load_config(slug: str) -> LandingConfig:
     config_path = os.path.join(settings.BASE_DIR, f"config/{slug}.yaml")
     with open(config_path, "r", encoding="utf-8") as f:
@@ -12,6 +17,7 @@ def load_config(slug: str) -> LandingConfig:
     return LandingConfig(**data)
 
 
+@lru_cache(maxsize=1)
 def load_testimonial() -> Testimonial:
     config_path = os.path.join(settings.BASE_DIR, "config/testmonial.yaml")
     with open(config_path, "r", encoding="utf-8") as f:
@@ -19,6 +25,7 @@ def load_testimonial() -> Testimonial:
     return Testimonial(**data)
 
 
+@lru_cache(maxsize=1)
 def load_visa_services_countries() -> VisaServiceCountries:
     config_path = os.path.join(settings.BASE_DIR, "config/visa_service_countries.yaml")
     with open(config_path, "r", encoding="utf-8") as f:
@@ -99,3 +106,26 @@ def get_random_success_stories(max_items: int = 6):
             remaining.remove(img)
 
     return selected[:max_items]
+
+
+def build_flag_image_url(url: str, size: int) -> str:
+    """Return a smaller FlagCDN variant when the source already uses FlagCDN sizing."""
+    return re.sub(r"/w\d+/", f"/w{size}/", url) if "flagcdn.com" in url else url
+
+
+@lru_cache(maxsize=64)
+def get_static_image_dimensions(relative_path: str) -> tuple[int | None, int | None]:
+    """
+    Read image dimensions from the local static directory.
+    Returns (None, None) when the file is missing or unreadable.
+    """
+    image_path = Path(settings.BASE_DIR) / "static" / relative_path
+
+    if not image_path.exists():
+        return (None, None)
+
+    try:
+        with Image.open(image_path) as image:
+            return image.size
+    except (FileNotFoundError, OSError):
+        return (None, None)

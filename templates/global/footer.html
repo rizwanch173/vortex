@@ -1,3 +1,4 @@
+{% load static %}
  <footer class="footer-style1 bg-dark">
         <div class="container">
           <div class="row">
@@ -8,9 +9,13 @@
               <div class="footer-logo">
                 <a href="{% url 'home' %}">
                   <img
-                    src="/static/img/logos/logo.png"
+                    src="{% static 'img/logos/logo.png' %}"
                     class="mb-4"
-                    alt="..."
+                    width="764"
+                    height="327"
+                    loading="lazy"
+                    decoding="async"
+                    alt="Vortex Ease"
                   />
                 </a>
               </div>

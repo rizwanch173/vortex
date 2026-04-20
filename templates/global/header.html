@@ -1,3 +1,4 @@
+{% load static %}
  <header class="header-style2">
         <div class="navbar-default">
           <!-- start top search -->
@@ -40,7 +41,15 @@
                     <div class="navbar-header navbar-header-custom">
                       <!-- start logo -->
                       <a href="{% url 'home' %}" class="navbar-brand logodefault"
-                        ><img id="logo" src="/static/img/logos/logo.png" alt="logo"
+                        ><img
+                          id="logo"
+                          src="{% static 'img/logos/logo.png' %}"
+                          data-top-src="{% static 'img/logos/logo.png' %}"
+                          data-scrolled-src="{% static 'img/logos/logo.png' %}"
+                          width="764"
+                          height="327"
+                          decoding="async"
+                          alt="Vortex Ease"
                       /></a>
                       <!-- end logo -->
                     </div>

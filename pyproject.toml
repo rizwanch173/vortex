@@ -16,4 +16,5 @@ dependencies = [
     "reportlab>=4.0.0",
     "requests>=2.32.5",
     "weasyprint>=61.2",
+    "whitenoise[brotli]>=6.11.0",
 ]

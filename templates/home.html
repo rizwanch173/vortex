@@ -4,13 +4,73 @@
 Vortex Ease - Visit & Tourist Visa Services
 {% endblock title %}
 
+{% block extra_head %}
+<link
+  rel="preload"
+  as="image"
+  href="{% static 'img/banner/banner-01.jpg' %}"
+  fetchpriority="high"
+/>
+<style>
+  .home-hero-slide {
+    position: relative;
+    overflow: hidden;
+    background: #eef2f7;
+  }
+
+  .home-hero-slide > .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .home-hero-slide__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .home-page .service-card-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 549 / 366;
+    object-fit: cover;
+  }
+
+  .home-page .testimonial-review-image {
+    width: 100%;
+    height: auto;
+  }
+  @media (max-width: 991.98px) {
+    .home-hero-slide {
+      min-height: clamp(32rem, 92vh, 46rem);
+      display: flex;
+      align-items: center;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="home-page">
 <section class="top-position p-0">
   <div class="container-fluid px-0">
     <div class="slider-fade1 owl-carousel owl-theme w-100">
-      <div class="item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-md-16 py-lg-20 py-xxl-24"
-        data-overlay-dark="0" data-background="{% static 'img/banner/banner-01.jpg' %}">
+      <div class="item bg-img cover-background pt-6 pb-10 pt-sm-6 pb-sm-14 py-md-16 py-lg-20 py-xxl-24 home-hero-slide"
+        data-overlay-dark="0">
+        <img
+          src="{% static 'img/banner/banner-01.jpg' %}"
+          alt=""
+          class="home-hero-slide__image"
+          width="1920"
+          height="900"
+          sizes="100vw"
+          fetchpriority="high"
+          decoding="async"
+          loading="eager"
+        />
         <div class="container pt-6 pt-md-0">
           <div class="row align-items-center">
             <div class="col-md-10 col-lg-8 col-xl-7 col-xxl-6 mb-1-9 mb-lg-0 py-2 position-relative">
@@ -95,7 +155,7 @@ Vortex Ease - Visit & Tourist Visa Services
       <div class="col-md-6 col-lg-5 mt-2-9 wow fadeInUp" data-wow-delay="200ms">
         <div class="card h-100 border-0 text-center p-4" style="border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.10);">
           <div class="mb-3">
-            <img src="{% static 'img/icons/icon-24.png' %}" alt="Study Visa" class="w-60px mx-auto" />
+            <img src="{% static 'img/icons/icon-24.png' %}" alt="Study Visa" class="w-60px mx-auto" width="80" height="80" loading="lazy" decoding="async" />
           </div>
           <h3 class="h4 mb-2">Study Visa - UK Universities</h3>
           <p class="mb-4 text-muted">Comprehensive support for your UK Student Visa application - from university selection to visa approval.</p>
@@ -109,7 +169,7 @@ Vortex Ease - Visit & Tourist Visa Services
       <div class="col-md-6 col-lg-5 mt-2-9 wow fadeInUp" data-wow-delay="350ms">
         <div class="card h-100 border-0 text-center p-4" style="border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.10);">
           <div class="mb-3">
-            <img src="{% static 'img/icons/icon-23.png' %}" alt="Visit Visa" class="w-60px mx-auto" />
+            <img src="{% static 'img/icons/icon-23.png' %}" alt="Visit Visa" class="w-60px mx-auto" width="80" height="80" loading="lazy" decoding="async" />
           </div>
           <h3 class="h4 mb-2">Visit Visa - Schengen, US &amp; More</h3>
           <p class="mb-4 text-muted">Expert guidance for tourist and visit visas across 12+ countries including Schengen, USA, Canada, and Australia.</p>
@@ -131,17 +191,17 @@ Vortex Ease - Visit & Tourist Visa Services
       <div class="col-lg-6 d-none d-lg-block mt-2-9 mb-18 mb-lg-0 wow fadeIn" data-wow-delay="200ms">
         <div class="about-left">
           <div class="about-shape-2 ani-top-bottom d-none d-sm-block">
-            <img src="{% static 'img/content/shape-02.png' %}" alt="..." loading="lazy" />
+            <img src="{% static 'img/content/shape-02.png' %}" alt="" width="272" height="217" loading="lazy" decoding="async" />
           </div>
           <div class="position-relative d-block">
             <div class="about-img-1">
-              <img src="{% static 'img/content/about-01.jpg' %}" alt="..." class="rounded" loading="lazy" />
+              <img src="{% static 'img/content/about-01.jpg' %}" alt="" class="rounded" width="1536" height="1024" loading="lazy" decoding="async" />
               <div class="about-shape-1 ani-top-bottom">
-                <img src="{% static 'img/content/shape-01.png' %}" alt="..." class="rounded" loading="lazy" />
+                <img src="{% static 'img/content/shape-01.png' %}" alt="" class="rounded" width="91" height="381" loading="lazy" decoding="async" />
               </div>
             </div>
             <div class="about-img-2">
-              <img src="{% static 'img/content/about-02.jpg' %}" alt="..." class="rounded" loading="lazy" />
+              <img src="{% static 'img/content/about-02.jpg' %}" alt="" class="rounded" width="400" height="343" loading="lazy" decoding="async" />
             </div>
             <!-- <div class="about-experience rounded">
                     <div class="counter">
@@ -156,7 +216,7 @@ Vortex Ease - Visit & Tourist Visa Services
                     </div>
                   </div> -->
             <div class="about-icon d-none d-sm-block">
-              <img src="{% static 'img/content/shape-03.png' %}" alt="..." class="rounded-circle" loading="lazy" />
+              <img src="{% static 'img/content/shape-03.png' %}" alt="" class="rounded-circle" width="173" height="173" loading="lazy" decoding="async" />
             </div>
           </div>
         </div>
@@ -180,7 +240,7 @@ Vortex Ease - Visit & Tourist Visa Services
                 <div class="d-flex">
                   <div class="flex-shrink-0">
                     <div class="about-icon-box">
-                      <img src="{% static 'img/icons/icon-07.png' %}" alt="..." loading="lazy" />
+                      <img src="{% static 'img/icons/icon-07.png' %}" alt="" width="80" height="80" loading="lazy" decoding="async" />
                     </div>
                   </div>
                   <div class="flex-grow-1 ms-3">
@@ -197,7 +257,7 @@ Vortex Ease - Visit & Tourist Visa Services
                 <div class="d-flex">
                   <div class="flex-shrink-0">
                     <div class="about-icon-box">
-                      <img src="{% static 'img/icons/icon-08.png' %}" alt="..." loading="lazy" />
+                      <img src="{% static 'img/icons/icon-08.png' %}" alt="" width="80" height="80" loading="lazy" decoding="async" />
                     </div>
                   </div>
                   <div class="flex-grow-1 ms-3">
@@ -225,7 +285,7 @@ Vortex Ease - Visit & Tourist Visa Services
                     </h5>
                   </div>
                 </div> -->
-          <a href="about.html" class="butn">About More</a>
+          <a href="{% url 'about' %}" class="butn">About More</a>
         </div>
       </div>
     </div>
@@ -255,7 +315,13 @@ Vortex Ease - Visit & Tourist Visa Services
           <div class="country-card text-center p-3 h-100">
             <div class="country-flag mb-3">
               <img src="{{ country.image }}" alt="{{ country.name }} Flag" class="img-fluid rounded-circle shadow-sm"
-                loading="lazy" style="width: 80px; height: 80px; object-fit: cover;" />
+                srcset="{{ country.image }} 1x, {{ country.image_2x }} 2x"
+                sizes="80px"
+                width="80"
+                height="80"
+                loading="lazy"
+                decoding="async"
+                style="width: 80px; height: 80px; object-fit: cover;" />
             </div>
             <h5 class="h6 mb-2 font-weight-600">{{ country.name }}</h5>
             <p class="small text-muted mb-0">{{ country.title }}</p>
@@ -268,7 +334,7 @@ Vortex Ease - Visit & Tourist Visa Services
     </div>
 
     <div class="text-center mt-4">
-      <a href="contact.html" class="butn">Get Your Visa Today</a>
+      <a href="{% url 'contact' %}" class="butn">Get Your Visa Today</a>
     </div>
   </div>
 </section>
@@ -285,11 +351,11 @@ Vortex Ease - Visit & Tourist Visa Services
       </h2>
     </div>
     <div class="service-carousel owl-carousel owl-theme">
-      <div class="card card-style03 border-color-light-black h-100">
+        <div class="card card-style03 border-color-light-black h-100">
         <div class="card-img position-relative overflow-hidden rounded-top bg-dark">
-          <img src="{% static 'img/content/visa-01.jpg' %}" alt="..." loading="lazy" />
+          <img src="{% static 'img/content/visa-01.jpg' %}" alt="" class="service-card-image" width="549" height="366" sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 33vw" loading="lazy" decoding="async" />
           <div class="card-icon-img">
-            <img src="{% static 'img/icons/icon-23.png' %}" alt="..." class="w-40px" />
+            <img src="{% static 'img/icons/icon-23.png' %}" alt="" class="w-40px" width="80" height="80" loading="lazy" decoding="async" />
           </div>
         </div>
         <div class="card-body p-1-6 p-sm-1-9 position-relative">
@@ -306,9 +372,9 @@ Vortex Ease - Visit & Tourist Visa Services
 
       <div class="card card-style03 border-color-light-black h-100">
         <div class="card-img position-relative overflow-hidden rounded-top bg-dark">
-          <img src="{% static 'img/content/visa-02.jpg' %}" alt="..." loading="lazy" />
+          <img src="{% static 'img/content/visa-02.jpg' %}" alt="" class="service-card-image" width="549" height="366" sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 33vw" loading="lazy" decoding="async" />
           <div class="card-icon-img">
-            <img src="{% static 'img/icons/icon-24.png' %}" alt="..." class="w-40px" />
+            <img src="{% static 'img/icons/icon-24.png' %}" alt="" class="w-40px" width="80" height="80" loading="lazy" decoding="async" />
           </div>
         </div>
         <div class="card-body p-1-6 p-sm-1-9 position-relative">
@@ -325,9 +391,9 @@ Vortex Ease - Visit & Tourist Visa Services
 
       <div class="card card-style03 border-color-light-black h-100">
         <div class="card-img position-relative overflow-hidden rounded-top bg-dark">
-          <img src="{% static 'img/content/visa-03.jpg' %}" alt="..." loading="lazy" />
+          <img src="{% static 'img/content/visa-03.jpg' %}" alt="" class="service-card-image" width="549" height="366" sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 33vw" loading="lazy" decoding="async" />
           <div class="card-icon-img">
-            <img src="{% static 'img/icons/icon-25.png' %}" alt="..." class="w-40px" />
+            <img src="{% static 'img/icons/icon-25.png' %}" alt="" class="w-40px" width="80" height="80" loading="lazy" decoding="async" />
           </div>
         </div>
         <div class="card-body p-1-6 p-sm-1-9 position-relative">
@@ -426,7 +492,7 @@ Vortex Ease - Visit & Tourist Visa Services
           </div>
           <div class="d-flex mt-1-9">
             <div class="flex-shrink-0 me-4">
-              <img src="{% static 'img/icons/icon-13.png' %}" alt="" title="" class="w-60px" loading="lazy" />
+              <img src="{% static 'img/icons/icon-13.png' %}" alt="" class="w-60px" width="120" height="120" loading="lazy" decoding="async" />
             </div>
             <div class="flex-grow-1">
               <h4 class="h5">Direct Online Interviews</h4>
@@ -439,7 +505,7 @@ Vortex Ease - Visit & Tourist Visa Services
           </div>
           <div class="d-flex mt-1-9">
             <div class="flex-shrink-0 me-4">
-              <img src="{% static 'img/icons/icon-14.png' %}" alt="" title="" class="w-60px" loading="lazy" />
+              <img src="{% static 'img/icons/icon-14.png' %}" alt="" class="w-60px" width="120" height="120" loading="lazy" decoding="async" />
             </div>
             <div class="flex-grow-1">
               <h4 class="h5">Quick &amp; Easy Process</h4>
@@ -451,7 +517,7 @@ Vortex Ease - Visit & Tourist Visa Services
           </div>
           <div class="d-flex mt-1-9">
             <div class="flex-shrink-0 me-4">
-              <img src="{% static 'img/icons/icon-15.png' %}" alt="" title="" class="w-60px" loading="lazy" />
+              <img src="{% static 'img/icons/icon-15.png' %}" alt="" class="w-60px" width="120" height="120" loading="lazy" decoding="async" />
             </div>
             <div class="flex-grow-1">
               <h4 class="h5">99% Visa Approvals</h4>
@@ -467,7 +533,7 @@ Vortex Ease - Visit & Tourist Visa Services
       </div>
       <div class="col-lg-6 mt-1-9 d-none d-lg-block wow fadeIn" data-wow-delay="400ms">
         <div class="text-center position-relative">
-          <img src="{% static 'img/content/advisor-01.jpg' %}" alt="..." class="rounded" loading="lazy" />
+          <img src="{% static 'img/content/advisor-01.jpg' %}" alt="" class="rounded" width="5209" height="5210" sizes="(max-width: 991px) 100vw, 50vw" loading="lazy" decoding="async" />
           <div class="why-choose-box d-none d-sm-block rounded">
             <h5 class="text-white h4">
               Your Trusted Partner for Global Visa Solutions.

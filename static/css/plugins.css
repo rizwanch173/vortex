@@ -1,5 +1,4 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&amp;display=swap");
 /*!
  * Bootstrap  v5.3.0 (https://getbootstrap.com/)
  * Copyright 2011-2023 The Bootstrap Authors
@@ -20072,7 +20071,7 @@ fieldset:disabled .btn {
   font-family: "Font Awesome 6 Brands";
   font-style: normal;
   font-weight: 400;
-  font-display: block;
+  font-display: swap;
   src: url(../fonts/fa-brands-400.woff2) format("woff2"),
     url(../fonts/fa-brands-400.ttf) format("truetype");
 }
@@ -21484,7 +21483,7 @@ fieldset:disabled .btn {
   font-family: "Font Awesome 6 Free";
   font-style: normal;
   font-weight: 400;
-  font-display: block;
+  font-display: swap;
   src: url(../fonts/fa-regular-400.woff2) format("woff2"),
     url(../fonts/fa-regular-400.ttf) format("truetype");
 }
@@ -21501,7 +21500,7 @@ fieldset:disabled .btn {
   font-family: "Font Awesome 6 Free";
   font-style: normal;
   font-weight: 900;
-  font-display: block;
+  font-display: swap;
   src: url(../fonts/fa-solid-900.woff2) format("woff2"),
     url(../fonts/fa-solid-900.ttf) format("truetype");
 }
@@ -21512,40 +21511,40 @@ fieldset:disabled .btn {
 }
 @font-face {
   font-family: "Font Awesome 5 Brands";
-  font-display: block;
+  font-display: swap;
   font-weight: 400;
   src: url(../fonts/fa-brands-400.woff2) format("woff2"),
     url(../fonts/fa-brands-400.ttf) format("truetype");
 }
 @font-face {
   font-family: "Font Awesome 5 Free";
-  font-display: block;
+  font-display: swap;
   font-weight: 900;
   src: url(../fonts/fa-solid-900.woff2) format("woff2"),
     url(../fonts/fa-solid-900.ttf) format("truetype");
 }
 @font-face {
   font-family: "Font Awesome 5 Free";
-  font-display: block;
+  font-display: swap;
   font-weight: 400;
   src: url(../fonts/fa-regular-400.woff2) format("woff2"),
     url(../fonts/fa-regular-400.ttf) format("truetype");
 }
 @font-face {
   font-family: "FontAwesome";
-  font-display: block;
+  font-display: swap;
   src: url(../fonts/fa-solid-900.woff2) format("woff2"),
     url(../fonts/fa-solid-900.ttf) format("truetype");
 }
 @font-face {
   font-family: "FontAwesome";
-  font-display: block;
+  font-display: swap;
   src: url(../fonts/fa-brands-400.woff2) format("woff2"),
     url(../fonts/fa-brands-400.ttf) format("truetype");
 }
 @font-face {
   font-family: "FontAwesome";
-  font-display: block;
+  font-display: swap;
   src: url(../fonts/fa-regular-400.woff2) format("woff2"),
     url(../fonts/fa-regular-400.ttf) format("truetype");
   unicode-range: u+f003, u+f006, u+f014, u+f016-f017, u+f01a-f01b, u+f01d,
@@ -21576,6 +21575,7 @@ fieldset:disabled .btn {
     url("../fonts/themify9f24.woff?-fvbane") format("woff"),
     url("../fonts/themify9f24.ttf?-fvbane") format("truetype"),
     url("../fonts/themify9f24.svg?-fvbane#themify") format("svg");
+  font-display: swap;
   font-weight: normal;
   font-style: normal;
 }

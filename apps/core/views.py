@@ -6,12 +6,13 @@ from django.conf import settings
 from django.urls import reverse
 from django.templatetags.static import static
 from .utils import (
+    build_flag_image_url,
+    get_static_image_dimensions,
     load_config,
     load_testimonial,
     load_visa_services_countries,
     get_random_success_stories,
 )
-from .context_schema import Testimonial, Reviews
 from .models import Invoice, InvoiceApplication, InvoiceOtherPayment
 
 # Load global configs that don't change often or can be loaded per request
@@ -22,34 +23,47 @@ from .models import Invoice, InvoiceApplication, InvoiceOtherPayment
 def home(request: HttpRequest):
     visa_countries_config = load_visa_services_countries()
     testimonial_config = load_testimonial()
+    homepage_countries = [
+        {
+            "name": country.name,
+            "slug": country.slug,
+            "title": country.title,
+            "image": build_flag_image_url(country.image, 80),
+            "image_2x": build_flag_image_url(country.image, 160),
+        }
+        for country in visa_countries_config.countries
+    ]
 
     # Get random success stories
     success_stories = get_random_success_stories(max_items=6)
 
-    # Create a modified testimonial config with random images
-    testimonial_context = testimonial_config
+    # Create a modified testimonial context with random images
+    testimonial_context = {
+        "title": testimonial_config.title,
+        "heading": testimonial_config.heading,
+        "reviews": [],
+    }
+
     if success_stories:
-        # Update reviews with random images
         reviews = []
         for story in success_stories:
-            # Create review entry with just the image
-            reviews.append(Reviews(
-                text="",
-                name="",
-                country_flag="",
-                country_name="",
-                image=story['image']
-            ))
-        # Create new testimonial object with updated reviews
-        testimonial_context = Testimonial(
-            title=testimonial_config.title,
-            heading=testimonial_config.heading,
-            reviews=reviews
-        )
+            image_width, image_height = get_static_image_dimensions(story["image"])
+            reviews.append(
+                {
+                    "text": "",
+                    "name": "",
+                    "country_flag": "",
+                    "country_name": "",
+                    "image": story["image"],
+                    "image_width": image_width,
+                    "image_height": image_height,
+                }
+            )
+        testimonial_context["reviews"] = reviews
 
     return render(request, "home.html", {
         "context": testimonial_context,
-        "visa_countries": visa_countries_config.countries
+        "visa_countries": homepage_countries,
     })
 
 
@@ -228,19 +242,19 @@ def blogs(request: HttpRequest):
             "title": "Tourist Visa Tips: Essential Advice for Your Journey",
             "description": "Comprehensive tips for a smooth tourist visa application process.",
             "url": "/blog/tourist-visa-tips",
-            "image": "/static/img/blog/blog-01.jpg"
+            "image": static("img/blog/blog-01.jpg")
         },
         {
             "title": "Student Visa Guide: Your Path to International Education",
             "description": "A complete guide for obtaining a student visa for your studies abroad.",
             "url": "/blog/student-visa-guide",
-            "image": "/static/img/blog/blog-02.jpg"
+            "image": static("img/blog/blog-02.jpg")
         },
         {
             "title": "Work Visa Requirements: Navigating Global Employment",
             "description": "Understand the requirements for securing a work visa in various countries.",
             "url": "/blog/work-visa-requirements",
-            "image": "/static/img/blog/blog-03.jpg"
+            "image": static("img/blog/blog-03.jpg")
         },
     ]
 

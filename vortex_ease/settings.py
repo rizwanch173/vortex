@@ -1,3 +1,4 @@
+import importlib.util
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -12,8 +13,12 @@ if dotenv_path.exists():
 # Read environment variables
 SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-default-key-change-in-prod")
 ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
-
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "0" if ENVIRONMENT == "production" else "1").lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
 
 # # Parse ALLOWED_HOSTS="a,b,c"
 # ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
@@ -45,6 +50,12 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+]
+
+if importlib.util.find_spec("whitenoise") is not None:
+    MIDDLEWARE.append("whitenoise.middleware.WhiteNoiseMiddleware")
+
+MIDDLEWARE += [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "apps.core.middleware.Custom404Middleware",
@@ -116,9 +127,22 @@ USE_TZ = True
 # ----------------------------------------------------
 # STATIC FILES
 # ----------------------------------------------------
-STATIC_URL = "/static/"
+STATIC_HOST = os.environ.get("STATIC_HOST", "").rstrip("/")
+STATIC_URL = f"{STATIC_HOST}/static/" if STATIC_HOST else "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"   # Required for production collectstatic
+
+if importlib.util.find_spec("whitenoise") is not None and not DEBUG:
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+    WHITENOISE_MAX_AGE = 31536000
+    WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
 # ----------------------------------------------------
 # MEDIA FILES
